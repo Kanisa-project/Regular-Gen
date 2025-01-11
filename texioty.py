@@ -75,7 +75,7 @@ class TEXIOTY(tk.LabelFrame):
         self.registry = CommandRegistry({})
         self.helper_dict = {}
         self.available_profiles = s.available_profiles
-        self.active_profile = self.available_profiles["kanisa"]
+        self.active_profile = self.available_profiles["guest"]
 
         self.texoty = texoty.TEXOTY(int(width) + 16, int(height), master=self)
         self.texoty.grid(column=0, row=0)
@@ -92,14 +92,10 @@ class TEXIOTY(tk.LabelFrame):
         self.known_commands_dict = {
             "help": [self.display_help_message, "Displays a message of hope and help.",
                      [], [], s.rgb_to_hex(s.INDIAN_RED), s.rgb_to_hex(s.BLACK)],
-            "helpers": [self.display_helper_widgets, "Displays the list of helper widgets.",
-                        [], [], s.rgb_to_hex(s.INDIAN_RED), s.rgb_to_hex(s.BLACK)],
             "exit": [self.close_program, "Exits the program.",
-                     [], [], s.rgb_to_hex(s.ORANGE_RED), s.rgb_to_hex(s.BLACK)],
-            "echo": [self.perform_echo, "Echos back to you.",
-                     [], [], s.rgb_to_hex(s.ORANGE_RED), s.rgb_to_hex(s.BLACK)],
+                     [], [], s.rgb_to_hex(s.INDIAN_RED), s.rgb_to_hex(s.BLACK)],
             "login": [self.log_profile_in, "This logs the user into a profile:",
-                      ['bluebeard', 'sprawly'], [], s.rgb_to_hex(s.LIGHT_GREEN), s.rgb_to_hex(s.BLACK)],
+                      ['guest'], [], s.rgb_to_hex(s.LIGHT_GREEN), s.rgb_to_hex(s.BLACK)],
             "logout": [self.log_profile_out, "This logs the user out of a profile.",
                        [], [], s.rgb_to_hex(s.LIGHT_GREEN), s.rgb_to_hex(s.BLACK)],
             "dear_sys,": [self.start_diary_mode, "Creates a new .diary/ entry.",

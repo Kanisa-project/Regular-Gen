@@ -1,8 +1,8 @@
 import artay
-import helperIMX
-import helperPIN
+# import helperIMX
+# import helperPIN
 import idutc
-import helperLRC
+# import helperLRC
 import tkinter as tk
 import settings as s
 import texioty
@@ -32,9 +32,6 @@ class Application(tk.Frame):
         self.artay_frame = artay.ARTAY(width=screen_w*.333, height=screen_h*.4, idutc_frame=self.idutc_frame)
 
         self.texioty_frame = texioty.TEXIOTY(width=screen_w//3, height=screen_h*.93)
-        self.LAPI_helper = helperLRC.Luprung()
-        self.IAPI_helper = helperIMX.ImmutaX()
-        self.PAPI_helper = helperPIN.TalkingPinata()
 
         self.kinvow_frame = kinvow.KINVOW(width=screen_w//3, height=screen_h*.93,
                                           idutc_frame=self.idutc_frame, artay_frame=self.artay_frame)
@@ -43,9 +40,6 @@ class Application(tk.Frame):
         self.calendar_frame = kalendar.Kalendar(width=screen_w*.333, height=screen_h*.4)
         self.calendar_frame.txo = self.texioty_frame.texoty
 
-        self.texioty_frame.add_helper_widget("LAPI", self.LAPI_helper)
-        self.texioty_frame.add_helper_widget("IAPI", self.IAPI_helper)
-        self.texioty_frame.add_helper_widget("PAPI", self.PAPI_helper)
         self.texioty_frame.add_helper_widget("CLDR", self.calendar_frame)
         self.texioty_frame.add_helper_widget("IDUT", self.idutc_frame)
         self.texioty_frame.add_helper_widget("KNVO", self.kinvow_frame)

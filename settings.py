@@ -666,34 +666,13 @@ class TexiotyProfile:
     username: str
     password: str
     color_theme: tuple
-    loopring_id: int
-    loopring_api_key: str
 
 
 available_profiles = {
     "guest": TexiotyProfile("Guest", "p455",
                             (rgb_to_hex(DARK_BROWN),
                              rgb_to_hex(SAGE_GREEN),
-                             rgb_to_hex(LIGHT_SLATE_BLUE)), 114295,
-                            config["LOOPRING_API_KEYS"]["THIRDO_API_KEY"]),
-    "kanisa": TexiotyProfile(username="Kanisa",
-                             password="p455",
-                             color_theme=(rgb_to_hex(SPACE_GREY),
-                                          rgb_to_hex(NEON_PINK),
-                                          rgb_to_hex(FELDSPAR)),
-                             loopring_id=256131,
-                             loopring_api_key=config["LOOPRING_API_KEYS"]["KANISA_API_KEY"]),
-    "bluebeard": TexiotyProfile(username="Bluebeard",
-                                password="p455",
-                                color_theme=(rgb_to_hex(BLUE_3),
-                                             rgb_to_hex(LIGHT_CORAL),
-                                             rgb_to_hex(DARK_ORANGE)), loopring_id=66852,
-                                loopring_api_key=config["LOOPRING_API_KEYS"]["BLUEBEARD_API_KEY"]),
-    "sprawly": TexiotyProfile("Sprawly", "p455",
-                              (rgb_to_hex(BLACK),
-                               rgb_to_hex(SPACE_GREY),
-                               rgb_to_hex(CRIMSON)), 0,
-                              config["LOOPRING_API_KEYS"]["BLUEBEARD_API_KEY"])
+                             rgb_to_hex(LIGHT_SLATE_BLUE)))
 }
 
 
