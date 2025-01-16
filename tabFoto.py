@@ -20,8 +20,9 @@ class Fotoes(artstyle.Artyle):
             A collection of options to create a new and exciting Foto.
         """
         super(Fotoes, self).__init__(master=master, idutc=idutc, width=width, height=height)
+        self.use_data_dict = None
         self.tab_name = "foto"
-        self.home_folder_path = 'C:\\Users\\thisr\\PycharmProjects\\KanisaRedditGen\\'
+        self.home_folder_path = 'C:\\Users\\thisr\\PycharmProjects\\Regular-Gen\\'
         r1 = random.randint(0, 69)
         r2 = random.randint(0, 69)
         self.setup_button_choices(["Change Foto 1",
@@ -52,10 +53,9 @@ class Fotoes(artstyle.Artyle):
     def gather_foto_options(self) -> dict:
         """Gather and return the options Foto will use to make."""
         sd = self.slider_dict
-        # if self.IDUTC_frame.data_source_var.get() == "Random":
-        #     for slider in self.slider_choice_list:
-        #         rn = random.randint(6, 94)
-        #         sd[slider][0].set(rn)
+        for slider in self.slider_choice_list:
+            rn = random.randint(6, 94)
+            sd[slider][0].set(rn)
         chosen_foto_options = {"IMG": self.button_dict["Change Foto 1"][0].get(),
                                "IMG2": self.button_dict["Change Foto 2"][0].get(),
                                "AB": sd["Blend"][0].get(),
@@ -76,10 +76,10 @@ class Fotoes(artstyle.Artyle):
         """Add a single foto"""
         self.use_data_dict = self.IDUTC_frame.kre8dict
         x = ""
-        rn = random.randint(0, 69)
-        lp = random.choice(["landscape", "landscape"])
+        rn = random.randint(0, 30)
+        orientation = random.choice(["landscape", "landscape"])
         if self.use_data_dict["artributes"][0] == "Random":
-            x = f'/assets/Fotoes/OG/{lp}{rn}.jpg'
+            x = f'/assets/Fotoes/OG/{orientation}{rn}.jpg'
         elif self.use_data_dict["artributes"][0] == "Human":
             x = openfilename_str()
             x = x[len(self.home_folder_path):]
@@ -89,10 +89,10 @@ class Fotoes(artstyle.Artyle):
         """Add a second foto"""
         self.use_data_dict = self.IDUTC_frame.kre8dict
         x = ""
-        rn = random.randint(0, 69)
-        lp = random.choice(["landscape", "landscape"])
+        rn = random.randint(0, 30)
+        orientation = random.choice(["landscape", "landscape"])
         if self.use_data_dict["artributes"][0] == "Random":
-            x = f'/assets/Fotoes/OG/{lp}{rn}.jpg'
+            x = f'/assets/Fotoes/OG/{orientation}{rn}.jpg'
         elif self.use_data_dict["artributes"][0] == "Human":
             x = openfilename_str()
             x = x[len(self.home_folder_path):]

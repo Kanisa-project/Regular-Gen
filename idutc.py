@@ -68,7 +68,7 @@ class IDUTC(tk.LabelFrame):
             self.attributeMenus[key][1].grid(column=0, row=2+list(self.artyle_artributes_dict.keys()).index(key))
 
         self.generate_new_idutc()
-        self.entry_ID_string_var.set("r4nd0m")
+        self.entry_ID_string_var.set("shadow")
         self.set_use_idutc()
         self.kre8dict = self.setup_kre8dict(self.entry_ID_string_var.get(),
                                             self.entry_UTC_string_var.get())

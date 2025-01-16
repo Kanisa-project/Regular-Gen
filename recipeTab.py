@@ -29,8 +29,8 @@ class Recitab(ttk.Frame):
 
         self.chosen_options_dict = {}
         self.widget_display_array = []
-        self.setup_labels(["Ingredients:"], start_x_cell=5, start_y_cell=0)
-        self.setup_labels(["Directions:"], start_x_cell=5, start_y_cell=6)
+        self.setup_labels(["ingredients:"], start_x_cell=5, start_y_cell=0)
+        self.setup_labels(["directions:"], start_x_cell=5, start_y_cell=6)
 
     def set_used_recipe(self, recipe_dict: dict) -> dict:
         self.master.master.chosen_recipe_dict = recipe_dict

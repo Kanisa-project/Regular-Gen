@@ -79,7 +79,7 @@ HANGMAN_TEXTMAN_LIST = ["  ╔═════╕   \n"
 
 def prompto(img: Image, kre8dict: dict) -> Image:
     """
-    Creates a writing prompt from
+    Creates a writing prompt from options within the Wordie tab.
     @param img:
     @param kre8dict:
     @return:

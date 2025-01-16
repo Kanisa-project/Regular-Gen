@@ -4,6 +4,8 @@ from PIL import Image, ImageDraw
 import settings as s
 import math
 import numpy as np
+
+
 # import matplotlib
 
 
@@ -17,7 +19,7 @@ def glyth_formation(img: Image, number_list: list, color_list: list) -> Image:
     draw = ImageDraw.Draw(img)
     print((w, h), number_list, color_list)
     for i in range(number_list[9]):
-        draw.line((w // (i+1), h // (i+1)), fill="blue", width=6)
+        draw.line((w // (i + 1), h // (i + 1)), fill="blue", width=6)
     return img
 
 
@@ -35,10 +37,7 @@ def plan_angled_line(x, y, angle, length, width, color, img_size):
     @return:
     """
     endx1 = x
-    # endx1 = x + length * math.cos(math.radians(angle))
     endy1 = y
-    # endy1 = y + length * math.sin(math.radians(angle))
-    print('x:', x)
     endx2 = x + length * math.cos(math.radians(angle + 180)) * -1
     endy2 = y + length * math.sin(math.radians(angle + 180)) * -1
     return (s.clamp(endx1, 0, img_size[0]),
@@ -56,19 +55,20 @@ def lsystem_string_maker(axioms: str, rules: dict, iterations: int) -> str:
             else:
                 new_axioms += axiom
             axioms = new_axioms
-        print(new_axioms)
+        # print(new_axioms)
     return axioms
 
 
-def lsystem_rule_parser(lstring: str, start_point=(320, 320),
-                        start_length=32, start_width=1, start_color=s.ORANGE) -> dict:
+def lsystem_morse_coder(lstring: str, start_point=(320, 320),
+                        start_length=32, start_width=1, start_color=s.ORANGE) -> list:
     """
-    Takes an L-system string and creates a dictionary of line drawers.
-    :param start_length:
-    :param start_color:
-    :param start_point:
-    :param start_width:
-    :param lstring:
+    Parses the lstring into a dictionary of line_tuples which contain 2 points, a width and color.
+
+    :param lstring: L-System string to apply rules from.
+    :param start_point: Beginning point of a whole line.
+    :param start_length: Starting length to move forward.
+    :param start_width: Width of a whole line to start at.
+    :param start_color: Color of the first line portion.
     :return:
     """
     angle = 0
@@ -76,78 +76,23 @@ def lsystem_rule_parser(lstring: str, start_point=(320, 320),
     w, h = (640, 640)
     width = start_width
     color = start_color
-    prev_line_tup = ((start_point[0], start_point[1], 550, 420), width, color)
+    prev_line_tuple = ((start_point[0], start_point[1], start_point[0], start_point[1]), width, color)
     # point_list = [prev_line_tup]
-    line_points_dict = {
-        "main": [prev_line_tup]
-    }
+    line_points_list = [prev_line_tuple]
+
     for c in lstring:
-        if s.ALPHANUMERIC_RULES[c.lower()].startswith("ANGLE"):
-            angle += int(s.ALPHANUMERIC_RULES[c.lower()].split("ANGLE")[1])
+        if s.MORSE_CODE_RULES[c.lower()].startswith("ANGLE"):
+            angle += int(s.MORSE_CODE_RULES[c.lower()].split("ANGLE")[1])
             angle = s.clamp(angle, -360, 360)
-        if s.ALPHANUMERIC_RULES[c.lower()].startswith("LINE"):
-            length = int(s.ALPHANUMERIC_RULES[c.lower()].split("LINE")[1])
-        if s.ALPHANUMERIC_RULES[c.lower()].startswith("FORWARD"):
-            length += int(s.ALPHANUMERIC_RULES[c.lower()].split("FORWARD")[1])
-        if s.ALPHANUMERIC_RULES[c.lower()].startswith("THICK"):
-            width += int(s.ALPHANUMERIC_RULES[c.lower()].split("THICK")[1])
-        if s.ALPHANUMERIC_RULES[c.lower()].startswith("THIN"):
-            width += int(s.ALPHANUMERIC_RULES[c.lower()].split("THIN")[1])
-        if s.ALPHANUMERIC_RULES[c.lower()].startswith("PUSH"):
-            line_points_dict[str(len(line_points_dict))] = []
-        if s.ALPHANUMERIC_RULES[c.lower()].startswith("POP"):
-            pass
-        line_tup = plan_angled_line(prev_line_tup[0][2], prev_line_tup[0][3],
-                                    angle, length, width,
-                                    color, (w, h))
-        line_points_dict["main"].append(line_tup)
-        prev_line_tup = line_tup
-    return line_points_dict
-
-
-# def lsystem_rule_parser(lstring: str, start_tup=((320, 320, 320, 320), 1, ORANGE)) -> list:
-#     """
-#     Takes an L-system string and creates a dictionary of line drawers.
-#     :param lstring:
-#     :param start_tup:
-#     :return:
-#     """
-#     angle = 0
-#     length = start_tup[0][2]
-#     w, h = (start_tup[0][2] * 128, start_tup[0][3] * 2)
-#     width = 1
-#     prev_line_tup = start_tup
-#     point_list = [prev_line_tup]
-#     for c in lstring:
-#         if ALPHANUMERIC_RULES[c.lower()].startswith("ANGLE"):
-#             angle += int(ALPHANUMERIC_RULES[c.lower()].split("ANGLE")[1])
-#             angle = s.clamp(angle, -360, 360)
-#             print(f"New angle: {angle}")
-#         if ALPHANUMERIC_RULES[c.lower()].startswith("LINE"):
-#             length = int(ALPHANUMERIC_RULES[c.lower()].split("LINE")[1])
-#             print(f"New length: {length}")
-#         if ALPHANUMERIC_RULES[c.lower()].startswith("FORWARD"):
-#             length += int(ALPHANUMERIC_RULES[c.lower()].split("FORWARD")[1])
-#             print(f"New length: {length}")
-#         if ALPHANUMERIC_RULES[c.lower()].startswith("THICK"):
-#             width += int(ALPHANUMERIC_RULES[c.lower()].split("THICK")[1])
-#             print(f"New width: {width}")
-#         if ALPHANUMERIC_RULES[c.lower()].startswith("THIN"):
-#             width += int(ALPHANUMERIC_RULES[c.lower()].split("THIN")[1])
-#             print(f"New width: {width}")
-#         if ALPHANUMERIC_RULES[c.lower()].startswith("PUSH"):
-#             pass
-#         if ALPHANUMERIC_RULES[c.lower()].startswith("POP"):
-#             pass
-#         line_tup = plan_angled_line(prev_line_tup[0][0], prev_line_tup[0][1],
-#                                     angle, length, prev_line_tup[1],
-#                                     prev_line_tup[2], (w, h))
-#         point_list.append(line_tup)
-#         prev_line_tup = line_tup
-#     print("POINTLIST")
-#     for point in point_list:
-#         print(point)
-#     return point_list
+        if s.MORSE_CODE_RULES[c.lower()].startswith("LINE"):
+            length = int(s.MORSE_CODE_RULES[c.lower()].split("LINE")[1])
+        line_tuple = plan_angled_line(prev_line_tuple[0][2], prev_line_tuple[0][3],
+                                      angle, length, width,
+                                      color, (w, h))
+        line_points_list.append(line_tuple)
+        prev_line_tuple = line_tuple
+        # color = random.choice(s.RANDOM_COLORS)
+    return line_points_list
 
 
 def segmented_line_run(start_len: int, seg_diff: int, direction_list: list, start_pos=(320, 320), rando=False) -> list:
@@ -164,7 +109,7 @@ def segmented_line_run(start_len: int, seg_diff: int, direction_list: list, star
     return point_list
 
 
-def boxline(img: Image, kre8dict: dict) -> Image:
+def waves(img: Image, kre8dict: dict) -> Image:
     nl = kre8dict["number_list"]
     cl = kre8dict["color_list"]
     w, h = img.size
@@ -223,58 +168,6 @@ def squiggle_xy(a, b, c, d):
     return np.sin(i * a) * np.cos(i * b), np.sin(i * c) * np.cos(i * d)
 
 
-# def bare_bones(img: Image, kre8dict: dict) -> Image:
-#     nl = kre8dict["number_list"]
-#     cl = kre8dict["color_list"]
-#     t = np.linspace(0, 10, 100*random.choice(nl))
-#     # p = np.poly1d([-0.03, -1.6, 1.25, -8.0, -2.1, 4.2, 6.9])
-#     p_list = []
-#     colo = random.choice(cl)
-#     for i in nl:
-#         p_list.append((random.random()*i) * random.randint(-1, 1))
-#     p = np.poly1d(p_list)
-#     # w = signal.chirp(t, f0=nl[0], f1=nl[9], t1=nl[9], method='quadratic')
-#     w = signal.sweep_poly(t, p)
-#     # fig = plt.figure(figsize=(6, 6), facecolor=(DRS_PURPLE[0] / 255, DRS_PURPLE[1] / 255, DRS_PURPLE[2] / 255))
-#     fig = plt.figure(figsize=(10, 8), facecolor=(colo[0] / 255, colo[1] / 255, colo[2] / 255))
-#     plt.plot(t, w, random.choice(RANDOM_COLOR_STR_LIST))
-#     plt.axis('off')
-#     plt.savefig("img_buf.png", format='png')
-#     draw = ImageDraw.Draw(img)
-
-    img_buf = Image.open("img_buf.png")
-    img.paste(img_buf, (-192, -80))
-    # plt.title("Linear Chirp, f(0)=6, f(10)=1")
-    # plt.xlabel('t (sec)')
-    # plt.show()
-    return img
-
-
-def weird_stuff(img: Image, kre8dict: dict) -> Image:
-    fig = plt.figure(figsize=(8, 8))
-    outer_grid = fig.add_gridspec(4, 4, wspace=0, hspace=0)
-    nl = kre8dict["number_list"]
-
-    for a in range(4):
-        for c in range(4):
-            # gridspec inside gridspec
-            inner_grid = outer_grid[a, c].subgridspec(3, 3, wspace=0, hspace=0)
-            axs = inner_grid.subplots()  # Create all subplots for the inner grid.
-            for (b, d), ax in np.ndenumerate(axs):
-                ax.plot(*squiggle_xy((random.choice(nl) % 4) + 1, (random.choice(nl) % 4) + 1,
-                                     (random.choice(nl) % 4) + 1, (random.choice(nl) % 4) + 1))
-                ax.set(xticks=[], yticks=[])
-
-    # show only the outside spines
-    for ax in fig.get_axes():
-        ss = ax.get_subplotspec()
-        ax.spines.top.set_visible(ss.is_first_row())
-        ax.spines.bottom.set_visible(ss.is_last_row())
-        ax.spines.left.set_visible(ss.is_first_col())
-        ax.spines.right.set_visible(ss.is_last_col())
-    plt.show()
-
-
 def flame(img: Image, kre8dict: dict) -> Image:
     """
     Glyth image that looks a bit like flames.
@@ -292,7 +185,7 @@ def flame(img: Image, kre8dict: dict) -> Image:
     return img
 
 
-def slanters(img: Image, kre8dict: dict) -> Image:
+def pebbles(img: Image, kre8dict: dict) -> Image:
     """
     Glyth image that looks a bit like flames.
     """
@@ -335,7 +228,7 @@ def grid(img: Image, kre8dict: dict) -> Image:
 
 def llines(img: Image, kre8dict: dict) -> Image:
     """
-    Draw a glyph image that looks a bit like flames.
+    Draw a glyth image that uses the l-system.
     """
     nl = kre8dict["number_list"]
     cl = kre8dict["color_list"]
@@ -344,23 +237,98 @@ def llines(img: Image, kre8dict: dict) -> Image:
     prev_point = (w // 2, h // 2, w // 128, h // 2)
     prev_width = 1
     prev_color = (0, 0, 0)
-    rooz = lsystem_string_maker(kre8dict['use_id'], s.ALPHANUMERIC_AXIOMS, 4)
-    roost = lsystem_rule_parser(rooz)
+    str_axiom = list(f"{nl[4]}".join(kre8dict['use_id']))
+    # str_axiom.append(str_axiom)
+    random.shuffle(str_axiom)
+    print(str_axiom)
+    # str_axiom = random.choice(kre8dict['use_id']) + str(random.choice(nl)) + kre8dict['use_id']
+    # str_axiom += random.choice(kre8dict['use_id']) + kre8dict['use_id'] + str(random.choice(nl))
+    rooz = lsystem_string_maker(''.join(str_axiom), s.MORSE_CODE_AXIOMS, 3)
+    # roost = lsystem_rule_parser(rooz, start_color=s.RANDOM_COLOR2)
+    roost = lsystem_morse_coder(rooz, start_color=s.RANDOM_COLOR2)
     for roo in roost["main"]:
-        point = (roo[0][0], roo[0][1], roo[0][2], roo[0][3])
+        # print("roo:", roo)
+        line_points = (roo[0][0], roo[0][1], roo[0][2], roo[0][3])
         width = roo[1]
         color = roo[2]
-        print(color)
-        draw.line(point, fill=color, width=width)
-        draw.line((point[2], point[3], prev_point[1], prev_point[0]), fill=prev_color, width=prev_width)
-        draw.line((point[0], point[1], prev_point[0], prev_point[1]), fill=prev_color, width=prev_width)
-        prev_point = point
+        draw.line(line_points, fill=color, width=width)
+        for i in range(1, 9):
+            offset = i * 32
+            if w - offset <= offset or h - offset <= offset:
+                break
+            ellipse_coordinates = (roo[0][0], roo[0][1], w - offset, h - offset)
+            draw.ellipse(ellipse_coordinates, outline=random.choice(cl), width=random.choice(nl))
+            ellipse_coordinates = (-roo[0][2], -roo[0][3], (w - offset) / 2, (h - offset) / 2)
+            draw.ellipse(ellipse_coordinates, outline=random.choice(cl), width=random.choice(nl))
+        # draw.line((point[2], point[3], prev_point[1], prev_point[0]), fill=prev_color, width=prev_width)
+        # draw.line((point[0], point[1], prev_point[0], prev_point[1]), fill=prev_color, width=prev_width)
+        prev_point = line_points
         prev_width = width
         prev_color = color
     return img
 
 
-def circle_grow(img: Image, kre8dict: dict) -> Image:
+def smoke(img: Image, kre8dict: dict) -> Image:
+    """
+    I have no idea what I'm doing, but I know I'm doing it really really well. :D
+    :param img:
+    :param kre8dict:
+    :return:
+    """
+    nl = kre8dict["number_list"]
+    cl = kre8dict["color_list"]
+    w, h = img.size
+    draw = ImageDraw.Draw(img)
+    for i in range(10):
+        num_sides = s.clamp(random.choice(nl), 3, 9)
+        poly_list = s.polypointlist(num_sides, 0, 2 * (w // 7), i * (h // 10), 16)
+        poly_list2 = s.polypointlist(num_sides, 0, 3 * (w // 7), i * (h // 10), 16)
+        poly_list3 = s.polypointlist(num_sides, 0, 4 * (w // 7), i * (h // 10), 16)
+        for point in poly_list:
+            draw.ellipse((point[0], point[1], (point[0] + i * 3, point[1] + i * 3)),
+                         width=random.choice(nl), fill=random.choice(cl))
+        for point in poly_list2:
+            draw.ellipse((point[0], point[1], (point[0] + i * 3, point[1] + i * 3)),
+                         width=random.choice(nl), fill=random.choice(cl))
+        for point in poly_list3:
+            draw.ellipse((point[0], point[1], (point[0] + i * 3, point[1] + i * 3)),
+                         width=random.choice(nl), fill=random.choice(cl))
+    return img
+
+
+def dirt(img: Image, kre8dict: dict) -> Image:
+    """
+    Darkest and solid bottom.
+    :param img:
+    :param kre8dict:
+    :return:
+    """
+    nl = random.choices(kre8dict["number_list"], k=8)
+    cl = random.choices(kre8dict["color_list"], k=8)
+    draw = ImageDraw.Draw(img)
+    w, h = img.size
+    str_axiom = list(f"{nl[4]}".join(kre8dict['use_id']))
+    random.shuffle(str_axiom)
+    print(str_axiom)
+    rooz = lsystem_string_maker(''.join(str_axiom), s.MORSE_CODE_AXIOMS, 3)
+    roost = lsystem_rule_parser(rooz, start_color=s.RANDOM_COLOR2)
+    for roo in roost["main"]:
+        # print("roo:", roo)
+        line_points = (roo[0][0], roo[0][1], roo[0][2], roo[0][3])
+        width = roo[1]
+        color = roo[2]
+        draw.line(line_points, fill=color, width=width)
+        for i in range(1, 9):
+            offset = i * 32
+            if w - offset <= offset or h - offset <= offset:
+                break
+            ellipse_coordinates = (roo[0][0], roo[0][1], w - offset, h - offset)
+            draw.ellipse(ellipse_coordinates, outline=random.choice(cl), width=random.choice(nl))
+            ellipse_coordinates = (-roo[0][2], -roo[0][3], (w - offset) / 2, (h - offset) / 2)
+            draw.ellipse(ellipse_coordinates, outline=random.choice(cl), width=random.choice(nl))
+
+
+def embers(img: Image, kre8dict: dict) -> Image:
     """
     Makes a circle and enlarges it.
     """
@@ -377,7 +345,7 @@ def circle_grow(img: Image, kre8dict: dict) -> Image:
     return img
 
 
-def box_grow(img: Image, kre8dict: dict) -> Image:
+def mist(img: Image, kre8dict: dict) -> Image:
     """
     Draws a series of concentric squares on the given image, with randomly
     chosen colors and line thickness.
@@ -395,7 +363,7 @@ def box_grow(img: Image, kre8dict: dict) -> Image:
     return img
 
 
-def spell_circle(img: Image, kre8dict: dict) -> Image:
+def frost(img: Image, kre8dict: dict) -> Image:
     """
     Shapes on shapes to make a circle for casting spells.
     """
@@ -464,7 +432,7 @@ def confetti(img: Image, kre8dict: dict) -> Image:
     return img
 
 
-def julia_filter(img: Image, kre8dict: dict) -> Image:
+def jacob_filter(img: Image, kre8dict: dict) -> Image:
     width, height = img.size
     rgb_img = img.convert('RGB')
     draw = ImageDraw.Draw(img)
@@ -498,7 +466,7 @@ def julia_filter(img: Image, kre8dict: dict) -> Image:
     return img
 
 
-def erik_filter(img: Image, kre8dict: dict) -> Image:
+def susan_filter(img: Image, kre8dict: dict) -> Image:
     width, height = img.size
     rgb_img = img.convert('RGB')
     draw = ImageDraw.Draw(img)
@@ -536,6 +504,7 @@ def erik_filter(img: Image, kre8dict: dict) -> Image:
             draw.point((s.clamp(nx, 0, width),
                         s.clamp(ny, 0, height)), use_color)
     return img
+
 
 # def julia_generate(img: Image, kre8dict: dict) -> Image:
 #     cl = kre8dict["color_list"]
@@ -591,7 +560,7 @@ def squiggles(img: Image, kre8dict: dict) -> Image:
     return img
 
 
-def circle_shapes(img: Image, kre8dict: dict) -> Image:
+def hail(img: Image, kre8dict: dict) -> Image:
     """
     Shapes with a hint of circles about it.
     """
@@ -653,7 +622,7 @@ def lightning(img: Image, kre8dict: dict) -> Image:
     return img
 
 
-def pikupstix(img: Image, kre8dict: dict) -> Image:
+def ash(img: Image, kre8dict: dict) -> Image:
     """
     Almost looks like a game of pick-up-sticks.
     @param img:
@@ -671,34 +640,7 @@ def pikupstix(img: Image, kre8dict: dict) -> Image:
     return img
 
 
-# def create_avatar(img: Image, kre8dict: dict) -> Image:
-#     for glyth_option in kre8dict["Glyth"]["Avatar"]:
-#         if glyth_option == "Box Lines":
-#             boxline(img, kre8dict)
-#         if glyth_option == "Circle Shapes":
-#             circle_shapes(img, kre8dict)
-#         if glyth_option == "Lightning":
-#             lightning(img, kre8dict)
-#         if glyth_option == "Squiggles":
-#             squiggles(img, kre8dict)
-#         if glyth_option == "Confetti":
-#             confetti(img, kre8dict)
-#         if glyth_option == "Ripples":
-#             ripples(img, kre8dict)
-#         if glyth_option == "Spell Circle":
-#             spell_circle(img, kre8dict)
-#         if glyth_option == "Spider Web":
-#             spider_web(img, kre8dict)
-#         if glyth_option == "Box Grow":
-#             box_grow(img, kre8dict)
-#         if glyth_option == "Circle Grow":
-#             circle_grow(img, kre8dict)
-#         if glyth_option == "Rooster":
-#             llines(img, kre8dict)
-#     return img
-
-
-def spider_web(img: Image, kre8dict: dict) -> Image:
+def dust(img: Image, kre8dict: dict) -> Image:
     nl = kre8dict["number_list"]
     cl = kre8dict["color_list"]
     w, h = img.size
@@ -716,17 +658,56 @@ def spider_web(img: Image, kre8dict: dict) -> Image:
                       fill=random.choice(cl))
     return img
 
-#
-# def lsystem(axioms: str, rules: dict, iterations: int) -> str:
-#     for _ in range(iterations):
-#         new_axioms = ''
-#         for axiom in axioms:
-#             if axiom in rules:
-#                 new_axioms += rules[axiom]
-#             else:
-#                 new_axioms += axiom
-#             axioms = new_axioms
-#         return axioms
+
+def shadow(img: Image, kre8dict: dict) -> Image:
+    """
+    Create lines and dots to maybe probably possibly depict a shadow.
+    :param img: Image to draw on and return.
+    :param kre8dict: Dictionary to take in options.
+    :return:
+    """
+    nl = kre8dict["number_list"]
+    cl = kre8dict["color_list"]
+    draw = ImageDraw.Draw(img)
+    w, h = img.size
+    str_axiom = list(f"{nl[4]}".join(kre8dict['use_id']))
+    random.shuffle(str_axiom)
+    l_string = lsystem_string_maker(''.join(str_axiom), s.MORSE_CODE_AXIOMS, 3)
+    l_morse_line_list = lsystem_morse_coder(l_string, start_color=s.RANDOM_COLOR2)
+    for line in l_morse_line_list:
+        line_points = (line[0][0], line[0][1], line[0][2], line[0][3])
+        width = line[1]
+        color = line[2]
+        draw.line(line_points, fill=color, width=width)
+        draw.line((line[0][0], 0, line[0][2], h), fill=color, width=width)
+        draw.line((0, line[0][1], w, line[0][3]), fill=color, width=width)
+    return img
+
+# def create_avatar(img: Image, kre8dict: dict) -> Image:
+#     for glyth_option in kre8dict["Glyth"]["Avatar"]:
+#         if glyth_option == "Dirt":
+#             boxline(img, kre8dict)
+#         if glyth_option == "Smoke":
+#             circle_shapes(img, kre8dict)
+#         if glyth_option == "Lightning":
+#             lightning(img, kre8dict)
+#         if glyth_option == "Pebbles":
+#             squiggles(img, kre8dict)
+#         if glyth_option == "Confetti":
+#             confetti(img, kre8dict)
+#         if glyth_option == "Ripples":
+#             ripples(img, kre8dict)
+#         if glyth_option == "Waves":
+#             spell_circle(img, kre8dict)
+#         if glyth_option == "Fog":
+#             spider_web(img, kre8dict)
+#         if glyth_option == "Ash":
+#             box_grow(img, kre8dict)
+#         if glyth_option == "Frost":
+#             circle_grow(img, kre8dict)
+#         if glyth_option == "Rooster":
+#             llines(img, kre8dict)
+#     return img
 
 
 # def mandelbrot_generate(self, oi):
@@ -788,3 +769,93 @@ def spider_web(img: Image, kre8dict: dict) -> Image:
 #             b = i % 16 * 16
 #             imaje.putpixel((x, y), b * 65536 + g * 256 + r)
 #     imaje.save(f"KINVOW/Julia_{self.use_data_dict['use_ID']}.png", "PNG")
+
+
+# def bare_bones(img: Image, kre8dict: dict) -> Image:
+#     nl = kre8dict["number_list"]
+#     cl = kre8dict["color_list"]
+#     t = np.linspace(0, 10, 100*random.choice(nl))
+#     # p = np.poly1d([-0.03, -1.6, 1.25, -8.0, -2.1, 4.2, 6.9])
+#     p_list = []
+#     colo = random.choice(cl)
+#     for i in nl:
+#         p_list.append((random.random()*i) * random.randint(-1, 1))
+#     p = np.poly1d(p_list)
+#     # w = signal.chirp(t, f0=nl[0], f1=nl[9], t1=nl[9], method='quadratic')
+#     w = signal.sweep_poly(t, p)
+#     # fig = plt.figure(figsize=(6, 6), facecolor=(DRS_PURPLE[0] / 255, DRS_PURPLE[1] / 255, DRS_PURPLE[2] / 255))
+#     fig = plt.figure(figsize=(10, 8), facecolor=(colo[0] / 255, colo[1] / 255, colo[2] / 255))
+#     plt.plot(t, w, random.choice(RANDOM_COLOR_STR_LIST))
+#     plt.axis('off')
+#     plt.savefig("img_buf.png", format='png')
+#     draw = ImageDraw.Draw(img)
+
+
+# def fog(img: Image, kre8dict: dict) -> Image:
+#     fig = plt.figure(figsize=(8, 8))
+#     outer_grid = fig.add_gridspec(4, 4, wspace=0, hspace=0)
+#     nl = kre8dict["number_list"]
+#
+#     for a in range(4):
+#         for c in range(4):
+#             # gridspec inside gridspec
+#             inner_grid = outer_grid[a, c].subgridspec(3, 3, wspace=0, hspace=0)
+#             axs = inner_grid.subplots()  # Create all subplots for the inner grid.
+#             for (b, d), ax in np.ndenumerate(axs):
+#                 ax.plot(*squiggle_xy((random.choice(nl) % 4) + 1, (random.choice(nl) % 4) + 1,
+#                                      (random.choice(nl) % 4) + 1, (random.choice(nl) % 4) + 1))
+#                 ax.set(xticks=[], yticks=[])
+#
+#     # show only the outside spines
+#     for ax in fig.get_axes():
+#         ss = ax.get_subplotspec()
+#         ax.spines.top.set_visible(ss.is_first_row())
+#         ax.spines.bottom.set_visible(ss.is_last_row())
+#         ax.spines.left.set_visible(ss.is_first_col())
+#         ax.spines.right.set_visible(ss.is_last_col())
+#     plt.show()
+
+
+# def lsystem_rule_parser(lstring: str, start_tup=((320, 320, 320, 320), 1, ORANGE)) -> list:
+#     """
+#     Takes an L-system string and creates a dictionary of line drawers.
+#     :param lstring:
+#     :param start_tup:
+#     :return:
+#     """
+#     angle = 0
+#     length = start_tup[0][2]
+#     w, h = (start_tup[0][2] * 128, start_tup[0][3] * 2)
+#     width = 1
+#     prev_line_tup = start_tup
+#     point_list = [prev_line_tup]
+#     for c in lstring:
+#         if ALPHANUMERIC_RULES[c.lower()].startswith("ANGLE"):
+#             angle += int(ALPHANUMERIC_RULES[c.lower()].split("ANGLE")[1])
+#             angle = s.clamp(angle, -360, 360)
+#             print(f"New angle: {angle}")
+#         if ALPHANUMERIC_RULES[c.lower()].startswith("LINE"):
+#             length = int(ALPHANUMERIC_RULES[c.lower()].split("LINE")[1])
+#             print(f"New length: {length}")
+#         if ALPHANUMERIC_RULES[c.lower()].startswith("FORWARD"):
+#             length += int(ALPHANUMERIC_RULES[c.lower()].split("FORWARD")[1])
+#             print(f"New length: {length}")
+#         if ALPHANUMERIC_RULES[c.lower()].startswith("THICK"):
+#             width += int(ALPHANUMERIC_RULES[c.lower()].split("THICK")[1])
+#             print(f"New width: {width}")
+#         if ALPHANUMERIC_RULES[c.lower()].startswith("THIN"):
+#             width += int(ALPHANUMERIC_RULES[c.lower()].split("THIN")[1])
+#             print(f"New width: {width}")
+#         if ALPHANUMERIC_RULES[c.lower()].startswith("PUSH"):
+#             pass
+#         if ALPHANUMERIC_RULES[c.lower()].startswith("POP"):
+#             pass
+#         line_tup = plan_angled_line(prev_line_tup[0][0], prev_line_tup[0][1],
+#                                     angle, length, prev_line_tup[1],
+#                                     prev_line_tup[2], (w, h))
+#         point_list.append(line_tup)
+#         prev_line_tup = line_tup
+#     print("POINTLIST")
+#     for point in point_list:
+#         print(point)
+#     return point_list

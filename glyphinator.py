@@ -36,12 +36,6 @@ def emoji_bity(img: Image, color_list: list) -> Image:
     connection_point_list = [(0, 0), (.5, 0), (1, 0),
                              (0, .5), (.5, .5), (1, .5),
                              (0, 1), (.5, 1), (1, 1)]
-    # connection_point_list = [(0, 0), (.2, 0), (.4, 0), (.6, 0), (.8, 0), (1, 0),
-    #                          (0, .2), (.2, .2), (.4, .2), (.6, .2), (.8, .2), (1, .2),
-    #                          (0, .4), (.2, .4), (.4, .4), (.6, .4), (.8, .4), (1, .4),
-    #                          (0, .6), (.2, .6), (.4, .6), (.6, .6), (.8, .6), (1, .6),
-    #                          (0, .8), (.2, .8), (.4, .8), (.6, .8), (.8, .8), (1, .8),
-    #                          (0, 1), (.2, 1), (.4, 1), (.6, 1), (.8, 1), (1, 1)]
     connection_path = [random.choice(connection_point_list)]
     for i in range(len(color_list)):
         connection_path.append(random.choice(connection_point_list))
@@ -54,7 +48,6 @@ def emoji_bity(img: Image, color_list: list) -> Image:
         y1 = con_pon[1] * h
         x2 = next_con_pon[0] * w
         y2 = next_con_pon[1] * h
-        # draw.line((x1, y1, x2, y2), width=3, fill=random.choice(color_list))
         draw.line((x1, y1, x2, y2), width=3, fill=colo)
     return img
 
