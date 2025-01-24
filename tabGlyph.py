@@ -19,12 +19,18 @@ class Glyphin(artstyle.Artyle):
         super(Glyphin, self).__init__(master=master, idutc=idutc, width=width, height=height)
         self.tab_name = "Glyph"
         # self.radiobutton_choice_list = ["masterpiece", "Avatar", "Banner", "Tile"]
-        self.checkbutton_choice_list = ["Square", "Round", "SlantUp", "SlantDown", "Ring", "Vertical", "Horizontal",
-                                        "Emoji", "masterpiece", "Snow", "Scales"]
+        self.checkbutton_choice_list = ["Square", "Round", "SlantUp", "SlantDown", "SlantLeft", "SlantRight", "Ring",
+                                        "Vertical", "Horizontal", "Up", "Down", "Left", "Right", "Snow", "Scales",
+                                        "Plaid"]
+        self.selection_button_list = ["All", "None", "Random"]
         # self.tone_int_var = IntVar()
         # self.disp_img = None
         # self.setup_radiobutton_choices(self.radiobutton_choice_list)
+        self.setup_button_choices(self.selection_button_list)
         self.setup_checkbutton_choices(self.checkbutton_choice_list)
+        self.button_dict["All"][1].configure(command=self.select_all)
+        self.button_dict["None"][1].configure(command=self.select_none)
+        self.button_dict["Random"][1].configure(command=self.select_random)
 
     def gather_glyph_options(self) -> list:
         """Gather the options from this tab and return them as a dictionary."""
@@ -52,7 +58,7 @@ class Glyphin(artstyle.Artyle):
         :return:
         """
         w, h = img.size
-        bity = Image.new("RGBA", (64, 64), DRS_PURPLE)
+        # bity = Image.new("RGBA", (64, 64), DRS_PURPLE)
         selected_colors = []
         print(kre8dict)
         if kre8dict["artributes"][2] == "Rainbow":
@@ -64,8 +70,8 @@ class Glyphin(artstyle.Artyle):
                 selected_colors.append(((i + 1) * shadelvl, (i + 1) * shadelvl, (i + 1) * shadelvl))
         for x in range(0, w, 64):
             for y in range(0, h, 64):
-                if len(kre8dict) == 0:
-                    kre8dict.append("Emoji")
+                # if len(kre8dict) == 0:
+                #     kre8dict.append("Emoji")
                 bit_type = random.choice(kre8dict["glyph"])
                 bity = Image.new("RGBA", (64, 64), DRS_PURPLE)
                 if bit_type == "Vertical":
@@ -73,9 +79,21 @@ class Glyphin(artstyle.Artyle):
                 if bit_type == "Horizontal":
                     bity = glyphinator.horizontal_bity(bity, selected_colors)
                 if bit_type == "SlantUp":
-                    bity = glyphinator.diamond_up_bity(bity, selected_colors)
+                    bity = glyphinator.slant_up_bity(bity, selected_colors)
                 if bit_type == "SlantDown":
-                    bity = glyphinator.diamond_down_bity(bity, selected_colors)
+                    bity = glyphinator.slant_down_bity(bity, selected_colors)
+                if bit_type == "SlantLeft":
+                    bity = glyphinator.slant_left_bity(bity, selected_colors)
+                if bit_type == "SlantRight":
+                    bity = glyphinator.slant_right_bity(bity, selected_colors)
+                if bit_type == "Up":
+                    bity = glyphinator.up_bity(bity, selected_colors)
+                if bit_type == "Down":
+                    bity = glyphinator.down_bity(bity, selected_colors)
+                if bit_type == "Left":
+                    bity = glyphinator.left_bity(bity, selected_colors)
+                if bit_type == "Right":
+                    bity = glyphinator.right_bity(bity, selected_colors)
                 if bit_type == "Square":
                     bity = glyphinator.square_bity(bity, selected_colors)
                 if bit_type == "Round":
@@ -84,11 +102,26 @@ class Glyphin(artstyle.Artyle):
                     bity = glyphinator.ring_bity(bity, selected_colors)
                 if bit_type == "Snow":
                     bity = glyphinator.snow_bity(bity, selected_colors)
-                if bit_type == "masterpiece":
+                if bit_type == "Plaid":
                     bity = glyphinator.plaid_bity(bity, selected_colors)
                 if bit_type == "Emoji":
                     bity = glyphinator.emoji_bity(bity, selected_colors)
                 if bit_type == "Scales":
                     bity = glyphinator.scales_bity(bity, selected_colors)
+                print(bity, bit_type)
                 img.paste(bity, (x, y))
         return img
+
+    def select_all(self):
+        for option in self.checkbutton_choice_list:
+            if self.checkbutton_dict[option][0].get() != 1:
+                self.checkbutton_dict[option][0].set(1)
+
+    def select_none(self):
+        for option in self.checkbutton_choice_list:
+            if self.checkbutton_dict[option][0].get() == 1:
+                self.checkbutton_dict[option][0].set(0)
+
+    def select_random(self):
+        for option in self.checkbutton_choice_list:
+            self.checkbutton_dict[option][0].set(random.randint(0, 1))

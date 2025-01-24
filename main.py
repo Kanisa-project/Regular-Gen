@@ -166,7 +166,7 @@ class SpotLighter(tk.LabelFrame):
 
 if __name__ == '__main__':
     root = tk.Tk()
-    root.title('Project: KanisaGenWallet')
+    root.title('Regular Generator')
 
     # ~~ ALLOW FOR FULLSCREEN HERE
     # root.attributes("-fullscreen", True)

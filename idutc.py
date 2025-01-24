@@ -45,7 +45,7 @@ class IDUTC(tk.LabelFrame):
         self.texioty_commands = {}
 
         self.artyle_artributes_dict = {
-            "Data_Source": ["Random", "Reddit", "OSRS", "Twitter", "Discord"],
+            "Data_Source": ["Random", "Human", "Reddit", "OSRS", "Twitter", "Discord"],
             "Transparency": ["Door", "Window"],
             "Coloration": ["Rainbow", "Cloud"],
             "Animation Speed": ["Ice", "Fire"],

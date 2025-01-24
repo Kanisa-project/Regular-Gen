@@ -54,7 +54,7 @@ def shuffle_foto(img: Image, kre8dict: dict) -> Image:
         sdraw.text((0, 0), str(sliced_images.index(simg)))
         if sliced_images.index(simg) == len(sliced_images)-1:
             simg.paste(Image.new("RGB", (simg.size[0], simg.size[1]), color=DRS_PURPLE))
-        simg.save(f"temp/{sliced_images.index(simg)}.png")
+        simg.save(f".temp/{sliced_images.index(simg)}.png")
         shuf_img_pos_list.remove(picked_pos)
     return img
 

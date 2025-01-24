@@ -4,7 +4,7 @@ from PIL import Image, ImageDraw, ImageTk
 from settings import *
 
 
-def stack_layers(img: Image, kre8dict: dict, size=(128, 128)) -> Image:
+def stack_layers(img: Image, artribute_dict: dict, size=(128, 128)) -> Image:
     """
     Stack the layers of a spirite with the options of the kre8shun dictionary.
 
@@ -13,25 +13,21 @@ def stack_layers(img: Image, kre8dict: dict, size=(128, 128)) -> Image:
     :param size:
     :return:
     """
-    print(kre8dict)
-    object_str = list(kre8dict["spirite"].keys())[0]
-    cl = []
-    for color in kre8dict["color_list"]:
-        cl.append((int(color[0] * 255),
-                   int(color[1] * 255),
-                   int(color[2] * 255),
-                   int(1.0 * 255)))
-    nl = kre8dict["number_list"]
-    lnd = LAYER_DICT[object_str]
-    layers_list = list(lnd.keys())
+    print(artribute_dict)
+    object_str = "Ball"
+    cl = artribute_dict["colors"]
     object_image = Image.new('RGBA', (128, 128), (0, 0, 0, 0))
-    for layer in layers_list:
-        # pim = Image.open(f'assets/{object_str}/{layer}{random.choice(kre8dict["spirite"][object_str][layer])}.png')
-        pim = Image.open(f'assets/{object_str}/{layer}{random.choice(nl)}.png')
-        cim = Image.new('RGBA', (128, 128), random.choice(cl))
-        pim = pim.convert(mode='RGBA')
-        cim = Image.blend(pim, cim, .55)
-        object_image.paste(cim, (0, 0), mask=pim)
+    for layer_list in list(artribute_dict['spirite'].keys()):
+        if layer_list in list(LAYER_DICT.keys()):
+            object_str = layer_list
+            print(object_str)
+        if layer_list.startswith('layer_'):
+            # print(f'assets/{object_str}/{artribute_dict[layer_list][0].get()}{artribute_dict[layer_list][1].get()}.png')
+            pim = Image.open(f'assets/{object_str}/{artribute_dict["spirite"][layer_list][0].get()}{artribute_dict["spirite"][layer_list][1].get()}.png')
+            cim = Image.new('RGBA', (128, 128), random.choice(cl))
+            pim = pim.convert(mode='RGBA')
+            cim = Image.blend(pim, cim, artribute_dict['transparency'])
+            object_image.paste(cim, (0, 0), mask=pim)
     return object_image.resize(size)
 
 

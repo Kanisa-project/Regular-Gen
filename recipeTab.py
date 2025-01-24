@@ -40,9 +40,9 @@ class Recitab(ttk.Frame):
         self.setup_direction_text_boxes(recipe_dict["directions"], start_x_cell=6, start_y_cell=6)
         return recipe_dict
 
-    def update_slider_label(self, intvar, strvar) -> str:
-        strvar.set(intvar.get())
-        return str(self.widget_display_array)
+    # def update_slider_label(self, intvar, strvar) -> str:
+    #     strvar.set(intvar.get())
+    #     return str(self.widget_display_array)
 
     def delete_text_boxes(self):
         for textbox in self.textbox_dict:
@@ -70,62 +70,62 @@ class Recitab(ttk.Frame):
             col = i // 10
             label.grid(column=col+start_x_cell, row=row+start_y_cell)
 
-    def setup_slider_bars(self, slider_list: list):
-        """
-        Set up a dictionary of sliders for a given list of parameters.
+    # def setup_slider_bars(self, slider_list: list):
+    #     """
+    #     Set up a dictionary of sliders for a given list of parameters.
+    #
+    #     :param slider_list: A list of parameter names.
+    #     """
+    #     self.widget_display_array.append(slider_list)
+    #     for i, parameter in enumerate(slider_list):
+    #         min_val, max_val = self.slider_limit_dict[parameter]
+    #         str_var = StringVar(value=parameter + " : ")
+    #         int_var = IntVar(value=(max_val + min_val) // 2)
+    #         label = Label(self, textvariable=str_var)
+    #         scale = Scale(self, from_=min_val, to=max_val, variable=int_var, width=5, length=88,
+    #                       orient="horizontal", borderwidth=0, sliderlength=6, showvalue=False,
+    #                       command=self.update_slider_label(int_var, str_var))
+    #         self.slider_dict[parameter] = [int_var, str_var, scale, label]
+    #         # scale.configure(command=self.update_slider_label)
+    #
+    #         row = i % 10
+    #         col = i // 10
+    #         scale.grid(column=len(self.widget_display_array) + col, row=row, sticky="se")
+    #         label.grid(column=len(self.widget_display_array), row=row, sticky="nw")
 
-        :param slider_list: A list of parameter names.
-        """
-        self.widget_display_array.append(slider_list)
-        for i, parameter in enumerate(slider_list):
-            min_val, max_val = self.slider_limit_dict[parameter]
-            str_var = StringVar(value=parameter + " : ")
-            int_var = IntVar(value=(max_val + min_val) // 2)
-            label = Label(self, textvariable=str_var)
-            scale = Scale(self, from_=min_val, to=max_val, variable=int_var, width=5, length=88,
-                          orient="horizontal", borderwidth=0, sliderlength=6, showvalue=False,
-                          command=self.update_slider_label(int_var, str_var))
-            self.slider_dict[parameter] = [int_var, str_var, scale, label]
-            # scale.configure(command=self.update_slider_label)
+    # def setup_dropdown_menus(self, word_list=None, word_str=None, dropdown_name=""):
+    #     if word_str:
+    #         self.widget_display_array.append(word_str)
+    #         for c in word_str:
+    #             while c in self.dropdown_menu_dict:
+    #                 c += c
+    #             words_str_var = StringVar(value=ALPHANUMERIC_WORD_LISTS[c[:1].lower()][0])
+    #             self.dropdown_menu_dict[c] = [words_str_var,
+    #                                           OptionMenu(self, words_str_var, *ALPHANUMERIC_WORD_LISTS[c[:1].lower()])]
+    #     elif word_list:
+    #         self.widget_display_array.append(dropdown_name)
+    #         word_str_var = StringVar(value=word_list[0])
+    #         self.dropdown_menu_dict[dropdown_name] = [word_str_var,
+    #                                                   OptionMenu(self, word_str_var, *word_list)]
+    #
+    #     for i, dropdown in enumerate(list(self.dropdown_menu_dict.keys())):
+    #         row = i % 10
+    #         col = i // 10
+    #         self.dropdown_menu_dict[dropdown][1].grid(column=len(self.widget_display_array) + col, row=row)
 
-            row = i % 10
-            col = i // 10
-            scale.grid(column=len(self.widget_display_array) + col, row=row, sticky="se")
-            label.grid(column=len(self.widget_display_array), row=row, sticky="nw")
-
-    def setup_dropdown_menus(self, word_list=None, word_str=None, dropdown_name=""):
-        if word_str:
-            self.widget_display_array.append(word_str)
-            for c in word_str:
-                while c in self.dropdown_menu_dict:
-                    c += c
-                words_str_var = StringVar(value=ALPHANUMERIC_WORD_LISTS[c[:1].lower()][0])
-                self.dropdown_menu_dict[c] = [words_str_var,
-                                              OptionMenu(self, words_str_var, *ALPHANUMERIC_WORD_LISTS[c[:1].lower()])]
-        elif word_list:
-            self.widget_display_array.append(dropdown_name)
-            word_str_var = StringVar(value=word_list[0])
-            self.dropdown_menu_dict[dropdown_name] = [word_str_var,
-                                                      OptionMenu(self, word_str_var, *word_list)]
-
-        for i, dropdown in enumerate(list(self.dropdown_menu_dict.keys())):
-            row = i % 10
-            col = i // 10
-            self.dropdown_menu_dict[dropdown][1].grid(column=len(self.widget_display_array) + col, row=row)
-
-    def setup_radiobutton_choices(self, options_list: list):
-        """
-        Radio button choices setup.
-        :param options_list: list of options for the radio buttons
-        :return: None
-        """
-        int_var = IntVar()
-        self.widget_display_array.append(options_list)
-        for i, option in enumerate(options_list):
-            new_str_var = StringVar(value=option)
-            radiobutton = Radiobutton(self, text=option, variable=int_var, value=i)
-            radiobutton.grid(column=len(self.widget_display_array) + 0, row=i)
-            self.radiobutton_dict[option] = [int_var, new_str_var, radiobutton]
+    # def setup_radiobutton_choices(self, options_list: list):
+    #     """
+    #     Radio button choices setup.
+    #     :param options_list: list of options for the radio buttons
+    #     :return: None
+    #     """
+    #     int_var = IntVar()
+    #     self.widget_display_array.append(options_list)
+    #     for i, option in enumerate(options_list):
+    #         new_str_var = StringVar(value=option)
+    #         radiobutton = Radiobutton(self, text=option, variable=int_var, value=i)
+    #         radiobutton.grid(column=len(self.widget_display_array) + 0, row=i)
+    #         self.radiobutton_dict[option] = [int_var, new_str_var, radiobutton]
 
     def setup_ingredient_text_boxes(self, ingredient_dict: dict, start_x_cell=0, start_y_cell=0):
         for i, (key, value) in enumerate(ingredient_dict.items()):

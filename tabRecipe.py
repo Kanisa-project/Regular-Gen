@@ -32,7 +32,7 @@ class AlaNFT(artstyle.Artyle):
         """
         super(AlaNFT, self).__init__(master=master, idutc=idutc, width=width, height=height)
         self.osrsTab = None
-        self.tab_name = "recipe"
+        self.tab_name = "Recipe"
 
         self.recipeBook = ttk.Notebook(master=self)
 

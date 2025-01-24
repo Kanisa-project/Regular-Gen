@@ -155,9 +155,6 @@ def word_search(img: Image, kre8dict: dict) -> Image:
     letters_array = []
     word_list = ["KANISA", "BLUE"]
     font = ImageFont.truetype('trebucbd.ttf', 16)
-    for i in range(nl[5]):
-        word_picked = random.choice(list(kre8dict["word_dict"].keys()))
-        word_list.append(word_picked.upper())
     for word in kre8dict["wordie"]:
         if word != "type" and word != "word_search":
             word_list.append(word.upper())
@@ -175,19 +172,19 @@ def word_search(img: Image, kre8dict: dict) -> Image:
             for c in word:
                 print(cx, cy)
                 letters_array[cx][cy] = c.upper()
-                draw.text((cx*16+4, cy*16-2), font=font, text=c.upper(), fill=cl[1], align='right')
+                draw.text((cx*16+4, cy*16-2), font=font, text=c.upper(), fill=cl[0], align='right')
                 cy += 1
         elif orientation == "Horizontal":
             for c in word:
                 print(cx, cy)
                 letters_array[cx][cy] = c.upper()
-                draw.text((cx*16+4, cy*16-2), font=font, text=c.upper(), fill=cl[1], align='right')
+                draw.text((cx*16+4, cy*16-2), font=font, text=c.upper(), fill=cl[0], align='right')
                 cx += 1
         elif orientation == "Diagonal":
             for c in word:
                 print(cx, cy)
                 letters_array[cx][cy] = c.upper()
-                draw.text((cx*16+4, cy*16-2), font=font, text=c.upper(), fill=cl[1], align='right')
+                draw.text((cx*16+4, cy*16-2), font=font, text=c.upper(), fill=cl[0], align='right')
                 cx += 1
                 cy += 1
         # cy += 1
@@ -198,14 +195,8 @@ def word_search(img: Image, kre8dict: dict) -> Image:
             if len(letters_array[cx][cy]) == 0:
                 c = random.choice("abcdefghijklmnopqrstuvwxyz")
                 letters_array[cx][cy] = c.upper()
-                draw.text((cx*16+4, cy*16-2), font=font, text=c.upper(), fill=WHITE, align='right')
-    # werd_serch_dict = {
-    #     'letter_array': letters_array,
-    #     'find_list': word_list
-    # }
+                draw.text((cx*16+4, cy*16-2), font=font, text=c.upper(), fill=random.choice(cl), align='right')
     kre8dict["wordie"]["word_search"]["letter_array"] = letters_array
-    # with open(f'WORDIE/werd_serch_array.txt', 'w') as f:
-    #     json.dump(werd_serch_dict, f, separators=(',', ': '))
     return img
 
 

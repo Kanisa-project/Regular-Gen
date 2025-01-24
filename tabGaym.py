@@ -16,7 +16,7 @@ class Gaym(artstyle.Artyle):
     def __init__(self, width, height, master=None, idutc=None):
         super(Gaym, self).__init__(master=master, idutc=idutc, width=width, height=height)
         self.disp_img = None
-        self.tab_name = "gaym"
+        self.tab_name = "Gaym"
         self.gaym_optionmenu_choice_list = ["SpaceDits", "ABF", "ThurBo", "Othaido", "BootyDefence"]
         # self.spirite_option_dict = {
         #     "Othaido": ["RTJ", "Boat"],

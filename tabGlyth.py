@@ -22,12 +22,13 @@ class Glyther(artstyle.Artyle):
         self.tab_name = "Glyth"
         self.checkbutton_choice_list = ["Dirt", "Smoke", "Ripples", "Lightning", "Pebbles",
                                         "Waves", "Fog", "Ash", "Frost", "Mist", "Hail", "Embers", "Dust", "Shadow",
-                                        "Glare", "Puddles", "Crystals", "Mud", "Dew", "Steam"]
-        # self.air_checkbutton_list = ['Cloud', 'Smoke', 'Wind']
-        # self.water_checkbutton_list = ['Wave', 'Ripples', 'Rain']
-        # self.earth_checkbutton_list = ['Cloud', 'Smoke', 'Wind']
-        # self.fire_checkbutton_list = ['Lightning', 'Ripples', 'Rain']
+                                        "Glare", "Puddles", "Crystals", "Mud", "Dew", "Steam", "Flame"]
         self.radiobutton_choice_list = ["None", "Justin", "Susan", "Bethany", "Jacob"]
+        self.selection_button_list = ["All", "None", "Random"]
+        self.setup_button_choices(self.selection_button_list)
+        self.button_dict["All"][1].configure(command=self.select_all)
+        self.button_dict["None"][1].configure(command=self.select_none)
+        self.button_dict["Random"][1].configure(command=self.select_random)
         self.setup_radiobutton_choices(self.radiobutton_choice_list)
         self.setup_checkbutton_choices(self.checkbutton_choice_list)
 
@@ -52,65 +53,63 @@ class Glyther(artstyle.Artyle):
                 chosen_glyth_options.append(option)
         return chosen_glyth_options
 
-    def set_artributes(self, kre8dict: dict) -> list:
-        selected_colors = []
-        if kre8dict["artributes"][5] == "Pen":
-            pass
-            # kre8dict["Glyth"]["width"] = kre8dict["number_list"][:3]
-        elif kre8dict["artributes"][5] == "Crayon":
-            pass
-            # kre8dict["Glyth"]["width"] = kre8dict["number_list"][3:]
-        if kre8dict["artributes"][1] == "Rainbow":
-            for ltr in kre8dict["use_id"]:
-                if ltr.lower() in ALPHANUMERIC_COLORS:
-                    selected_colors.append(ALPHANUMERIC_COLORS[ltr.lower()])
-                else:
-                    selected_colors.append(PUNCTUATION_COLORS[ltr.lower()])
-        elif kre8dict["artributes"][1] == "Cloud":
-            shadelvl = 255 // len(kre8dict["use_id"])
-            for i in range(len(kre8dict["use_id"])):
-                selected_colors.append(((i + 1) * shadelvl, (i + 1) * shadelvl, (i + 1) * shadelvl))
-        return selected_colors
-
     def add_glyth(self, img: Image, kre8dict: dict, abt="masterpiece") -> Image:
         """
         Add each chosen glyth option to the img using the kre8dict.
         """
-        # selected_colors = self.set_artributes(kre8dict)
+        artributes = self.set_artributes(kre8dict)
         for glyth_option in kre8dict["glyth"]:
             if glyth_option == "Shadow":
-                glyther.shadow(img, kre8dict)
+                glyther.shadow(img, artributes)
             if glyth_option == "Dirt":
-                glyther.dirt(img, kre8dict)
+                glyther.dirt(img, artributes)
             if glyth_option == "Smoke":
-                glyther.smoke(img, kre8dict)
+                glyther.smoke(img, artributes)
             if glyth_option == "Lightning":
-                glyther.lightning(img, kre8dict)
+                glyther.lightning(img, artributes)
             if glyth_option == "Pebbles":
-                glyther.pebbles(img, kre8dict)
+                glyther.pebbles(img, artributes)
             # if glyth_option == "Confetti":
-            #     glyther.confetti(img, kre8dict)
+            #     glyther.confetti(img, artributes)
             if glyth_option == "Ripples":
-                glyther.ripples(img, kre8dict)
+                glyther.ripples(img, artributes)
             if glyth_option == "Waves":
-                glyther.waves(img, kre8dict)
+                glyther.waves(img, artributes)
             if glyth_option == "Fog":
-                glyther.fog(img, kre8dict)
+                glyther.fog(img, artributes)
             if glyth_option == "Frost":
-                glyther.frost(img, kre8dict)
+                glyther.frost(img, artributes)
             if glyth_option == "Mist":
-                glyther.mist(img, kre8dict)
+                glyther.mist(img, artributes)
             if glyth_option == "Hail":
-                glyther.hail(img, kre8dict)
+                glyther.hail(img, artributes)
             if glyth_option == "Embers":
-                glyther.embers(img, kre8dict)
+                glyther.embers(img, artributes)
             if glyth_option == "Dust":
-                glyther.dust(img, kre8dict)
+                glyther.dust(img, artributes)
             if glyth_option == "Ash":
-                glyther.ash(img, kre8dict)
+                glyther.ash(img, artributes)
+            if glyth_option == "Flame":
+                glyther.flame(img, artributes)
+            if glyth_option == "Steam":
+                glyther.steam(img, artributes)
         if self.radiobutton_dict["Justin"][0].get() == 1:
             glyther.susan_filter(img, kre8dict)
         if self.radiobutton_dict["Justin"][0].get() == 2:
             glyther.jacob_filter(img, kre8dict)
 
         return img
+
+    def select_all(self):
+        for option in self.checkbutton_choice_list:
+            if self.checkbutton_dict[option][0].get() != 1:
+                self.checkbutton_dict[option][0].set(1)
+
+    def select_none(self):
+        for option in self.checkbutton_choice_list:
+            if self.checkbutton_dict[option][0].get() == 1:
+                self.checkbutton_dict[option][0].set(0)
+
+    def select_random(self):
+        for option in self.checkbutton_choice_list:
+            self.checkbutton_dict[option][0].set(random.randint(0, 1))

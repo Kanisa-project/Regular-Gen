@@ -16,9 +16,10 @@ class Artyle(ttk.Frame):
         :param texioty:
         """
         super(Artyle, self).__init__(master=master, width=width, height=height)
-        self.TEXIOTY = texioty
+        # self.TEXIOTY = texioty
         self.IDUTC_frame: idutc.IDUTC = idutc
         self.tab_name = "Basic"
+
         self.checkbutton_dict = {}
         self.radiobutton_dict = {}
         self.textbox_dict = {}
@@ -155,4 +156,31 @@ class Artyle(ttk.Frame):
             row = (i % 8)
             col = (i // 8)
 
-            checkbutton.grid(column=len(self.widget_display_array)+col, row=row)
+            checkbutton.grid(column=len(self.widget_display_array) + col, row=row)
+
+    def set_artributes(self, kre8dict: dict) -> dict:
+        selected_colors = []
+        artribute_dict = {}
+
+        if kre8dict["artributes"][1] == "Door":
+            artribute_dict["transparency"] = 0.85
+        elif kre8dict["artributes"][1] == "Window":
+            artribute_dict["transparency"] = 0.35
+
+        if kre8dict["artributes"][2] == "Rainbow":
+            for ltr in kre8dict["use_id"]:
+                if ltr.lower() in ALPHANUMERIC_COLORS:
+                    selected_colors.append(ALPHANUMERIC_COLORS[ltr.lower()])
+                else:
+                    selected_colors.append(PUNCTUATION_COLORS[ltr.lower()])
+        elif kre8dict["artributes"][2] == "Cloud":
+            shadelvl = 255 // len(kre8dict["use_id"])
+            for i in range(len(kre8dict["use_id"])):
+                selected_colors.append(((i + 1) * shadelvl, (i + 1) * shadelvl, (i + 1) * shadelvl))
+        artribute_dict['colors'] = selected_colors
+
+        if kre8dict["artributes"][6] == "Pen":
+            artribute_dict["accuracy"] = kre8dict["number_list"][:3]
+        elif kre8dict["artributes"][6] == "Crayon":
+            artribute_dict["accuracy"] = kre8dict["number_list"][3:]
+        return artribute_dict

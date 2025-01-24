@@ -1,9 +1,9 @@
 import random
-from dataclasses import dataclass
+# from dataclasses import dataclass
 from PIL import Image, ImageDraw
 import settings as s
 import math
-import numpy as np
+# import numpy as np
 
 
 # import matplotlib
@@ -96,6 +96,15 @@ def lsystem_morse_coder(lstring: str, start_point=(320, 320),
 
 
 def segmented_line_run(start_len: int, seg_diff: int, direction_list: list, start_pos=(320, 320), rando=False) -> list:
+    """
+    Makes a running line using the list of directions, allowing many and few different lines in a single line.
+    :param start_len: Starting length of line segments.
+    :param seg_diff: The amount of each segment to grow.
+    :param direction_list: List of possible directions to go.
+    :param start_pos: Starting position of the line segment.
+    :param rando: direction_list in order or not?
+    :return:
+    """
     point_list = [start_pos]
     prev_point = start_pos
     seg_length = start_len
@@ -109,11 +118,11 @@ def segmented_line_run(start_len: int, seg_diff: int, direction_list: list, star
     return point_list
 
 
-def waves(img: Image, kre8dict: dict) -> Image:
-    nl = kre8dict["number_list"]
-    cl = kre8dict["color_list"]
-    w, h = img.size
+def waves(img: Image, artribute_dict: dict) -> Image:
+    width_list = artribute_dict["accuracy"]
+    cl = artribute_dict["colors"]
     draw = ImageDraw.Draw(img)
+    w, h = img.size
     start_point = (w // 2, h // 2)
     box_line_dir_list = [
         (-1, 0), (0, 1), (-1, 0),
@@ -129,95 +138,55 @@ def waves(img: Image, kre8dict: dict) -> Image:
         (0, -1), (-1, 0), (0, 1),
         (0, 1), (0, 1), (-1, 0)
     ]
-    # end_point_list = segmented_line_run(64, 4, box_line_dir_list, start_pos=start_point, rando=True)
     end_point_list = segmented_line_run(w // 10, random.randint(-20, 20), box_line_dir_list, start_pos=start_point,
                                         rando=True)
     prev_point = start_point
     for point in end_point_list:
-        draw.line((prev_point, point), fill=random.choice(cl), width=random.choice(nl))
+        draw.line((prev_point, point), fill=random.choice(cl), width=random.choice(width_list))
         prev_point = point
     return img
 
 
-def dummy(img: Image, kre8dict: dict) -> Image:
-    nl = kre8dict["number_list"]
-    cl = kre8dict["color_list"]
-    draw = ImageDraw.Draw(img)
-    for rad in nl:
-        draw.regular_polygon([64 * rad, 64 * rad, rad + random.choice(nl) + 1 * 64], random.choice(nl) + 3,
-                             random.choice(nl) * 36, outline=random.choice(nl), fill=random.choice(cl))
-    return img
-
-
-# def bare_bones(img: Image, kre8dict: dict) -> Image:
-#     nl = kre8dict["number_list"]
-#     cl = kre8dict["color_list"]
-#     draw = ImageDraw.Draw(img)
-#     w, h = img.size
-#     # print(type(mujic.get_sin_wave(60)))
-#     draw.line((2, 4, 90, 60))
-#     # for spot in mujic.get_chirp(60):
-#     #     print(spot)
-#     #     rani = random.choice(nl)
-#     #     draw.line((spot*rani, -spot*rani), fill=random.choice(cl))
-#     return img
-
-
-def squiggle_xy(a, b, c, d):
-    i = np.arange(0.0, 2 * np.pi, 0.05)
-    return np.sin(i * a) * np.cos(i * b), np.sin(i * c) * np.cos(i * d)
-
-
-def flame(img: Image, kre8dict: dict) -> Image:
-    """
-    Glyth image that looks a bit like flames.
-    """
-    nl = kre8dict["number_list"]
-    cl = kre8dict["color_list"]
+def flame(img: Image, artribute_dict: dict) -> Image:
+    width_list = artribute_dict["accuracy"]
+    cl = artribute_dict["colors"]
     draw = ImageDraw.Draw(img)
     w, h = img.size
-    for x in range(w):
-        for y in range(h):
+    for x in range(64, w, 16):
+        for y in range(64, h, 16):
             if 128 > x > 32 or 256 > y > 16:
-                draw.line((x + x, y * 3, 320 - y, 144 + x), random.choice(cl), random.choice(nl))
-            if x == 32:
-                draw.point((x, 180), random.choice(cl))
+                draw.line((x + x, y * 3, 320 - y, 144 + x), random.choice(cl), random.choice(width_list))
     return img
 
 
-def pebbles(img: Image, kre8dict: dict) -> Image:
-    """
-    Glyth image that looks a bit like flames.
-    """
-    nl = kre8dict["number_list"]
-    cl = kre8dict["color_list"]
+def pebbles(img: Image, artribute_dict: dict) -> Image:
+    width_list = artribute_dict["accuracy"]
+    cl = artribute_dict["colors"]
     draw = ImageDraw.Draw(img)
+    w, h = img.size
     pixel_num_list = []
-    w, h = img.size
-    for x in range(w):
+    for x in range(0, w):
         pixel_num_list.append([])
-        for y in range(h):
-            pixel_num_list[x].append([(x, y), random.choice(nl)])
+        for y in range(0, h, 16):
+            pixel_num_list[x].append([(x, y), random.choice(width_list)])
     starting_list = random.choice(pixel_num_list)
-    starting_color = random.choice(cl)
-    print(starting_list)
+    # starting_color = random.choice(cl)
+    # print(starting_list)
     for lyst in starting_list:
-        draw.point((lyst[0][0], lyst[0][1]), fill=starting_color)
-        for i in range(1):
-            colo = random.choice(cl)
-            draw.line((lyst[0][0], lyst[0][1],
-                       (lyst[0][0] + (lyst[1] * w // 20) * random.randint(-1, 1)),
-                       (lyst[0][1] + (lyst[1] * h // 20) * random.randint(-1, 1))),
-                      fill=colo,
-                      width=s.clamp(lyst[1], 1, 4))
+        # draw.point((lyst[0][0], lyst[0][1]), fill=random.choice(cl))
+        draw.line((lyst[0][0], lyst[0][1],
+                   (lyst[0][0] + (lyst[1] * w // 80) * random.randint(-1, 1)),
+                   (lyst[0][1] + (lyst[1] * h // 80) * random.randint(-1, 1))),
+                  fill=random.choice(cl),
+                  width=random.choice(width_list))
     return img
 
 
-def grid(img: Image, kre8dict: dict) -> Image:
-    nl = kre8dict["number_list"]
-    cl = kre8dict["color_list"]
-    w, h = img.size
+def grid(img: Image, artribute_dict: dict) -> Image:
+    width_list = artribute_dict["accuracy"]
+    cl = artribute_dict["colors"]
     draw = ImageDraw.Draw(img)
+    w, h = img.size
     grid_size = 16
     for x in range(0, w + grid_size, grid_size):
         for y in range(0, h + grid_size, grid_size):
@@ -226,27 +195,24 @@ def grid(img: Image, kre8dict: dict) -> Image:
     return img
 
 
-def llines(img: Image, kre8dict: dict) -> Image:
-    """
-    Draw a glyth image that uses the l-system.
-    """
-    nl = kre8dict["number_list"]
-    cl = kre8dict["color_list"]
+def llines(img: Image, artribute_dict: dict) -> Image:
+    width_list = artribute_dict["accuracy"]
+    cl = artribute_dict["colors"]
     draw = ImageDraw.Draw(img)
     w, h = img.size
     prev_point = (w // 2, h // 2, w // 128, h // 2)
     prev_width = 1
     prev_color = (0, 0, 0)
-    str_axiom = list(f"{nl[4]}".join(kre8dict['use_id']))
+    str_axiom = list(f"llinness".join('genurary'))
     # str_axiom.append(str_axiom)
     random.shuffle(str_axiom)
     print(str_axiom)
-    # str_axiom = random.choice(kre8dict['use_id']) + str(random.choice(nl)) + kre8dict['use_id']
-    # str_axiom += random.choice(kre8dict['use_id']) + kre8dict['use_id'] + str(random.choice(nl))
+    # str_axiom = random.choice(artribute_dict['use_id']) + str(random.choice(nl)) + artribute_dict['use_id']
+    # str_axiom += random.choice(artribute_dict['use_id']) + artribute_dict['use_id'] + str(random.choice(nl))
     rooz = lsystem_string_maker(''.join(str_axiom), s.MORSE_CODE_AXIOMS, 3)
     # roost = lsystem_rule_parser(rooz, start_color=s.RANDOM_COLOR2)
     roost = lsystem_morse_coder(rooz, start_color=s.RANDOM_COLOR2)
-    for roo in roost["main"]:
+    for roo in roost:
         # print("roo:", roo)
         line_points = (roo[0][0], roo[0][1], roo[0][2], roo[0][3])
         width = roo[1]
@@ -268,156 +234,140 @@ def llines(img: Image, kre8dict: dict) -> Image:
     return img
 
 
-def smoke(img: Image, kre8dict: dict) -> Image:
-    """
-    I have no idea what I'm doing, but I know I'm doing it really really well. :D
-    :param img:
-    :param kre8dict:
-    :return:
-    """
-    nl = kre8dict["number_list"]
-    cl = kre8dict["color_list"]
-    w, h = img.size
+def smoke(img: Image, artribute_dict: dict) -> Image:
+    width_list = artribute_dict["accuracy"]
+    cl = artribute_dict["colors"]
     draw = ImageDraw.Draw(img)
+    w, h = img.size
     for i in range(10):
-        num_sides = s.clamp(random.choice(nl), 3, 9)
+        num_sides = s.clamp(random.choice(width_list), 3, 9)
         poly_list = s.polypointlist(num_sides, 0, 2 * (w // 7), i * (h // 10), 16)
         poly_list2 = s.polypointlist(num_sides, 0, 3 * (w // 7), i * (h // 10), 16)
         poly_list3 = s.polypointlist(num_sides, 0, 4 * (w // 7), i * (h // 10), 16)
         for point in poly_list:
             draw.ellipse((point[0], point[1], (point[0] + i * 3, point[1] + i * 3)),
-                         width=random.choice(nl), fill=random.choice(cl))
+                         width=random.choice(width_list), fill=random.choice(cl))
         for point in poly_list2:
             draw.ellipse((point[0], point[1], (point[0] + i * 3, point[1] + i * 3)),
-                         width=random.choice(nl), fill=random.choice(cl))
+                         width=random.choice(width_list), fill=random.choice(cl))
         for point in poly_list3:
             draw.ellipse((point[0], point[1], (point[0] + i * 3, point[1] + i * 3)),
-                         width=random.choice(nl), fill=random.choice(cl))
+                         width=random.choice(width_list), fill=random.choice(cl))
     return img
 
 
-def dirt(img: Image, kre8dict: dict) -> Image:
-    """
-    Darkest and solid bottom.
-    :param img:
-    :param kre8dict:
-    :return:
-    """
-    nl = random.choices(kre8dict["number_list"], k=8)
-    cl = random.choices(kre8dict["color_list"], k=8)
+def dirt(img: Image, artribute_dict: dict) -> Image:
+    print(artribute_dict)
+
+    width_list = artribute_dict["accuracy"]
+    cl = artribute_dict["colors"]
     draw = ImageDraw.Draw(img)
     w, h = img.size
-    str_axiom = list(f"{nl[4]}".join(kre8dict['use_id']))
+
+    str_axiom = list(f"dirt".join("genurary"))
     random.shuffle(str_axiom)
-    print(str_axiom)
-    rooz = lsystem_string_maker(''.join(str_axiom), s.MORSE_CODE_AXIOMS, 3)
-    roost = lsystem_rule_parser(rooz, start_color=s.RANDOM_COLOR2)
-    for roo in roost["main"]:
-        # print("roo:", roo)
-        line_points = (roo[0][0], roo[0][1], roo[0][2], roo[0][3])
-        width = roo[1]
-        color = roo[2]
-        draw.line(line_points, fill=color, width=width)
-        for i in range(1, 9):
-            offset = i * 32
-            if w - offset <= offset or h - offset <= offset:
-                break
-            ellipse_coordinates = (roo[0][0], roo[0][1], w - offset, h - offset)
-            draw.ellipse(ellipse_coordinates, outline=random.choice(cl), width=random.choice(nl))
-            ellipse_coordinates = (-roo[0][2], -roo[0][3], (w - offset) / 2, (h - offset) / 2)
-            draw.ellipse(ellipse_coordinates, outline=random.choice(cl), width=random.choice(nl))
+    l_string = lsystem_string_maker(''.join(str_axiom), s.MORSE_CODE_AXIOMS, 3)
+    l_morse_line_list = lsystem_morse_coder(l_string, start_color=s.RANDOM_COLOR2)
+
+    for line in l_morse_line_list:
+        line_points = (line[0][0], line[0][1], line[0][2], line[0][3])
+        draw.line(line_points, fill=random.choice(cl), width=random.choice(width_list))
+        draw.line((line[0][0], 0, line[0][2], h), fill=random.choice(cl), width=random.choice(width_list))
+        draw.line((0, line[0][1], w, line[0][3]), fill=random.choice(cl), width=random.choice(width_list))
+    return img
 
 
-def embers(img: Image, kre8dict: dict) -> Image:
+def embers(img: Image, artribute_dict: dict) -> Image:
     """
     Makes a circle and enlarges it.
     """
-    nl = random.choices(kre8dict["number_list"], k=8)
-    cl = random.choices(kre8dict["color_list"], k=8)
+    width_list = artribute_dict["accuracy"]
+    cl = artribute_dict["colors"]
     draw = ImageDraw.Draw(img)
     w, h = img.size
+
     for i in range(1, 9):
         offset = i * 32
         if w - offset <= offset or h - offset <= offset:
             break
         ellipse_coordinates = (offset, offset, w - offset, h - offset)
-        draw.ellipse(ellipse_coordinates, outline=cl[i - 1], width=nl[i - 1])
+        draw.ellipse(ellipse_coordinates, outline=random.choice(cl), width=random.choice(width_list))
     return img
 
 
-def mist(img: Image, kre8dict: dict) -> Image:
+def mist(img: Image, artribute_dict: dict) -> Image:
     """
     Draws a series of concentric squares on the given image, with randomly
     chosen colors and line thickness.
     """
-    number_list = kre8dict.get("number_list", [10])
-    color_list = kre8dict.get("color_list", ["black"])
+    width_list = artribute_dict["accuracy"]
+    cl = artribute_dict["colors"]
     draw = ImageDraw.Draw(img)
-    width, height = img.size
-    for i in range(number_list[9]):
+    w, h = img.size
+    for i in range(9):
         x = (i * 64) // 2 + 32
-        draw.rectangle((width // 2 - x, height // 2 - x, width // 2 + x, height // 2 + x),
-                       outline=random.choice(color_list),
+        draw.rectangle((w // 2 - x, h // 2 - x, w // 2 + x, h // 2 + x),
+                       outline=random.choice(cl),
                        # fill=random.choice(color_list),
-                       width=random.choice(number_list))
+                       width=random.choice(width_list))
     return img
 
 
-def frost(img: Image, kre8dict: dict) -> Image:
+def frost(img: Image, artribute_dict: dict) -> Image:
     """
     Shapes on shapes to make a circle for casting spells.
     """
-    nl = kre8dict["number_list"]
-    cl = kre8dict["color_list"]
-    new_img = img
+    width_list = artribute_dict["accuracy"]
+    cl = artribute_dict["colors"]
     draw = ImageDraw.Draw(img)
-    use_cl = []
-    for colo in cl:
-        co0 = int(colo[0] * 255)
-        co1 = int(colo[1] * 255)
-        co2 = int(colo[2] * 255)
-        use_cl.append((co0, co1, co2))
-    for i in range(nl[9]):
-        draw.regular_polygon((img.size[0] // 2, img.size[1] // 2, img.size[1] // 8), (nl[9] - i + 3),
-                             fill=random.choice(kre8dict["color_list"]), outline=random.choice(kre8dict["color_list"]))
-    return new_img
+    w, h = img.size
+
+    for i in range(9):
+        draw.regular_polygon((w // 2, h // 2, h // 8),
+                             (random.choice(width_list) + 3),
+                             fill=random.choice(cl),
+                             outline=random.choice(cl))
+    return img
 
 
-def ripples(img: Image, kre8dict: dict) -> Image:
+def ripples(img: Image, artribute_dict: dict) -> Image:
     """
     Circles that get bigger or smaller and travel in a direction.
     "system32.eth suggests bigger circles"
     """
-    nl = kre8dict["number_list"]
-    cl = kre8dict["color_list"]
-    w, h = img.size
+    width_list = artribute_dict["accuracy"]
+    cl = artribute_dict["colors"]
     draw = ImageDraw.Draw(img)
+    w, h = img.size
+
     for i in range(10):
-        num_sides = s.clamp(random.choice(nl), 3, 9)
+        num_sides = s.clamp(random.choice(width_list), 3, 9)
         poly_list = s.polypointlist(num_sides, 0, 2 * (w // 7), i * (h // 10), 16)
         poly_list2 = s.polypointlist(num_sides, 0, 3 * (w // 7), i * (h // 10), 16)
         poly_list3 = s.polypointlist(num_sides, 0, 4 * (w // 7), i * (h // 10), 16)
         for point in poly_list:
             draw.ellipse((point[0], point[1], (point[0] + i * 3, point[1] + i * 3)),
-                         width=random.choice(nl), fill=random.choice(cl))
+                         width=random.choice(width_list), fill=random.choice(cl))
         for point in poly_list2:
             draw.ellipse((point[0], point[1], (point[0] + i * 3, point[1] + i * 3)),
-                         width=random.choice(nl), fill=random.choice(cl))
+                         width=random.choice(width_list), fill=random.choice(cl))
         for point in poly_list3:
             draw.ellipse((point[0], point[1], (point[0] + i * 3, point[1] + i * 3)),
-                         width=random.choice(nl), fill=random.choice(cl))
+                         width=random.choice(width_list), fill=random.choice(cl))
     return img
 
 
-def confetti(img: Image, kre8dict: dict) -> Image:
+def confetti(img: Image, artribute_dict: dict) -> Image:
     """
     Confetti from a parade or something.
     """
-    nl = kre8dict["number_list"]
-    cl = kre8dict["color_list"]
+    width_list = artribute_dict["accuracy"]
+    cl = artribute_dict["colors"]
     draw = ImageDraw.Draw(img)
-    for i in range(nl[9] * nl[8]):
-        start_pos = (random.randint(0, img.size[0]), random.randint(0, img.size[1]))
+    w, h = img.size
+
+    for i in range(w):
+        start_pos = (random.randint(0, w), random.randint(0, h))
         random_factor = random.randint(-1, 1)
         # shape = [(12*random_factor, 12*random.randint(-3, 6)), (-12*random_factor, 12*random.randint(-3, 6)),
         #          (12*random_factor, -12*random.randint(-3, 6)), (-12*random_factor, -12*random.randint(-3, 6))]
@@ -426,18 +376,18 @@ def confetti(img: Image, kre8dict: dict) -> Image:
         shaped = []
         for point in shape:
             shaped.append((start_pos[0] + point[0], start_pos[1] + point[1]))
-        draw.regular_polygon((start_pos[0], start_pos[1], 16), random.choice(nl) + 3,
+        draw.regular_polygon((start_pos[0], start_pos[1], 16), random.choice(width_list) + 3,
                              outline=random.choice(cl), fill=random.choice(cl))
         draw.polygon(shaped, fill=random.choice(cl))
     return img
 
 
-def jacob_filter(img: Image, kre8dict: dict) -> Image:
+def jacob_filter(img: Image, artribute_dict: dict) -> Image:
     width, height = img.size
     rgb_img = img.convert('RGB')
     draw = ImageDraw.Draw(img)
-    nl = kre8dict["number_list"]
-    cl = kre8dict["color_list"]
+    nl = artribute_dict["number_list"]
+    cl = artribute_dict["color_list"]
     # center_point = (320, 320)
     center_point = (nl[0] * 64, nl[0] * 64)
     base_color = random.choice(cl)
@@ -466,12 +416,12 @@ def jacob_filter(img: Image, kre8dict: dict) -> Image:
     return img
 
 
-def susan_filter(img: Image, kre8dict: dict) -> Image:
+def susan_filter(img: Image, artribute_dict: dict) -> Image:
     width, height = img.size
     rgb_img = img.convert('RGB')
     draw = ImageDraw.Draw(img)
-    nl = kre8dict["number_list"]
-    cl = kre8dict["color_list"]
+    nl = artribute_dict["number_list"]
+    cl = artribute_dict["color_list"]
     # center_point = (320, 320)
     center_point = (nl[0] * 64, nl[0] * 64)
     base_color = random.choice(cl)
@@ -506,47 +456,21 @@ def susan_filter(img: Image, kre8dict: dict) -> Image:
     return img
 
 
-# def julia_generate(img: Image, kre8dict: dict) -> Image:
-#     cl = kre8dict["color_list"]
-#     xa = -2.0
-#     xb = 1.0
-#     ya = -1.5
-#     yb = 1.5
-#     max_it = 128
-#     w, h = img.size
-#     draw = ImageDraw.Draw(img)
-#     c = complex(random.random() * 2.0 - 1.0, random.random() - 0.5)
-#     for y in range(h):
-#         zy = y * (yb - ya) / (h - 1) + ya
-#         for x in range(w):
-#             zx = x * (xb - xa) / (w - 1) + xa
-#             z = complex(zx, zy)
-#             for i in range(max_it):
-#                 if abs(z) > 2.0:
-#                     break
-#                 z = z * z + c
-#             r = i % 4 * 32
-#             g = i % 8 * 32
-#             b = i % 16 * 16
-#             draw.point((x, y), fill=(r, g, b))
-#     return img
-
-
-def squiggles(img: Image, kre8dict: dict) -> Image:
+def squiggles(img: Image, artribute_dict: dict) -> Image:
     """
-    Using sin and cos waves make some squiggly squiggles.
+    Uses sin and cos to make squiggly lines.
     """
-    nl = kre8dict["number_list"]
-    cl = kre8dict["color_list"]
+    width_list = artribute_dict["accuracy"]
+    cl = artribute_dict["colors"]
     draw = ImageDraw.Draw(img)
     w, h = img.size
     center = h // 2
-    x_increment = random.choice(nl) + 2
+    x_increment = random.choice(width_list) + 2
     # WIDTH STRETCH
-    x_factor = random.choice(nl)
+    x_factor = random.choice(width_list)
     # HEIGHT STRETCH
     y_amplitude = random.randint(-10, 10)
-    lt = random.choice(nl)
+    lt = random.choice(width_list)
     if lt == 0:
         lt += 1
     sine_list = []
@@ -560,52 +484,46 @@ def squiggles(img: Image, kre8dict: dict) -> Image:
     return img
 
 
-def hail(img: Image, kre8dict: dict) -> Image:
+def hail(img: Image, artribute_dict: dict) -> Image:
     """
-    Shapes with a hint of circles about it.
+    Uses a simple range with a few arc drawings.
     """
-    nl = kre8dict["number_list"]
-    cl = kre8dict["color_list"]
+    width_list = artribute_dict["accuracy"]
+    cl = artribute_dict["colors"]
     draw = ImageDraw.Draw(img)
-    for i in range(10):
-        starter = random.choice(nl)
-        ended = random.choice(nl)
+    w, h = img.size
+    for i in range(9):
+        starter = random.choice(width_list) * random.random() * i
+        ended = random.choice(width_list) * random.random() * i
         draw.arc([(0, 0), (img.size[0] // 2, img.size[1] // 2)],
                  start=starter, end=ended, fill=random.choice(cl),
-                 width=random.choice(nl))
+                 width=random.choice(width_list))
         draw.arc([(img.size[0] // 2, img.size[1] // 2), (img.size[0], img.size[1])],
                  start=starter, end=ended, fill=random.choice(cl),
-                 width=random.choice(nl))
+                 width=random.choice(width_list))
         draw.arc([(0, 0), (img.size[0], img.size[1])],
                  start=starter, end=ended, fill=random.choice(cl),
-                 width=random.choice(nl))
+                 width=random.choice(width_list))
     return img
 
 
-def lightning(img: Image, kre8dict: dict) -> Image:
-    """
-    Glyther will look like a lightning bolt.
-    """
-    nl = kre8dict["number_list"]
-    cl = kre8dict["color_list"]
+def lightning(img: Image, artribute_dict: dict) -> Image:
+    width_list = artribute_dict["accuracy"]
+    cl = artribute_dict["colors"]
     draw = ImageDraw.Draw(img)
-    dir_list = []
     w, h = img.size
+    dir_list = []
     for _ in range(16):
         dir_list.append((random.randint(-1, 1), 1))
     end_point_list = segmented_line_run(32, 1, direction_list=dir_list, start_pos=(w // 2, 0))
     prev_point = (w // 2, 0)
-    lightning_path = lsystem_string_maker(kre8dict["use_id"], s.ALPHANUMERIC_AXIOMS, 3)
-    print(cl, nl)
     for point in end_point_list:
-        # ranxy = random.randint(nl[0], nl[9]) * 64
-        draw.line((prev_point, point), fill=random.choice(cl), width=random.choice(nl))
+        draw.line((prev_point, point), fill=random.choice(cl), width=random.choice(width_list))
         prev_point = point
         static_dir_list = []
-        lightning_point_list = []
-        for st in kre8dict["use_id"]:
+        for st in "rengenurary":
             static_dir_list.append((random.randint(-1, 1), random.randint(-1, 1)))
-            # lightning_point_list = segmented_line_run(3, 1, direction_list=static_dir_list)
+            lightning_point_list = segmented_line_run(12, 6, direction_list=static_dir_list, start_pos=point)
             if st.lower() in s.ALPHANUMERIC_COORDS:
                 lightning_point_list.append(((random.choice(s.ALPHANUMERIC_COORDS[st.lower()])[0]) + point[0],
                                              (random.choice(s.ALPHANUMERIC_COORDS[st.lower()])[1]) + point[1]))
@@ -613,78 +531,105 @@ def lightning(img: Image, kre8dict: dict) -> Image:
                 lightning_point_list.append(((random.choice(s.PUNCTUATION_COORDS[st.lower()])[0]) + point[0],
                                              (random.choice(s.PUNCTUATION_COORDS[st.lower()])[1]) + point[1]))
             for lpoint in lightning_point_list:
-                draw.line((prev_point, lpoint), fill=random.choice(cl), width=random.choice(nl))
+                draw.line((prev_point, lpoint), fill=random.choice(cl), width=random.choice(width_list))
                 prev_point = lpoint
-
-        # for s in lightning_path:
-        #     lightning_point_list.append(((random.choice(s.ALPHANUMERIC_COORDS[s])[0]) + point[0],
-        #                                  (random.choice(s.ALPHANUMERIC_COORDS[s])[1]) + point[1]))
     return img
 
 
-def ash(img: Image, kre8dict: dict) -> Image:
-    """
-    Almost looks like a game of pick-up-sticks.
-    @param img:
-    @param kre8dict:
-    @return:
-    """
-    nl = kre8dict["number_list"]
-    cl = kre8dict["color_list"]
+def ash(img: Image, artribute_dict: dict) -> Image:
+    width_list = artribute_dict["accuracy"]
+    cl = artribute_dict["colors"]
     draw = ImageDraw.Draw(img)
-    for i in range(nl[9] + nl[7]):
-        draw.line((random.randint(nl[0], nl[9]) * 64,
-                   random.randint(nl[0], nl[9]) * 64,
-                   random.randint(nl[0], nl[9]) * 64,
-                   random.randint(nl[0], nl[9]) * 64), fill=random.choice(cl), width=random.choice(nl))
-    return img
-
-
-def dust(img: Image, kre8dict: dict) -> Image:
-    nl = kre8dict["number_list"]
-    cl = kre8dict["color_list"]
     w, h = img.size
+    for i in range(18):
+        for point in s.polypointlist(6, i, i * 10, i * 20, i * 5):
+            draw.circle(point, random.choice(width_list) + 1, fill=random.choice(cl), outline=random.choice(cl))
+    return img
+
+
+def dust(img: Image, artribute_dict: dict) -> Image:
+    width_list = artribute_dict["accuracy"]
+    cl = artribute_dict["colors"]
     draw = ImageDraw.Draw(img)
+    w, h = img.size
     point_list_1 = []
     point_list_2 = []
     for i in range(0, w + (w // 4), w // 4):
         for j in range(0, h + (h // 4), h // 4):
-            point_list_1.append((i, j))
-            point_list_2.append((i, j))
-    # rainbow_rgb_list = [RED, ORANGE, YELLOW, GRREEN, BLUE, INDIGO, VIOLET]
+            point_list_1.append((0, j))
+            point_list_2.append((i, 0))
     for point in point_list_1:
         for point2 in point_list_2:
-            draw.line((point[0], point[1], point2[0], point2[1]), width=random.choice(nl),
+            draw.line((point[0], point[1], point2[0], point2[1]), width=random.choice(width_list),
                       fill=random.choice(cl))
     return img
 
 
-def shadow(img: Image, kre8dict: dict) -> Image:
-    """
-    Create lines and dots to maybe probably possibly depict a shadow.
-    :param img: Image to draw on and return.
-    :param kre8dict: Dictionary to take in options.
-    :return:
-    """
-    nl = kre8dict["number_list"]
-    cl = kre8dict["color_list"]
+def shadow(img: Image, artribute_dict: dict) -> Image:
+    width_list = artribute_dict["accuracy"]
+    cl = artribute_dict["colors"]
     draw = ImageDraw.Draw(img)
     w, h = img.size
-    str_axiom = list(f"{nl[4]}".join(kre8dict['use_id']))
+
+    str_axiom = list(f"shadow".join("genurary"))
+    random.shuffle(str_axiom)
+    l_string = lsystem_string_maker(''.join(str_axiom), s.MORSE_CODE_AXIOMS, 3)
+    l_morse_line_list = lsystem_morse_coder(l_string, start_color=s.RANDOM_COLOR2)
+
+    for line in l_morse_line_list:
+        line_points = (line[0][0], line[0][1], line[0][2], line[0][3])
+        draw.line(line_points, fill=random.choice(cl), width=random.choice(width_list))
+        draw.line((line[0][0], 0, line[0][2], h), fill=random.choice(cl), width=random.choice(width_list))
+        draw.line((0, line[0][1], w, line[0][3]), fill=random.choice(cl), width=random.choice(width_list))
+    return img
+
+
+def steam(img: Image, artribute_dict: dict) -> Image:
+    width_list = artribute_dict["accuracy"]
+    cl = artribute_dict["colors"]
+    draw = ImageDraw.Draw(img)
+    w, h = img.size
+    str_axiom = list(f"steam".join("genurary"))
     random.shuffle(str_axiom)
     l_string = lsystem_string_maker(''.join(str_axiom), s.MORSE_CODE_AXIOMS, 3)
     l_morse_line_list = lsystem_morse_coder(l_string, start_color=s.RANDOM_COLOR2)
     for line in l_morse_line_list:
         line_points = (line[0][0], line[0][1], line[0][2], line[0][3])
-        width = line[1]
-        color = line[2]
-        draw.line(line_points, fill=color, width=width)
-        draw.line((line[0][0], 0, line[0][2], h), fill=color, width=width)
-        draw.line((0, line[0][1], w, line[0][3]), fill=color, width=width)
+        draw.line(line_points, fill=random.choice(cl), width=random.choice(width_list))
+        draw.line((line[0][0], 0, line[0][2], h), fill=random.choice(cl), width=random.choice(width_list))
+        draw.line((0, line[0][1], w, line[0][3]), fill=random.choice(cl), width=random.choice(width_list))
     return img
 
-# def create_avatar(img: Image, kre8dict: dict) -> Image:
-#     for glyth_option in kre8dict["Glyth"]["Avatar"]:
+
+def fog(img: Image, artribute_dict: dict) -> Image:
+    """
+    Uses sin and cos to make squiggly lines.
+    """
+    width_list = artribute_dict["accuracy"]
+    cl = artribute_dict["colors"]
+    draw = ImageDraw.Draw(img)
+    w, h = img.size
+    center = h // 2
+    x_increment = random.choice(width_list) + 2
+    # WIDTH STRETCH
+    x_factor = random.choice(width_list)
+    # HEIGHT STRETCH
+    y_amplitude = random.randint(-10, 10)
+    lt = random.choice(width_list)
+    if lt == 0:
+        lt += 1
+    sine_list = []
+    for y in range(-15, 15):
+        for x in range(-h, h):
+            y_amplitude += .001 * lt
+            sine_list.append(x * x_increment)
+            sine_list.append(int(math.cos(x * x_factor) * y_amplitude) + center)
+            # sine_list.append(int(math.sin(x * x_factor) * y_amplitude) + center)
+    draw.line(sine_list, random.choice(cl))
+    return img
+
+# def create_avatar(img: Image, artribute_dict: dict) -> Image:
+#     for glyth_option in artribute_dict["Glyth"]["Avatar"]:
 #         if glyth_option == "Dirt":
 #             boxline(img, kre8dict)
 #         if glyth_option == "Smoke":
@@ -745,7 +690,7 @@ def shadow(img: Image, kre8dict: dict) -> Image:
 #             imaje.putpixel((x, y), b * 65536 + g * 256 + r)
 #     imaje.save(f"KINVOW/Mandel_{self.use_data_dict['use_ID']}.png", "PNG")
 #
-# def julia_generate(self):
+# def jacob_generate(self):
 #     xa = -2.0
 #     xb = 1.0
 #     ya = -1.5
@@ -771,9 +716,9 @@ def shadow(img: Image, kre8dict: dict) -> Image:
 #     imaje.save(f"KINVOW/Julia_{self.use_data_dict['use_ID']}.png", "PNG")
 
 
-# def bare_bones(img: Image, kre8dict: dict) -> Image:
-#     nl = kre8dict["number_list"]
-#     cl = kre8dict["color_list"]
+# def bare_bones(img: Image, artribute_dict: dict) -> Image:
+#     nl = artribute_dict["number_list"]
+#     cl = artribute_dict["color_list"]
 #     t = np.linspace(0, 10, 100*random.choice(nl))
 #     # p = np.poly1d([-0.03, -1.6, 1.25, -8.0, -2.1, 4.2, 6.9])
 #     p_list = []
@@ -791,10 +736,10 @@ def shadow(img: Image, kre8dict: dict) -> Image:
 #     draw = ImageDraw.Draw(img)
 
 
-# def fog(img: Image, kre8dict: dict) -> Image:
+# def fog(img: Image, artribute_dict: dict) -> Image:
 #     fig = plt.figure(figsize=(8, 8))
 #     outer_grid = fig.add_gridspec(4, 4, wspace=0, hspace=0)
-#     nl = kre8dict["number_list"]
+#     nl = artribute_dict["number_list"]
 #
 #     for a in range(4):
 #         for c in range(4):
@@ -859,3 +804,58 @@ def shadow(img: Image, kre8dict: dict) -> Image:
 #     for point in point_list:
 #         print(point)
 #     return point_list
+
+
+# def bethany_generate(img: Image, artribute_dict: dict) -> Image:
+#     cl = artribute_dict["color_list"]
+#     xa = -2.0
+#     xb = 1.0
+#     ya = -1.5
+#     yb = 1.5
+#     max_it = 128
+#     w, h = img.size
+#     draw = ImageDraw.Draw(img)
+#     c = complex(random.random() * 2.0 - 1.0, random.random() - 0.5)
+#     for y in range(h):
+#         zy = y * (yb - ya) / (h - 1) + ya
+#         for x in range(w):
+#             zx = x * (xb - xa) / (w - 1) + xa
+#             z = complex(zx, zy)
+#             for i in range(max_it):
+#                 if abs(z) > 2.0:
+#                     break
+#                 z = z * z + c
+#             r = i % 4 * 32
+#             g = i % 8 * 32
+#             b = i % 16 * 16
+#             draw.point((x, y), fill=(r, g, b))
+#     return img
+
+
+# def bare_bones(img: Image, artribute_dict: dict) -> Image:
+#     nl = artribute_dict["number_list"]
+#     cl = artribute_dict["color_list"]
+#     draw = ImageDraw.Draw(img)
+#     w, h = img.size
+#     # print(type(mujic.get_sin_wave(60)))
+#     draw.line((2, 4, 90, 60))
+#     # for spot in mujic.get_chirp(60):
+#     #     print(spot)
+#     #     rani = random.choice(nl)
+#     #     draw.line((spot*rani, -spot*rani), fill=random.choice(cl))
+#     return img
+
+
+# def squiggle_xy(a, b, c, d):
+#     i = np.arange(0.0, 2 * np.pi, 0.05)
+#     return np.sin(i * a) * np.cos(i * b), np.sin(i * c) * np.cos(i * d)
+
+#
+# def dummy(img: Image, artribute_dict: dict) -> Image:
+#     nl = artribute_dict["number_list"]
+#     cl = artribute_dict["color_list"]
+#     draw = ImageDraw.Draw(img)
+#     for rad in nl:
+#         draw.regular_polygon([64 * rad, 64 * rad, rad + random.choice(nl) + 1 * 64], random.choice(nl) + 3,
+#                              random.choice(nl) * 36, outline=random.choice(nl), fill=random.choice(cl))
+#     return img

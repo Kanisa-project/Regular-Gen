@@ -73,6 +73,7 @@ class KINVOW(ttk.LabelFrame):
                                'foto': self.artay.fotoTab.gather_foto_options,
                                'mujic': self.artay.mujicTab.gather_mujic_options,
                                'gaym': self.artay.gaymTab.gather_gaym_options,
+                               'meem': self.artay.meemTab.gather_meem_options,
                                }
 
         # Cycle through each kommand argument to collect which options from which artyles.

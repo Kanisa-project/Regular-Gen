@@ -4,6 +4,13 @@ from tkinter import *
 import artstyle
 import wordie
 from settings import *
+from tkinter import ttk
+
+import wtabHangman
+import wtabCrossword
+import wtabWordSearch
+import wtabRiddle
+import wtabCollage
 
 
 class Wordie(artstyle.Artyle):
@@ -18,9 +25,23 @@ class Wordie(artstyle.Artyle):
         """
         super(Wordie, self).__init__(master=master, idutc=idutc, width=width, height=height)
         # Set up the name and add the possible choices.
-        self.tab_name = "wordie"
-        self.wordie_choices = ["hangman", "word_search", "collage", "riddle"]
+        self.tab_name = "Wordie"
+        self.wordie_choices = ["Hangman", "Word Search", "Collage", "Riddle", "Crossword"]
         self.setup_radiobutton_choices(self.wordie_choices)
+        self.wordieBook = ttk.Notebook(master=self)
+        self.hangmanTab = wtabHangman.Hangman(master=self.wordieBook)
+        self.wordsearchTab = wtabWordSearch.WordSearch(master=self.wordieBook)
+        self.crosswordTab = wtabCrossword.Crossword(master=self.wordieBook)
+        self.riddleTab = wtabRiddle.Riddle(master=self.wordieBook)
+        self.collageTab = wtabCollage.Collage(master=self.wordieBook)
+
+        self.wordieBook.add(self.hangmanTab, text="Hangman")
+        self.wordieBook.add(self.wordsearchTab, text="Word Search")
+        self.wordieBook.add(self.crosswordTab, text="Crossword")
+        self.wordieBook.add(self.collageTab, text="Collage")
+        self.wordieBook.add(self.riddleTab, text="Riddle")
+
+        self.wordieBook.grid(row=0, column=0)
 
     def destroy_word_optionmenus(self):
         """
@@ -55,14 +76,7 @@ class Wordie(artstyle.Artyle):
         Adds the wordie type of wordie on the img provided.
         """
         # Set up the colors being used to display in the Kinvow.
-        selected_colors = []
-        if kre8dict["artributes"][1] == "Rainbow":
-            for ltr in kre8dict["use_id"]:
-                selected_colors.append(ALPHANUMERIC_COLORS[ltr])
-        elif kre8dict["artributes"][1] == "Cloud":
-            shadelvl = 255 // len(kre8dict["use_id"])
-            for i in range(len(kre8dict["use_id"])):
-                selected_colors.append(((i + 1) * shadelvl, (i + 1) * shadelvl, (i + 1) * shadelvl))
+        artribute_dict = self.set_artributes(kre8dict)
 
         # IF SELECTED POSITION IS 0, IT IS A HANGMAN WORDIE
         if kre8dict["wordie"]["type"] == 0:
@@ -108,7 +122,7 @@ class Wordie(artstyle.Artyle):
     #                     if line.find("letters_grid = ~~[]~~") >= 0:
     #                         print(kre8dict["wordie"])
     #                         line = line.replace("letters_grid = ~~[]~~", f"letters_grid = {kre8dict['Wordie']['Word Search']['Letter Array']}")
-                        # if line.find("word_array = ~~[]~~") >= 0:
-                        #     print("THIS")
-                        #     line = line.replace("word_array = ~~[]~~", f"word_array = {kre8dict['Wordie']['Word Search']['Word List']}")
-                        # file.write(line)
+    #                     if line.find("word_array = ~~[]~~") >= 0:
+    #                         print("THIS")
+    #                         line = line.replace("word_array = ~~[]~~", f"word_array = {kre8dict['Wordie']['Word Search']['Word List']}")
+    #                     file.write(line)

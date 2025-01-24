@@ -1,3 +1,4 @@
+import os
 import random
 
 from PIL.ImageFont import ImageFont
@@ -6,7 +7,7 @@ from tkinter import *
 from os import *
 from PIL import Image, ImageTk, ImageDraw, ImageFilter
 import glob
-from tkinter import ttk
+from tkinter import ttk, filedialog
 
 import fotoes
 from settings import *
@@ -21,15 +22,13 @@ class Fotoes(artstyle.Artyle):
         """
         super(Fotoes, self).__init__(master=master, idutc=idutc, width=width, height=height)
         self.use_data_dict = None
-        self.tab_name = "foto"
-        self.home_folder_path = 'C:\\Users\\thisr\\PycharmProjects\\Regular-Gen\\'
-        r1 = random.randint(0, 69)
-        r2 = random.randint(0, 69)
-        self.setup_button_choices(["Change Foto 1",
-                                   "Change Foto 2"
-                                   ])
+        self.tab_name = "Foto"
+        # self.home_folder_path = 'C:\\Users\\thisr\\PycharmProjects\\Regular-Gen\\'
+        self.setup_button_choices(["Change Foto 1", "Change Foto 2", "Shuffle Sliders", "Shuffle Filters"])
         self.button_dict["Change Foto 1"][1].configure(command=self.update_foto_button)
         self.button_dict["Change Foto 2"][1].configure(command=self.update_foto2_button)
+        self.button_dict["Shuffle Sliders"][1].configure(command=self.randomize_sliders)
+        self.button_dict["Shuffle Filters"][1].configure(command=self.randomize_filters)
         self.checkbutton_choice_list = ["HSB filter", "RGB filter", "Blur", "Contour", "Detail",
                                         "Edge Enhance", "Emboss", "Find Edges", "Smooth", "Shuffled"]
         self.slider_choice_list = ["Hue", "Saturation", "Brightness",
@@ -53,9 +52,6 @@ class Fotoes(artstyle.Artyle):
     def gather_foto_options(self) -> dict:
         """Gather and return the options Foto will use to make."""
         sd = self.slider_dict
-        for slider in self.slider_choice_list:
-            rn = random.randint(6, 94)
-            sd[slider][0].set(rn)
         chosen_foto_options = {"IMG": self.button_dict["Change Foto 1"][0].get(),
                                "IMG2": self.button_dict["Change Foto 2"][0].get(),
                                "AB": sd["Blend"][0].get(),
@@ -76,26 +72,26 @@ class Fotoes(artstyle.Artyle):
         """Add a single foto"""
         self.use_data_dict = self.IDUTC_frame.kre8dict
         x = ""
-        rn = random.randint(0, 30)
+        rn = random.randint(0, 29)
         orientation = random.choice(["landscape", "landscape"])
         if self.use_data_dict["artributes"][0] == "Random":
             x = f'/assets/Fotoes/OG/{orientation}{rn}.jpg'
         elif self.use_data_dict["artributes"][0] == "Human":
             x = openfilename_str()
-            x = x[len(self.home_folder_path):]
+            x = x[len(os.getcwd()):]
         self.button_dict["Change Foto 1"][0].set(x)
 
     def update_foto2_button(self):
         """Add a second foto"""
         self.use_data_dict = self.IDUTC_frame.kre8dict
         x = ""
-        rn = random.randint(0, 30)
+        rn = random.randint(0, 29)
         orientation = random.choice(["landscape", "landscape"])
         if self.use_data_dict["artributes"][0] == "Random":
             x = f'/assets/Fotoes/OG/{orientation}{rn}.jpg'
         elif self.use_data_dict["artributes"][0] == "Human":
             x = openfilename_str()
-            x = x[len(self.home_folder_path):]
+            x = x[len(os.getcwd()):]
         self.button_dict["Change Foto 2"][0].set(x)
 
     def add_foto(self, img: Image, kre8dict: dict, abt="masterpiece") -> Image:
@@ -106,10 +102,10 @@ class Fotoes(artstyle.Artyle):
         :param kre8dict: Dictionary of kre8shun.
         :return:
         """
-        print(kre8dict)
-        imaj1 = Image.open(self.home_folder_path + kre8dict["foto"]["IMG"])
-        imaj2 = Image.open(self.home_folder_path + kre8dict["foto"]["IMG2"])
-        bimg = fotoes.blend_foto(imaj1, imaj2, kre8dict["foto"]["AB"]/100)
+        # print(os.getcwd())
+        imaj1 = Image.open(os.getcwd() + kre8dict["foto"]["IMG"])
+        imaj2 = Image.open(os.getcwd() + kre8dict["foto"]["IMG2"])
+        bimg = fotoes.blend_foto(imaj1, imaj2, kre8dict["foto"]["AB"] / 100)
         rimg = fotoes.resize_foto(bimg, img.size)
         for chosen in kre8dict["foto"]["Filters"]:
             if chosen == "HSB filter":
@@ -134,3 +130,17 @@ class Fotoes(artstyle.Artyle):
                 rimg = fotoes.shuffle_foto(rimg, kre8dict)
         img.paste(rimg, (0, 0))
         return img
+
+    def randomize_sliders(self):
+        for slider in self.slider_choice_list:
+            rn = random.randint(6, 94)
+            self.slider_dict[slider][0].set(rn)
+
+    def randomize_filters(self):
+        for option in self.checkbutton_choice_list:
+            self.checkbutton_dict[option][0].set(random.randint(0, 1))
+
+
+def openfilename_str() -> str:
+    filename = filedialog.askopenfilename(title='Open')
+    return filename

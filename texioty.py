@@ -183,17 +183,17 @@ class TEXIOTY(tk.LabelFrame):
             self.texoty.priont_echo(msg, text_color=s.rgb_to_hex(s.BLACK),
                                     bg_color=s.rgb_to_hex(s.RANDOM_COLOR3))
 
-    def generate_texoty_masterpiece(self, args):
-        """
-        Generate kre8dict entries for a texoty masterpiece.
-        :param args:
-        :return:
-        """
-        print(args)
-        if args[0] == 'foto':
-            self.texoty.create_foto_line(1, 2)
-        else:
-            self.texoty.create_masterpiece(args)
+    # def generate_texoty_masterpiece(self, args):
+    #     """
+    #     Generate kre8dict entries for a texoty masterpiece.
+    #     :param args:
+    #     :return:
+    #     """
+    #     print(args)
+    #     if args[0] == 'foto':
+    #         self.texoty.create_foto_line(1, 2)
+    #     else:
+    #         self.texoty.create_masterpiece(args)
 
     def clear_texoty(self):
         """Clear all the text from texoty and replace the header."""
@@ -202,7 +202,7 @@ class TEXIOTY(tk.LabelFrame):
 
     def process_command(self, event=None):
         """
-        Process the command before executing it.
+        Process the command before executing it. Decide which helpers to use or if just a regular command.
         :return:
         """
         if self.in_questionnaire_mode:
@@ -220,7 +220,7 @@ class TEXIOTY(tk.LabelFrame):
 
     def execute_command(self, command, arguments):
         """
-        Execute the processed command.
+        Execute the processed command, then add it to the list of processed commands.
         :param command: The command to be using.
         :param arguments: Arguments for the command to use.
         :return:

@@ -89,19 +89,17 @@ def spiral_bity(img: Image, color_list: list) -> Image:
     return img
 
 
-def diamond_up_bity(img: Image, color_list: list) -> Image:
+def up_bity(img: Image, color_list: list) -> Image:
     draw = ImageDraw.Draw(img)
     for w in range(64):
-        for h in range(64):
-            draw.line((h, w, w, h), fill=random.choice(color_list))
+        draw.line((w*2, 0, w, 64), width=w, fill=random.choice(color_list))
     return img
 
 
-def diamond_down_bity(img: Image, color_list: list) -> Image:
+def down_bity(img: Image, color_list: list) -> Image:
     draw = ImageDraw.Draw(img)
     for w in range(64):
-        for h in range(64):
-            draw.line((w, 64-h, h, 64-w), fill=random.choice(color_list))
+        draw.line((w, 0, 64, 64-w), width=64-w, fill=random.choice(color_list))
     return img
 
 
@@ -204,3 +202,51 @@ def addColor(color_to_add: tuple, image_to_color: Image) -> Image:
     im_overlay = Image.new(size=image_to_color.size, color=int_color, mode='RGBA')
     image_to_color.paste(im_overlay, None, mask=im_overlay)
     return image_to_color
+
+
+def slant_up_bity(img: Image, color_list: list) -> Image:
+    draw = ImageDraw.Draw(img)
+    w, h = img.size
+    for i in range(64):
+        draw.line((0, 64, w, i*2), fill=random.choice(color_list))
+    return img
+
+
+def slant_down_bity(img: Image, color_list: list) -> Image:
+    draw = ImageDraw.Draw(img)
+    w, h = img.size
+    for i in range(64):
+        draw.line((0, 0, h, i//2), fill=random.choice(color_list))
+    return img
+
+
+def slant_left_bity(img: Image, color_list: list) -> Image:
+    draw = ImageDraw.Draw(img)
+    w, h = img.size
+    for i in range(64):
+        draw.arc(((i, i), (w, h)), 0.01, 0.6, fill=random.choice(color_list), width=i % 10)
+    return img
+
+
+def slant_right_bity(img: Image, color_list: list) -> Image:
+    draw = ImageDraw.Draw(img)
+    w, h = img.size
+    for i in range(64):
+        draw.regular_polygon((w//(i+1), h//2, (i+1)), 3, outline=random.choice(color_list))
+    return img
+
+
+def left_bity(img: Image, color_list: list) -> Image:
+    draw = ImageDraw.Draw(img)
+    w, h = img.size
+    for i in range(64):
+        draw.regular_polygon((w//2, h//3, (i+16)), 12, outline=random.choice(color_list))
+    return img
+
+
+def right_bity(img: Image, color_list: list) -> Image:
+    draw = ImageDraw.Draw(img)
+    w, h = img.size
+    for i in range(64):
+        draw.regular_polygon((i, h//2, (i+1)), 5, outline=random.choice(color_list))
+    return img
