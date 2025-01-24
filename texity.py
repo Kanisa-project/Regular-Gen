@@ -8,7 +8,7 @@ class Command:
     name: str
     handler: Any
     help_message: str
-    possible_args: tuple
+    possible_args: dict
     executed_args: tuple
     text_color: str
     bg_color: str
@@ -20,7 +20,7 @@ class TEXITY(tk.Entry):
         Text input for Texioty, it can accept commands and different types of entries.
         """
         # Set up the command list/cycling and different entry modes.
-        self.full_command_list = ['login bluebeard p455', 'kin8 spirite']
+        self.full_command_list = []
         self.kom_index = 0
         self.command_string_var = tk.StringVar()
         self.isTestingKeys = False

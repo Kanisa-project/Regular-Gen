@@ -1,6 +1,7 @@
 import json
 import random
 import uu
+
 # -*- coding: utf-8 -*-
 
 """
@@ -10,6 +11,7 @@ THE LOGIC FOR DISPLAYING ON KNIVOW.
 from PIL import Image, ImageDraw, ImageFont
 
 from settings import *
+
 ttf = ImageFont.truetype('emonob.ttf', 22)
 
 HANGMAN_TEXTMAN_LIST = ["  ╔═════╕   \n"
@@ -94,9 +96,9 @@ def hangman(img: Image, kre8dict: dict) -> Image:
     w, h = img.size
     chosen_word = kre8dict["wordie"]["hangman"]["chosen"]
     hidden_word = kre8dict["wordie"]["hangman"]["hidden"]
-    draw.multiline_text((w//2, h//6), text=HANGMAN_TEXTMAN_LIST[0], font=ttf)
-    draw.text((w//2, int(h*(5/7))), text=dict_to_str(hidden_word), font=ttf)
-    draw.text((w//8, h//6), text="Missed Letters:", font=ttf)
+    draw.multiline_text((w // 2, h // 6), text=HANGMAN_TEXTMAN_LIST[0], font=ttf)
+    draw.text((w // 2, int(h * (5 / 7))), text=dict_to_str(hidden_word), font=ttf)
+    draw.text((w // 8, h // 6), text="Missed Letters:", font=ttf)
     return img
 
 
@@ -108,10 +110,10 @@ def update_hangman(img: Image, kre8dict: dict) -> Image:
     chosen_word = kre8dict["wordie"]["hangman"]["chosen"]
     hidden_word = kre8dict["wordie"]["hangman"]["hidden"]
     missed_count = len(kre8dict["wordie"]["hangman"]["missed_letters"])
-    draw.multiline_text((w//2, h//6), text=HANGMAN_TEXTMAN_LIST[missed_count], font=ttf)
-    draw.text((w//2, int(h*(5/7))), text=dict_to_str(hidden_word), font=ttf)
-    draw.text((w//8, h//6), text="Missed Letters:", font=ttf)
-    draw.multiline_text((w//8, h//5), text=", ".join(kre8dict["wordie"]["hangman"]["missed_letters"]), font=ttf)
+    draw.multiline_text((w // 2, h // 6), text=HANGMAN_TEXTMAN_LIST[missed_count], font=ttf)
+    draw.text((w // 2, int(h * (5 / 7))), text=dict_to_str(hidden_word), font=ttf)
+    draw.text((w // 8, h // 6), text="Missed Letters:", font=ttf)
+    draw.multiline_text((w // 8, h // 5), text=", ".join(kre8dict["wordie"]["hangman"]["missed_letters"]), font=ttf)
     return img
 
 
@@ -128,9 +130,9 @@ def check_hangman_letter(letter_to_check: str, kre8dict: dict) -> dict:
     hidden_word = kre8dict["wordie"]["hangman"]["hidden"]
     if letter_to_check in chosen_word:
         for i in range(len(chosen_word)):
-            if letter_to_check*(i+1) in hidden_word:
-                if hidden_word[letter_to_check*(i+1)] == " ◙ ":
-                    hidden_word[letter_to_check*(i+1)] = f' {letter_to_check} '
+            if letter_to_check * (i + 1) in hidden_word:
+                if hidden_word[letter_to_check * (i + 1)] == " ◙ ":
+                    hidden_word[letter_to_check * (i + 1)] = f' {letter_to_check} '
     else:
         if letter_to_check in kre8dict["wordie"]["hangman"]["missed_letters"]:
             pass
@@ -162,7 +164,7 @@ def word_search(img: Image, kre8dict: dict) -> Image:
     for x in range(0, w, 16):
         letters_array.append([])
         for y in range(0, h, 16):
-            letters_array[x//16].append("")
+            letters_array[x // 16].append("")
     cx, cy = 0, 0
     for word in word_list:
         print(word)
@@ -172,19 +174,19 @@ def word_search(img: Image, kre8dict: dict) -> Image:
             for c in word:
                 print(cx, cy)
                 letters_array[cx][cy] = c.upper()
-                draw.text((cx*16+4, cy*16-2), font=font, text=c.upper(), fill=cl[0], align='right')
+                draw.text((cx * 16 + 4, cy * 16 - 2), font=font, text=c.upper(), fill=cl[0], align='right')
                 cy += 1
         elif orientation == "Horizontal":
             for c in word:
                 print(cx, cy)
                 letters_array[cx][cy] = c.upper()
-                draw.text((cx*16+4, cy*16-2), font=font, text=c.upper(), fill=cl[0], align='right')
+                draw.text((cx * 16 + 4, cy * 16 - 2), font=font, text=c.upper(), fill=cl[0], align='right')
                 cx += 1
         elif orientation == "Diagonal":
             for c in word:
                 print(cx, cy)
                 letters_array[cx][cy] = c.upper()
-                draw.text((cx*16+4, cy*16-2), font=font, text=c.upper(), fill=cl[0], align='right')
+                draw.text((cx * 16 + 4, cy * 16 - 2), font=font, text=c.upper(), fill=cl[0], align='right')
                 cx += 1
                 cy += 1
         # cy += 1
@@ -195,7 +197,7 @@ def word_search(img: Image, kre8dict: dict) -> Image:
             if len(letters_array[cx][cy]) == 0:
                 c = random.choice("abcdefghijklmnopqrstuvwxyz")
                 letters_array[cx][cy] = c.upper()
-                draw.text((cx*16+4, cy*16-2), font=font, text=c.upper(), fill=random.choice(cl), align='right')
+                draw.text((cx * 16 + 4, cy * 16 - 2), font=font, text=c.upper(), fill=random.choice(cl), align='right')
     kre8dict["wordie"]["word_search"]["letter_array"] = letters_array
     return img
 
@@ -218,7 +220,7 @@ def kollage(img: Image, kre8dict: dict) -> Image:
         for y in range(0, h, 32):
             rand_c = random.choice(kre8dict["use_id"])
             word = random.choice(ALPHANUMERIC_WORD_LISTS[rand_c])
-            draw.text((x, y), text=word, fill=random.choice(use_cl), angle=random.randint(-nl[8], nl[8])*36)
+            draw.text((x, y), text=word, fill=random.choice(use_cl), angle=random.randint(-nl[8], nl[8]) * 36)
     return img
 
 
@@ -244,3 +246,4 @@ def digiary(img: Image, kre8dict: dict) -> Image:
     Create a masterpiece from a digiary entry. Or create a digiary entry.
     """
     pass
+

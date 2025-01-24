@@ -57,7 +57,7 @@ class Wordie(artstyle.Artyle):
         """
         # Needs to not be used with a 'word_search' key.
         chosen_wordie_options = {
-            "type": self.radiobutton_dict["word_search"][0].get()
+            self.radiobutton_dict["word_search"][0].get(): ""
         }
         return chosen_wordie_options
 

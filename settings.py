@@ -713,26 +713,30 @@ class TexiotyProfile:
 available_profiles = {
     "guest": TexiotyProfile("Guest", "p455",
                             (rgb_to_hex(DARK_BROWN),
-                             rgb_to_hex(LIGHT_SEA_GREEN),
-                             rgb_to_hex(SAGE_GREEN)))
+                             rgb_to_hex(SAGE_GREEN),
+                             rgb_to_hex(LIGHT_GOLDENROD_YELLOW))),
+    "bluebeard": TexiotyProfile("Bluebeard", "p455",
+                                (rgb_to_hex(DARK_SLATE_BLUE),
+                                 rgb_to_hex(LIGHT_SLATE_BLUE),
+                                 rgb_to_hex(GHOST_WHITE)))
 }
 
 
-@dataclass
-class DisplayComponent:
-    """
-    Display some text as a label widget or edit some text as an entry widget.
-    """
-    default_value: str
-    var: tk.StringVar = None
-    label_widget: tk.Widget = None
-    new_entry_widget: tk.Widget = None
-    edit_entry_widget: tk.Widget = None
-
-    def set_var(self, new_var: str):
-        """
-        Set the StringVar of this display component.
-        :param new_var: String of info.
-        :return:
-        """
-        self.var.set(new_var)
+# @dataclass
+# class DisplayComponent:
+#     """
+#     Display some text as a label widget or edit some text as an entry widget.
+#     """
+#     default_value: str
+#     var: tk.StringVar = None
+#     label_widget: tk.Widget = None
+#     new_entry_widget: tk.Widget = None
+#     edit_entry_widget: tk.Widget = None
+#
+#     def set_var(self, new_var: str):
+#         """
+#         Set the StringVar of this display component.
+#         :param new_var: String of info.
+#         :return:
+#         """
+#         self.var.set(new_var)

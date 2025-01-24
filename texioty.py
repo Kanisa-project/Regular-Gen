@@ -11,6 +11,12 @@ import settings as s
 import texoty
 import texity
 
+LOADING_TERMS = ["Downloading", "Updating", "Executing", "Finding", "Searching for", "Deleting",
+                 "Creating", "Mixing", "Baking", "Loading", "Uploading", "Rolling", "Planting",
+                 "Growing", "Typing"]
+LOADED_TERMS = ["cookie", "cache", "chip", "key", "keyboard", "logic", "code", "math", "cereal",
+                "vape", "water", "juice", "rug", "cord", "port", "puppy", "kitten", "gaym"]
+
 
 @dataclass
 class CommandRegistry:
@@ -75,7 +81,7 @@ class TEXIOTY(tk.LabelFrame):
         self.registry = CommandRegistry({})
         self.helper_dict = {}
         self.available_profiles = s.available_profiles
-        self.active_profile = self.available_profiles["guest"]
+        self.active_profile = self.available_profiles["bluebeard"]
 
         self.texoty = texoty.TEXOTY(int(width) + 16, int(height), master=self)
         self.texoty.grid(column=0, row=0)
@@ -91,17 +97,20 @@ class TEXIOTY(tk.LabelFrame):
         # Set up basic commands for Texioty to know automatically.
         self.known_commands_dict = {
             "help": [self.display_help_message, "Displays a message of hope and help.",
-                     [], [], s.rgb_to_hex(s.INDIAN_RED), s.rgb_to_hex(s.BLACK)],
+                     {}, [], s.rgb_to_hex(s.INDIAN_RED), s.rgb_to_hex(s.BLACK)],
             "exit": [self.close_program, "Exits the program.",
-                     [], [], s.rgb_to_hex(s.INDIAN_RED), s.rgb_to_hex(s.BLACK)],
-            "login": [self.log_profile_in, "This logs the user into a profile:",
-                      ['guest'], [], s.rgb_to_hex(s.LIGHT_GREEN), s.rgb_to_hex(s.BLACK)],
+                     {}, [], s.rgb_to_hex(s.INDIAN_RED), s.rgb_to_hex(s.BLACK)],
+            "commands": [self.display_available_commands, "Displays all available commands.",
+                         {}, [], s.rgb_to_hex(s.INDIAN_RED), s.rgb_to_hex(s.BLACK)],
+            "login": [self.log_profile_in, "This logs the user into a profile: ",
+                      {'guest': "Basic account with a few permissions."}, [], s.rgb_to_hex(s.LIGHT_GREEN),
+                      s.rgb_to_hex(s.BLACK)],
             "logout": [self.log_profile_out, "This logs the user out of a profile.",
-                       [], [], s.rgb_to_hex(s.LIGHT_GREEN), s.rgb_to_hex(s.BLACK)],
+                       {}, [], s.rgb_to_hex(s.LIGHT_GREEN), s.rgb_to_hex(s.BLACK)],
             "dear_sys,": [self.start_diary_mode, "Creates a new .diary/ entry.",
-                          [], [], s.rgb_to_hex(s.LIGHT_GREEN), s.rgb_to_hex(s.BLACK)],
+                          {}, [], s.rgb_to_hex(s.LIGHT_GREEN), s.rgb_to_hex(s.BLACK)],
             "/until_next_time": [self.stop_diary_mode, "Ends and saves the .diary/ entry.",
-                                 [], [], s.rgb_to_hex(s.LIGHT_GREEN), s.rgb_to_hex(s.BLACK)]
+                                 {}, [], s.rgb_to_hex(s.LIGHT_GREEN), s.rgb_to_hex(s.BLACK)]
         }
 
         # Add the basic commands for Texioty.
@@ -163,11 +172,22 @@ class TEXIOTY(tk.LabelFrame):
         """
         self.texoty.clear_add_header()
         if self.active_profile:
-            self.texoty.priont_string('⦓PROFILE⦙ ' + self.active_profile.username)
+            self.texoty.priont_string('\n⦓PROFILE⦙ ' + self.active_profile.username)
         self.texoty.priont_string("⦓⦙ Seems like you might need help, good luck!")
-        self.display_available_commands()
+        self.texoty.priont_string("   Anything that can be done in this program can be")
+        self.texoty.priont_string("   done through this Texioty widget.")
+        self.texoty.priont_string("⦓⦙ Here are a couple of easy commands to get you started: \n\n")
+        self.texoty.priont_command(self.registry.commands["help"])
+        self.texoty.priont_command(self.registry.commands["commands"])
+        self.texoty.priont_command(self.registry.commands["dear_sys,"])
+        self.texoty.priont_string("⦓⦙ A '.diary/' entry is just a text file in that directory.")
+        self.texoty.priont_string("   It's all gibberish at the look of it, but reading the text file")
+        self.texoty.priont_string("   is very much more revealing. Easily accessed, don't write secrets.")
+        self.texoty.priont_command(self.registry.commands["/until_next_time"])
+        self.texoty.priont_string("⦓⦙ Finishes the entry and saves in the '.diary/' folder.")
+        self.texoty.priont_string("   Erases all of the gibberish and that's it.")
 
-    def display_available_commands(self):
+    def display_available_commands(self, args):
         """Prints out all the commands that are available."""
         self.clear_texoty()
         command_index = 2
@@ -225,9 +245,10 @@ class TEXIOTY(tk.LabelFrame):
         :param arguments: Arguments for the command to use.
         :return:
         """
-        self.clear_texoty()
+        # self.clear_texoty()
         if command in self.registry.commands:
             self.registry.execute_command(command, arguments)
+            self.texoty.priont_string(random_loading_phrase())
         else:
             self.texoty.priont_string(f"⦓⦙ Uhh, I don't recognize '{command}'")
             # self.texoty.priont_string(f"⦓⦙ Uhh, I don't recognize '{command}'. Try one of these instead:")
@@ -386,3 +407,10 @@ def timestamp_line_entry(entry_time: datetime, entry_line: str, lead_line=" ", f
             ret_str = entry_line + follow_line + time_stamp + f':{entry_time.microsecond:2d}'
 
     return ret_str
+
+
+def random_loading_phrase() -> str:
+    phrase = random.choice(LOADING_TERMS)
+    phrase += " " + random.choice(["a", "that", "all the"]) + " "
+    phrase += random.choice(LOADED_TERMS)
+    return phrase + ("." * random.randint(2, 5))

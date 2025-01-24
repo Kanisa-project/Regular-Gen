@@ -42,7 +42,10 @@ class IDUTC(tk.LabelFrame):
         self.set_button = create_button(self, text="Set ID/UTC", command=self.set_use_idutc, width=10, column=1, row=1)
         self.save_button = create_button(self, text="Save Metadata", command=self.save_json, width=10, column=4, row=0)
         self.load_button = create_button(self, text="Load Metadata", command=self.load_json, width=10, column=4, row=1)
-        self.texioty_commands = {}
+        self.texioty_commands = {
+            "random_artributes": [self.randomize_artributes, "Randomize the artributes in IDUTC.",
+                                  {}, [], s.rgb_to_hex(s.LIGHT_CORAL), s.rgb_to_hex(s.DARK_SLATE_BLUE)],
+        }
 
         self.artyle_artributes_dict = {
             "Data_Source": ["Random", "Human", "Reddit", "OSRS", "Twitter", "Discord"],
@@ -53,7 +56,7 @@ class IDUTC(tk.LabelFrame):
             "Motion Range": ["Sock", "Rock"],
             "Accuracy": ["Pen", "Crayon"]
         }
-        self.attributeMenus = {}
+        self.artributeMenus = {}
         for key, value in self.artyle_artributes_dict.items():
             attribute_str_var = StringVar()
             attribute_str_var.set(random.choice(value))
@@ -63,9 +66,9 @@ class IDUTC(tk.LabelFrame):
             elif key == "Size":
                 # ~~ set size to what you want
                 attribute_str_var.set("Dog")
-            self.attributeMenus[key] = [attribute_str_var,
+            self.artributeMenus[key] = [attribute_str_var,
                                         OptionMenu(self, attribute_str_var, *value)]
-            self.attributeMenus[key][1].grid(column=0, row=2+list(self.artyle_artributes_dict.keys()).index(key))
+            self.artributeMenus[key][1].grid(column=0, row=2 + list(self.artyle_artributes_dict.keys()).index(key))
 
         self.generate_new_idutc()
         self.entry_ID_string_var.set("shadow")
@@ -76,7 +79,7 @@ class IDUTC(tk.LabelFrame):
     def gather_attributes(self) -> list:
         """Gather and return a list of attribute keywords."""
         attribs_list = []
-        for key, value in self.attributeMenus.items():
+        for key, value in self.artributeMenus.items():
             attribs_list.append(value[0].get())
         return attribs_list
 
@@ -141,7 +144,6 @@ class IDUTC(tk.LabelFrame):
         self.entry_UTC_string_var.set(loaded_data['use_utc'])
         self.kre8dict = loaded_data
         for artyle, chosen_options in self.kre8dict.items():
-
             print(artyle, chosen_options)
 
     def load_pen(self):
@@ -157,7 +159,6 @@ class IDUTC(tk.LabelFrame):
         self.entry_UTC_string_var.set(loaded_data['use_utc'])
         self.kre8dict = loaded_data
         for artyle, chosen_options in self.kre8dict.items():
-
             print(artyle, chosen_options)
 
     def setup_kre8dict(self, use_id: str, use_utc: str) -> dict:
@@ -174,6 +175,10 @@ class IDUTC(tk.LabelFrame):
             "artributes": self.gather_attributes()
         }
         return creation_dict
+
+    def randomize_artributes(self, args):
+        for key, value in self.artyle_artributes_dict.items():
+            self.artributeMenus[key][0].set(random.choice(value))
 
 
 def construct_file_path(base_path, attributes, filename):

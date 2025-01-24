@@ -50,6 +50,7 @@ class TEXOTY(Text):
         welcome_line = msg
         half_blocks = '▄▌█▐▀'
         header_line = ""
+        header_bot = ""
         # Checks if Texioty frame has an active profile logged in, else logins to a guest.
         if self.master.active_profile:
             self.active_profile = self.master.active_profile
@@ -61,12 +62,10 @@ class TEXOTY(Text):
                 header_line += half_blocks[index]
             else:
                 header_line += random.choice(half_blocks)
+            header_bot += random.choice('═─')
         self.set_text_on_line(0,
                               f"{welcome_line}{header_line[len(welcome_line):]}{header_line[len(self.active_profile.username):]}{self.active_profile.username}")
-        self.set_header_theme(self.active_profile.color_theme[0],
-                              self.active_profile.color_theme[1],
-                              len(msg),
-                              font_color=self.active_profile.color_theme[2])
+        self.set_text_on_line(2, f"╙{header_bot[2:]}╛")
         self.configure(bg=self.active_profile.color_theme[2])
 
     def set_header_theme(self, primary_color: str, secondary_color: str, len_msg: int, font_color: str = "black"):
@@ -172,18 +171,18 @@ class TEXOTY(Text):
         :param command:
         :return:
         """
+        self.priont_break_line()
         self.priont_command_colorized(f'{command.name}╕', command.text_color, command.bg_color)
         if not command.possible_args:
-            help_message_text = f'{" " * len(command.name)}╘{command.help_message}'
+            help_message_text = f'{" " * len(command.name)}╘► {command.help_message}'
             self.priont_command_colorized(help_message_text, command.text_color, command.bg_color)
         else:
-            help_message_text = f'{" " * len(command.name)}╞{command.help_message}'
+            help_message_text = f'{" " * len(command.name)}╞► {command.help_message}'
             self.priont_command_colorized(help_message_text, command.text_color, command.bg_color)
-            for item in command.possible_args:
+            for p_arg_i, p_arg_k in enumerate(command.possible_args):
                 prefix = " " * len(command.name)
-                prefix += "└" if command.possible_args.index(item) == len(command.possible_args) - 1 else "├"
-                self.priont_command_colorized(prefix+item, text_color=command.text_color, bg_color=command.bg_color)
-        self.priont_break_line()
+                prefix += "└" if p_arg_i == len(command.possible_args) - 1 else "├"
+                self.priont_command_colorized(prefix+p_arg_k + f"» {command.possible_args[p_arg_k]}", text_color=command.text_color, bg_color=command.bg_color)
         self.yview(END)
 
     def priont_break_line(self):

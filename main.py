@@ -43,6 +43,7 @@ class Application(tk.Frame):
         self.texioty_frame.add_helper_widget("CLDR", self.calendar_frame)
         self.texioty_frame.add_helper_widget("IDUT", self.idutc_frame)
         self.texioty_frame.add_helper_widget("KNVO", self.kinvow_frame)
+        self.texioty_frame.add_helper_widget("ARTY", self.artay_frame)
 
         self.widget_dict = {
             "Texioty": self.texioty_frame,

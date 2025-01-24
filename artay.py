@@ -11,6 +11,7 @@ import tabMujic
 import tabRecipe
 import tabWordie
 import tabSpirite
+import settings as s
 
 
 class ARTAY(ttk.LabelFrame):
@@ -57,6 +58,16 @@ class ARTAY(ttk.LabelFrame):
         self.tabControl.add(self.gaymTab, text="Gaym")
         self.tabControl.add(self.meemTab, text="Meem")
         self.tabControl.grid(column=0, row=0)
+
+        self.texioty_commands = {
+            "glyth": [self.draw_on_kinvow, "Add Glyth options to the kre8dict.",
+                      {"0-9": "Number of Glyth to make."}, [], s.rgb_to_hex(s.BLACK), s.rgb_to_hex(s.LIGHT_GOLDENROD_YELLOW)],
+            "glyph": [self.draw_on_kinvow, "Add Glyph options to the kre8dict.",
+                      {"0-9": "Number of Glyph to make."}, [], s.rgb_to_hex(s.BLACK), s.rgb_to_hex(s.LIGHT_GOLDENROD_YELLOW)]
+        }
+
+    def draw_on_kinvow(self):
+        pass
 
     def add_osrs_recipes(self):
         if self.IDUTC_frame.kre8dict["data_source"] == "OSRS":

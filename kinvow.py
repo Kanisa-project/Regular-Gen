@@ -42,9 +42,9 @@ class KINVOW(ttk.LabelFrame):
         self.txo: texoty.TEXOTY = None
         self.texioty_commands = {
             "kin8": [self.create_masterpiece, "Create a masterpiece on Kinvow.",
-                     ["glyth", "glyph", "wordie"], [], s.rgb_to_hex(s.LIGHT_GOLDENROD_YELLOW), s.rgb_to_hex(s.BLACK)],
+                     {}, [], s.rgb_to_hex(s.LIGHT_GOLDENROD_YELLOW), s.rgb_to_hex(s.BLACK)],
             "kre8dict": [self.priont_kre8dict, "Show the creationary dictionary.",
-                         [], [], s.rgb_to_hex(s.LIGHT_GOLDENROD_YELLOW), s.rgb_to_hex(s.BLACK)]
+                         {}, [], s.rgb_to_hex(s.LIGHT_GOLDENROD_YELLOW), s.rgb_to_hex(s.BLACK)]
         }
 
     def priont_kre8dict(self, args):
