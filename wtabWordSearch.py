@@ -22,7 +22,7 @@ class WordSearch(wordieTab.Wordietab):
             boxes.append(word_value_list[i])
         if boxes in self.widget_display_array:
             self.widget_display_array.remove(boxes)
-        self.setup_text_boxes(boxes, start_x_cell=2)
+        # self.setup_text_boxes(boxes, start_x_cell=2)
 
     # def setup_text_box_number_wheel(self):
     #     self.widget_display_array.append("number_of_words")

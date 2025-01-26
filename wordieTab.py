@@ -68,30 +68,50 @@ class Wordietab(ttk.Frame):
             col = i // 10
             label.grid(column=col + start_x_cell, row=row + start_y_cell)
 
-    def setup_text_boxes(self, word_list: list, start_x_cell=0, start_y_cell=0, width=10, textbox_name=""):
+    def setup_text_boxes(self, keyed_dict: dict, start_x_cell=0, start_y_cell=0, width=10):
         """
         Set up a specified number of text boxes on the artyle tab.
 
-        :param textbox_name:
+        :param keyed_dict:
         :param width:
         :param start_y_cell:
         :param start_x_cell:
-        :param word_list:
         """
-        if word_list in self.widget_display_array:
-            pass
-        else:
-            self.widget_display_array.append(word_list)
-            for i, word in enumerate(word_list):
-                str_var = StringVar(value=word)
-                entry = Entry(self, textvariable=str_var, width=width)
-                key = f"{textbox_name}{i}"
-                self.textbox_dict[key] = [str_var, entry]
+        for i, word in enumerate(keyed_dict):
+            lbl_str = StringVar(value=word + ": ")
+            lbl = Label(self, textvariable=lbl_str)
+            str_var = StringVar(value=word)
+            entry = Entry(self, textvariable=str_var, width=width)
+            self.textbox_dict[word] = [str_var, entry]
+            row = (i % 5)
+            col = (i // 5 + 1)
+            lbl.grid(column=col + start_x_cell - 1, row=row + start_y_cell, sticky='e')
+            entry.grid(column=col + start_x_cell, row=row + start_y_cell)
 
-                row = (i % 5)
-                col = (i // 5 + 1)
-
-                entry.grid(column=col + start_x_cell, row=row + start_y_cell)
+    # def setup_text_boxes(self, word_list: list, start_x_cell=0, start_y_cell=0, width=10, textbox_name=""):
+    #     """
+    #     Set up a specified number of text boxes on the artyle tab.
+    #
+    #     :param textbox_name:
+    #     :param width:
+    #     :param start_y_cell:
+    #     :param start_x_cell:
+    #     :param word_list:
+    #     """
+    #     if word_list in self.widget_display_array:
+    #         pass
+    #     else:
+    #         self.widget_display_array.append(word_list)
+    #         for i, word in enumerate(word_list):
+    #             str_var = StringVar(value=word)
+    #             entry = Entry(self, textvariable=str_var, width=width)
+    #             key = f"{textbox_name}{i}"
+    #             self.textbox_dict[key] = [str_var, entry]
+    #
+    #             row = (i % 5)
+    #             col = (i // 5 + 1)
+    #
+    #             entry.grid(column=col + start_x_cell, row=row + start_y_cell)
 
     def setup_button_choices(self, button_list: list, start_x_cell=0, start_y_cell=0):
         """

@@ -87,9 +87,11 @@ class Artyle(ttk.Frame):
             col = i // 10
             self.dropdown_menu_dict[dropdown][1].grid(column=len(self.widget_display_array) + col, row=row)
 
-    def setup_radiobutton_choices(self, options_list: list):
+    def setup_radiobutton_choices(self, options_list: list, start_x_cell=0, start_y_cell=0):
         """
         Radio buttons are part of the same choices, only one of the options can be selected at a time.
+        :param start_y_cell:
+        :param start_x_cell:
         :param options_list: list of options for the radio buttons
         :return: None
         """
@@ -100,7 +102,9 @@ class Artyle(ttk.Frame):
         for i, option in enumerate(options_list):
             new_str_var = StringVar(value=option)
             radiobutton = Radiobutton(self, text=option, variable=int_var, value=i)
-            radiobutton.grid(column=len(self.widget_display_array) + 0, row=i)
+            row = (i % 5)
+            col = (i // 5)
+            radiobutton.grid(column=col + start_x_cell, row=row + start_y_cell)
             self.radiobutton_dict[option] = [int_var, new_str_var, radiobutton]
 
     def setup_text_boxes(self, many: int):

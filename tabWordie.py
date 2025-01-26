@@ -26,7 +26,8 @@ class Wordie(artstyle.Artyle):
         super(Wordie, self).__init__(master=master, idutc=idutc, width=width, height=height)
         # Set up the name and add the possible choices.
         self.tab_name = "Wordie"
-        self.wordie_choices = ["Hangman", "Word Search", "Collage", "Riddle", "Crossword"]
+        # self.wordie_choices = ["Hangman", "Word Search", "Collage", "Riddle", "Crossword"]
+        self.wordie_choices = ["Collage", "Riddle"]
         self.setup_radiobutton_choices(self.wordie_choices)
         self.wordieBook = ttk.Notebook(master=self)
         self.hangmanTab = wtabHangman.Hangman(master=self.wordieBook)
@@ -35,13 +36,13 @@ class Wordie(artstyle.Artyle):
         self.riddleTab = wtabRiddle.Riddle(master=self.wordieBook)
         self.collageTab = wtabCollage.Collage(master=self.wordieBook)
 
-        self.wordieBook.add(self.hangmanTab, text="Hangman")
-        self.wordieBook.add(self.wordsearchTab, text="Word Search")
-        self.wordieBook.add(self.crosswordTab, text="Crossword")
+        # self.wordieBook.add(self.hangmanTab, text="Hangman")
+        # self.wordieBook.add(self.wordsearchTab, text="Word Search")
+        # self.wordieBook.add(self.crosswordTab, text="Crossword")
         self.wordieBook.add(self.collageTab, text="Collage")
         self.wordieBook.add(self.riddleTab, text="Riddle")
 
-        self.wordieBook.grid(row=0, column=0)
+        self.wordieBook.grid(row=0, column=1, rowspan=6)
 
     def destroy_word_optionmenus(self):
         """
@@ -56,9 +57,12 @@ class Wordie(artstyle.Artyle):
         generator. Along with the phrase for hangman or list of words in a word search or crossword.
         """
         # Needs to not be used with a 'word_search' key.
+        print(self.radiobutton_dict)
         chosen_wordie_options = {
-            self.radiobutton_dict["word_search"][0].get(): ""
+            "type": self.radiobutton_dict["Collage"][0].get()
         }
+        if self.radiobutton_dict["Collage"][0].get() == 0:
+            chosen_wordie_options["Collage"] = self.collageTab.textbox_dict
         return chosen_wordie_options
 
     def gather_random_options(self) -> dict:
@@ -77,37 +81,48 @@ class Wordie(artstyle.Artyle):
         """
         # Set up the colors being used to display in the Kinvow.
         artribute_dict = self.set_artributes(kre8dict)
-
-        # IF SELECTED POSITION IS 0, IT IS A HANGMAN WORDIE
         if kre8dict["wordie"]["type"] == 0:
-            kre8dict["wordie"]["type"] = "hangman"
-            kre8dict["wordie"]["hangman"] = {
-                "chosen": random.choice(kre8dict["artributes"]),
-                "hidden": {},
-                "missed_letters": []
-            }
-            for c in kre8dict["wordie"]["hangman"]["chosen"]:
-                if c in kre8dict["wordie"]["hangman"]["hidden"]:
-                    c += c
-                kre8dict["wordie"]["hangman"]["hidden"][c] = " ◙ "
-            wordie.hangman(img, kre8dict)
-
-        # IF SELECTED POSITION IS 1, IT IS A WORD_SEARCH WORDIE
-        if kre8dict["wordie"]["type"] == 1:
-            kre8dict["wordie"]["type"] = "word_search"
-            kre8dict["wordie"]["word_search"] = {
-                "letter_array": [],
-                "word_list": [],
-                'found_words': []
-            }
-            wordie.word_search(img, kre8dict)
-
-        # IF SELECTED POSITION IS 2, IT IS A COLLAGE WORDIE
-        if kre8dict["wordie"]["type"] == 2:
-            kre8dict["wordie"]["type"] = "collage"
-            wordie.kollage(img, kre8dict)
+            kre8dict["wordie"]["type"] = "Collage"
+            wordie.kollage(img, artribute_dict, kre8dict["wordie"]["Collage"])
 
         return img
+    # def add_wordie(self, img: Image, kre8dict: dict, abt="masterpiece") -> Image:
+    #     """
+    #     Adds the wordie type of wordie on the img provided.
+    #     """
+    #     # Set up the colors being used to display in the Kinvow.
+    #     artribute_dict = self.set_artributes(kre8dict)
+    #
+    #     # IF SELECTED POSITION IS 0, IT IS A HANGMAN WORDIE
+    #     if kre8dict["wordie"]["type"] == 0:
+    #         kre8dict["wordie"]["type"] = "hangman"
+    #         kre8dict["wordie"]["hangman"] = {
+    #             "chosen": random.choice(kre8dict["artributes"]),
+    #             "hidden": {},
+    #             "missed_letters": []
+    #         }
+    #         for c in kre8dict["wordie"]["hangman"]["chosen"]:
+    #             if c in kre8dict["wordie"]["hangman"]["hidden"]:
+    #                 c += c
+    #             kre8dict["wordie"]["hangman"]["hidden"][c] = " ◙ "
+    #         wordie.hangman(img, kre8dict)
+    #
+    #     # IF SELECTED POSITION IS 1, IT IS A WORD_SEARCH WORDIE
+    #     if kre8dict["wordie"]["type"] == 1:
+    #         kre8dict["wordie"]["type"] = "word_search"
+    #         kre8dict["wordie"]["word_search"] = {
+    #             "letter_array": [],
+    #             "word_list": [],
+    #             'found_words': []
+    #         }
+    #         wordie.word_search(img, kre8dict)
+    #
+    #     # IF SELECTED POSITION IS 2, IT IS A COLLAGE WORDIE
+    #     if kre8dict["wordie"]["type"] == 2:
+    #         kre8dict["wordie"]["type"] = "collage"
+    #         wordie.kollage(img, kre8dict)
+    #
+    #     return img
 
     # def create_werd_serch(self, kre8dict: dict):
     #     for filename in os.listdir(f"WORDIE/"):

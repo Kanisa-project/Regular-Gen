@@ -10,12 +10,8 @@ from typing import Dict, Any
 import settings as s
 import texoty
 import texity
-
-LOADING_TERMS = ["Downloading", "Updating", "Executing", "Finding", "Searching for", "Deleting",
-                 "Creating", "Mixing", "Baking", "Loading", "Uploading", "Rolling", "Planting",
-                 "Growing", "Typing"]
-LOADED_TERMS = ["cookie", "cache", "chip", "key", "keyboard", "logic", "code", "math", "cereal",
-                "vape", "water", "juice", "rug", "cord", "port", "puppy", "kitten", "gaym"]
+import logging
+import sys
 
 
 @dataclass
@@ -110,7 +106,9 @@ class TEXIOTY(tk.LabelFrame):
             "dear_sys,": [self.start_diary_mode, "Creates a new .diary/ entry.",
                           {}, [], s.rgb_to_hex(s.LIGHT_GREEN), s.rgb_to_hex(s.BLACK)],
             "/until_next_time": [self.stop_diary_mode, "Ends and saves the .diary/ entry.",
-                                 {}, [], s.rgb_to_hex(s.LIGHT_GREEN), s.rgb_to_hex(s.BLACK)]
+                                 {}, [], s.rgb_to_hex(s.LIGHT_GREEN), s.rgb_to_hex(s.BLACK)],
+            "echo": [self.handle_errors, "Echo some errors.",
+                     {}, [], s.rgb_to_hex(s.LIGHT_GREEN), s.rgb_to_hex(s.BLACK)]
         }
 
         # Add the basic commands for Texioty.
@@ -248,7 +246,7 @@ class TEXIOTY(tk.LabelFrame):
         # self.clear_texoty()
         if command in self.registry.commands:
             self.registry.execute_command(command, arguments)
-            self.texoty.priont_string(random_loading_phrase())
+            self.texoty.priont_string("⦓⦙ " + s.random_loading_phrase())
         else:
             self.texoty.priont_string(f"⦓⦙ Uhh, I don't recognize '{command}'")
             # self.texoty.priont_string(f"⦓⦙ Uhh, I don't recognize '{command}'. Try one of these instead:")
@@ -367,6 +365,13 @@ class TEXIOTY(tk.LabelFrame):
     def get_responses(self):
         self.texoty.priont_dict(self.question_prompt_dict)
 
+    def handle_errors(self, error_message: str, severity="INFO"):
+        text_color = s.BLACK
+        if severity == "ERROR":
+            text_color = s.ORANGE_RED
+
+        self.texoty.priont_string(f"⦓⦙ {severity}: {error_message}")
+
 
 def create_date_entry(entry_time: datetime, entry_list: list):
     """
@@ -407,10 +412,3 @@ def timestamp_line_entry(entry_time: datetime, entry_line: str, lead_line=" ", f
             ret_str = entry_line + follow_line + time_stamp + f':{entry_time.microsecond:2d}'
 
     return ret_str
-
-
-def random_loading_phrase() -> str:
-    phrase = random.choice(LOADING_TERMS)
-    phrase += " " + random.choice(["a", "that", "all the"]) + " "
-    phrase += random.choice(LOADED_TERMS)
-    return phrase + ("." * random.randint(2, 5))

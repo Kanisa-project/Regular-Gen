@@ -721,6 +721,32 @@ available_profiles = {
                                  rgb_to_hex(GHOST_WHITE)))
 }
 
+LOADING_TERMS = ["Downloading", "Updating", "Executing", "Finding", "Searching for", "Deleting",
+                 "Creating", "Mixing", "Baking", "Loading", "Uploading", "Rolling", "Planting",
+                 "Growing", "Typing", "Brewing", "Chopping", "Fishing for", "Stashing", "Formatting",
+                 "Coiling", "Breaking", "Toasting", "Meowing", "Pouring"]
+MID_TERMS = ["a", "all the", "some", "the most", "that", "this", "many", "the entire", "the empty"]
+LOADED_TERMS = ["cookie", "cache", "chip", "lock", "keyboard", "logic", "code", "math", "cereal",
+                "vape", "water", "juice", "rug", "cord", "port", "puppy", "kitten", "gaym", "key",
+                "phone", "table", "mouse", "coffee", "tea", "python", "java", "screen", "virus",
+                "bread", "toast", "ball", "cloud", "recycling bin", "mug", "desk"]
+LOADING_BRACKETS = ["{}", "[]", "()", "<>", "‹›", "«»"]
+
+
+def random_loading_phrase() -> str:
+    mid_term = random.choice(MID_TERMS)
+    bracks = random.choice(LOADING_BRACKETS)
+    phrase = random.choice(LOADING_TERMS)
+    phrase += " " + mid_term + " "
+    if mid_term in ["some", "all the", "the most", "many"]:
+        phrase += random.choice(LOADED_TERMS) + "'s"
+    else:
+        phrase += random.choice(LOADED_TERMS)
+    # phrase += " " + random.choice("•⌂×¤±")
+    # phrase += bracks[0] + random.choice(".,_") + random.choice("-=+") + random.choice("^`*") + bracks[1]
+    return phrase + ("." * random.randint(2, 5))
+    # return phrase
+
 
 # @dataclass
 # class DisplayComponent:

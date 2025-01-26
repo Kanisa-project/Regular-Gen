@@ -1,6 +1,7 @@
 import json
 import random
 import uu
+import os
 
 # -*- coding: utf-8 -*-
 
@@ -12,7 +13,10 @@ from PIL import Image, ImageDraw, ImageFont
 
 from settings import *
 
-ttf = ImageFont.truetype('emonob.ttf', 22)
+ttf = ImageFont.truetype(f'{os.getcwd()}/assets/Fonts/emonob.ttf', 22)
+
+font_names = ["emono", "Parkinsans-Medium", "rogue", "Cookie-Regular", "berkshireswash-regular", "Akt-Medium",
+              "AguafineScript-Regular", "Charlie", "emonob", "fontello"]
 
 HANGMAN_TEXTMAN_LIST = ["  ╔═════╕   \n"
                         "  ║     ┇   \n"
@@ -202,25 +206,25 @@ def word_search(img: Image, kre8dict: dict) -> Image:
     return img
 
 
-def kollage(img: Image, kre8dict: dict) -> Image:
+def kollage(img: Image, artribute_dict: dict, area_dict: dict) -> Image:
     """
     Create a collage of words on the img provided.
     """
-    nl = kre8dict["number_list"]
-    cl = kre8dict["color_list"]
+    width_list = artribute_dict["accuracy"]
+    cl = artribute_dict["colors"]
     draw = ImageDraw.Draw(img)
-    use_cl = []
     w, h = img.size
-    for colo in cl:
-        co0 = int(colo[0] * 255)
-        co1 = int(colo[1] * 255)
-        co2 = int(colo[2] * 255)
-        use_cl.append((co0, co1, co2))
-    for x in range(0, w, 64):
-        for y in range(0, h, 32):
-            rand_c = random.choice(kre8dict["use_id"])
-            word = random.choice(ALPHANUMERIC_WORD_LISTS[rand_c])
-            draw.text((x, y), text=word, fill=random.choice(use_cl), angle=random.randint(-nl[8], nl[8]) * 36)
+    font = random.choice(font_names)
+    print(font)
+    font = ImageFont.truetype(f'{os.getcwd()}/assets/Fonts/{font}.ttf', random.choice(width_list) * 16)
+    draw.text((random.randint(0, w - 256), random.randint(0, h // 2)), font=font, text=area_dict["Top"][0].get(),
+              fill=random.choice(cl))
+    draw.text((random.randint(0, w - 256), random.randint(h // 2, h)), font=font, text=area_dict["Bottom"][0].get(),
+              fill=random.choice(cl))
+    draw.text((random.randint(w // 2, w), random.randint(0, h)), font=font, text='\n'.join(area_dict["Right"][0].get()),
+                        fill=random.choice(cl))
+    draw.text((random.randint(0, w // 2), random.randint(0, h)), font=font, text=area_dict["Left"][0].get(),
+              fill=random.choice(cl))
     return img
 
 
@@ -246,4 +250,3 @@ def digiary(img: Image, kre8dict: dict) -> Image:
     Create a masterpiece from a digiary entry. Or create a digiary entry.
     """
     pass
-
