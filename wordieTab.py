@@ -80,13 +80,13 @@ class Wordietab(ttk.Frame):
         for i, word in enumerate(keyed_dict):
             lbl_str = StringVar(value=word + ": ")
             lbl = Label(self, textvariable=lbl_str)
-            str_var = StringVar(value=word)
+            str_var = StringVar(value=keyed_dict[word])
             entry = Entry(self, textvariable=str_var, width=width)
             self.textbox_dict[word] = [str_var, entry]
             row = (i % 5)
             col = (i // 5 + 1)
             lbl.grid(column=col + start_x_cell - 1, row=row + start_y_cell, sticky='e')
-            entry.grid(column=col + start_x_cell, row=row + start_y_cell)
+            entry.grid(column=col + start_x_cell, row=row + start_y_cell, columnspan=2)
 
     # def setup_text_boxes(self, word_list: list, start_x_cell=0, start_y_cell=0, width=10, textbox_name=""):
     #     """

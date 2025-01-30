@@ -26,8 +26,7 @@ class Wordie(artstyle.Artyle):
         super(Wordie, self).__init__(master=master, idutc=idutc, width=width, height=height)
         # Set up the name and add the possible choices.
         self.tab_name = "Wordie"
-        # self.wordie_choices = ["Hangman", "Word Search", "Collage", "Riddle", "Crossword"]
-        self.wordie_choices = ["Collage", "Riddle"]
+        self.wordie_choices = ["Collage", "Riddle", "Word Search", "Hangman", "Crossword"]
         self.setup_radiobutton_choices(self.wordie_choices)
         self.wordieBook = ttk.Notebook(master=self)
         self.hangmanTab = wtabHangman.Hangman(master=self.wordieBook)
@@ -36,11 +35,11 @@ class Wordie(artstyle.Artyle):
         self.riddleTab = wtabRiddle.Riddle(master=self.wordieBook)
         self.collageTab = wtabCollage.Collage(master=self.wordieBook)
 
-        # self.wordieBook.add(self.hangmanTab, text="Hangman")
-        # self.wordieBook.add(self.wordsearchTab, text="Word Search")
-        # self.wordieBook.add(self.crosswordTab, text="Crossword")
         self.wordieBook.add(self.collageTab, text="Collage")
         self.wordieBook.add(self.riddleTab, text="Riddle")
+        self.wordieBook.add(self.wordsearchTab, text="Word Search")
+        self.wordieBook.add(self.hangmanTab, text="Hangman")
+        self.wordieBook.add(self.crosswordTab, text="Crossword")
 
         self.wordieBook.grid(row=0, column=1, rowspan=6)
 
@@ -63,6 +62,13 @@ class Wordie(artstyle.Artyle):
         }
         if self.radiobutton_dict["Collage"][0].get() == 0:
             chosen_wordie_options["Collage"] = self.collageTab.textbox_dict
+        if self.radiobutton_dict["Riddle"][0].get() == 1:
+            chosen_wordie_options["Riddle"] = self.riddleTab.textbox_dict
+        if self.radiobutton_dict["Hangman"][0].get() == 3:
+            chosen_wordie_options["Hangman"] = {
+                'Phrase': self.hangmanTab.textbox_dict["Phrase"][0].get(),
+                'Max Guesses': self.hangmanTab.max_guesses
+            }
         return chosen_wordie_options
 
     def gather_random_options(self) -> dict:
@@ -84,8 +90,12 @@ class Wordie(artstyle.Artyle):
         if kre8dict["wordie"]["type"] == 0:
             kre8dict["wordie"]["type"] = "Collage"
             wordie.kollage(img, artribute_dict, kre8dict["wordie"]["Collage"])
+        if kre8dict["wordie"]["type"] == 3:
+            kre8dict["wordie"]["type"] = "Hangman"
+            wordie.hangman(img, artribute_dict, kre8dict["wordie"]["Hangman"])
 
         return img
+
     # def add_wordie(self, img: Image, kre8dict: dict, abt="masterpiece") -> Image:
     #     """
     #     Adds the wordie type of wordie on the img provided.
@@ -104,7 +114,7 @@ class Wordie(artstyle.Artyle):
     #         for c in kre8dict["wordie"]["hangman"]["chosen"]:
     #             if c in kre8dict["wordie"]["hangman"]["hidden"]:
     #                 c += c
-    #             kre8dict["wordie"]["hangman"]["hidden"][c] = " ◙ "
+    #             kre8dict["wordie"]["hangman"]["hidden"][c] = "◙"
     #         wordie.hangman(img, kre8dict)
     #
     #     # IF SELECTED POSITION IS 1, IT IS A WORD_SEARCH WORDIE

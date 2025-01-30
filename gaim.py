@@ -116,12 +116,12 @@ ENVIRONMENT_FACTOR_OPTIONS_DICT = {
     "Safe": ["Does the environment have spikes and lava or flowers and bunnies?", True],
     "Difficulty": ["How many obstacles are in the way?", 0],
     "Theme": ["Is it set in space or on a farm or in the city?", ["Space", "Farm", "City"]],
-    "Engine": ["Which engine will power the gaym?", ["ABF", "ThurBo", "SpaceDits", "Booty Defence", "Othaido"]]
+    "Engine": ["Which engine will power the gaim?", ["ABF", "ThurBo", "SpaceDits", "Booty Defence", "Othaido"]]
 }
 
 
 def generate_player_factors(img: Image, kre8dict: dict) -> (Image, dict):
-    kre8dict["gaym"]["Player"] = {
+    kre8dict["gaim"]["Player"] = {
         "Movement": random.choice(list(PLAYER_FACTOR_OPTIONS_DICT["Movement"].keys())),
         "Projectiles": {
             "Can Shoot": PLAYER_FACTOR_OPTIONS_DICT["Projectiles"]["Can Shoot"][1],
@@ -142,7 +142,7 @@ def generate_player_factors(img: Image, kre8dict: dict) -> (Image, dict):
 
 
 def generate_enemy_factors(img: Image, kre8dict: dict) -> (Image, dict):
-    kre8dict["gaym"]["Enemy"] = {
+    kre8dict["gaim"]["Enemy"] = {
         "Movement": random.choice(list(ENEMY_FACTOR_OPTIONS_DICT["Movement"].keys())),
         "Projectiles": {
             "Can Shoot": ENEMY_FACTOR_OPTIONS_DICT["Projectiles"]["Can Shoot"][1]
@@ -157,7 +157,7 @@ def generate_enemy_factors(img: Image, kre8dict: dict) -> (Image, dict):
 
 
 def generate_goal_factors(img: Image, kre8dict: dict) -> (Image, dict):
-    kre8dict["gaym"]["Goal"] = {
+    kre8dict["gaim"]["Goal"] = {
         "Goal One": random.choice(list(GOAL_FACTOR_OPTIONS_DICT.keys())),
         "Goal Two": random.choice(list(GOAL_FACTOR_OPTIONS_DICT.keys())),
         "Goal Three": random.choice(list(GOAL_FACTOR_OPTIONS_DICT.keys())),
@@ -173,7 +173,7 @@ def generate_environment_factors(img: Image, kre8dict: dict) -> (Image, dict):
     :param kre8dict:
     :return:
     """
-    kre8dict["gaym"]["Environment"] = {
+    kre8dict["gaim"]["Environment"] = {
         "Safe": ENVIRONMENT_FACTOR_OPTIONS_DICT["Safe"][1],
         "Difficulty": ENVIRONMENT_FACTOR_OPTIONS_DICT["Difficulty"][1],
         "Theme": random.choice(ENVIRONMENT_FACTOR_OPTIONS_DICT["Theme"][1]),
@@ -182,11 +182,11 @@ def generate_environment_factors(img: Image, kre8dict: dict) -> (Image, dict):
     return img, kre8dict
 
 
-def add_gaym(img: Image, kre8dict: dict) -> Image:
+def add_gaim(img: Image, kre8dict: dict) -> Image:
     return img
 
 
-def create_directory(img: Image, kre8dict: dict, gaym_str="") -> Image:
+def create_directory(img: Image, kre8dict: dict, gaim_str="") -> Image:
     directory = kre8dict['use_id']
     parent_directory = f"{kre8dict['artributes'][3]}"
     path = os.path.join(parent_directory, directory)

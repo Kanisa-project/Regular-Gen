@@ -7,7 +7,7 @@ class Artyle(ttk.Frame):
     def __init__(self, width, height, master=None, idutc=None, texioty=None):
         """
         Base art style tab that has buttons, sliders, checkboxes and dropdown menus for choosing options from within
-        a glyth, glyph, wordie, sprite, gaym, mujic, foto and any other forms of art style.
+        a glyth, glyph, wordie, sprite, gaim, mujic, foto and any other forms of art style.
 
         :param width:
         :param height:
@@ -49,7 +49,7 @@ class Artyle(ttk.Frame):
             int_var = IntVar(value=(max_val + min_val) // 2)
             label = Label(self, textvariable=str_var)
             scale = Scale(self, from_=min_val, to=max_val, variable=int_var, width=5, length=88,
-                          orient="horizontal", borderwidth=0, sliderlength=6, showvalue=False,
+                          orient="horizontal", borderwidth=0, sliderlength=6, showvalue=True,
                           command=lambda: self.update_slider_label())
             self.slider_dict[parameter] = [int_var, str_var, scale, label]
 
@@ -125,10 +125,12 @@ class Artyle(ttk.Frame):
 
             entry.grid(column=col + len(self.widget_display_array), row=row)
 
-    def setup_button_choices(self, button_list: list):
+    def setup_button_choices(self, button_list: list, start_x_cell=0, start_y_cell=0):
         """
         Set up buttons on the artyle tab.
 
+        :param start_y_cell:
+        :param start_x_cell:
         :param button_list: List of words for buttons to use.
         :return:
         """
@@ -141,7 +143,7 @@ class Artyle(ttk.Frame):
             row = (i % 8)
             col = (i // 8)
 
-            button.grid(column=len(self.widget_display_array) + col, row=row)
+            button.grid(column=start_x_cell + col, row=start_y_cell + row)
 
     def setup_checkbutton_choices(self, word_list: list):
         """

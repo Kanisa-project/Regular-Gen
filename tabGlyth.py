@@ -29,7 +29,7 @@ class Glyther(artstyle.Artyle):
         self.button_dict["All"][1].configure(command=self.select_all)
         self.button_dict["None"][1].configure(command=self.select_none)
         self.button_dict["Random"][1].configure(command=self.select_random)
-        self.setup_radiobutton_choices(self.radiobutton_choice_list)
+        self.setup_radiobutton_choices(self.radiobutton_choice_list, start_x_cell=1)
         self.setup_checkbutton_choices(self.checkbutton_choice_list)
 
     # def load_glyth_options(self, options_to_load: list):

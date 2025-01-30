@@ -10,6 +10,7 @@ import kinvow
 import subprocess
 import threading
 import kalendar
+import gaimPlay
 
 large_widgets = ["Texioty", "Kinvow"]
 small_widgets = ["Calendar", "IDUTC", "Artay"]
@@ -40,17 +41,22 @@ class Application(tk.Frame):
         self.calendar_frame = kalendar.Kalendar(width=screen_w*.333, height=screen_h*.4)
         self.calendar_frame.txo = self.texioty_frame.texoty
 
+        self.gaimplay_frame = gaimPlay.gaimPlayer(width=screen_w*.333, height=screen_h*.4)
+        self.gaimplay_frame.txo = self.texioty_frame.texoty
+
         self.texioty_frame.add_helper_widget("CLDR", self.calendar_frame)
         self.texioty_frame.add_helper_widget("IDUT", self.idutc_frame)
         self.texioty_frame.add_helper_widget("KNVO", self.kinvow_frame)
         self.texioty_frame.add_helper_widget("ARTY", self.artay_frame)
+        self.texioty_frame.add_helper_widget("PLAY", self.gaimplay_frame)
 
         self.widget_dict = {
             "Texioty": self.texioty_frame,
             "Calendar": self.calendar_frame,
             "IDUTC": self.idutc_frame,
             "Kinvow": self.kinvow_frame,
-            "Artay": self.artay_frame
+            "Artay": self.artay_frame,
+            "gaimPlay": self.gaimplay_frame
         }
         self.center_frame = SpotLighter(widget_dict=self.widget_dict, width=screen_w//3, height=screen_h//4)
         self.center_frame.grid(column=1, row=1, columnspan=1, rowspan=1, padx=1, pady=1, sticky='nesw')

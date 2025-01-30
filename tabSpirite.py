@@ -22,7 +22,7 @@ class Spirite(artstyle.Artyle):
         self.spirite_optionmenu_choice_list = ["None", "Alien", "Asteroid", "Ball", "Medallion", "Ship", "Sword",
                                                "Tribloc", "RTJ", "Boat", "Platform", "Goal"]
         self.setup_dropdown_menus(word_list=self.spirite_optionmenu_choice_list, dropdown_name="spirite_type")
-        self.setup_button_choices(['Randomize All'])
+        self.setup_button_choices(['Randomize All'], start_y_cell=1)
         self.button_dict['Randomize All'][1].config(command=self.randomize_all_layer_number)
         self.spirite_str = self.dropdown_menu_dict["spirite_type"][0].get()
         self.layer_name_dict = LAYER_DICT[self.spirite_str]
@@ -55,7 +55,7 @@ class Spirite(artstyle.Artyle):
             print("UPDATE: ", layer_name, new_layer_list.index(layer_name))
             self.layer_number_wheel_dict[f'layer_{new_layer_list.index(layer_name)}'][0].set(layer_name)
 
-    def setup_dropdown_menus(self, word_list=None, word_str=None, dropdown_name=""):
+    def setup_dropdown_menus(self, word_list=None, word_str=None, dropdown_name="", start_x_cell=0, start_y_cell=0):
         # If it is a single string, collect random words for the dropdown menu
         if word_str:
             self.widget_display_array.append(word_str)
@@ -76,7 +76,7 @@ class Spirite(artstyle.Artyle):
         for i, dropdown in enumerate(list(self.dropdown_menu_dict.keys())):
             row = i % 10
             col = i // 10
-            self.dropdown_menu_dict[dropdown][1].grid(column=len(self.widget_display_array) + col, row=row)
+            self.dropdown_menu_dict[dropdown][1].grid(column=start_x_cell+col, row=start_y_cell+row)
 
     def update_spirite_str(self, morestuff):
         print("MORE", morestuff)

@@ -3,7 +3,7 @@ from tkinter import *
 from tkinter import ttk
 
 import tabFoto
-import tabGaym
+import tabGaim
 import tabGlyth
 import tabGlyph
 import tabMeem
@@ -44,7 +44,7 @@ class ARTAY(ttk.LabelFrame):
                                       width=int(width), height=int(height))
         self.mujicTab = tabMujic.Mujic(master=self.tabControl, idutc=self.IDUTC_frame,
                                        width=int(width), height=int(height))
-        self.gaymTab = tabGaym.Gaym(master=self.tabControl, idutc=self.IDUTC_frame,
+        self.gaimTab = tabGaim.Gaim(master=self.tabControl, idutc=self.IDUTC_frame,
                                     width=int(width), height=int(height))
         self.meemTab = tabMeem.Meem(master=self.tabControl, idutc=self.IDUTC_frame,
                                     width=int(width), height=int(height))
@@ -55,7 +55,7 @@ class ARTAY(ttk.LabelFrame):
         self.tabControl.add(self.recipeTab, text="Recipe")
         self.tabControl.add(self.fotoTab, text="Foto")
         self.tabControl.add(self.mujicTab, text="Mujic")
-        self.tabControl.add(self.gaymTab, text="Gaym")
+        self.tabControl.add(self.gaimTab, text="Gaim")
         self.tabControl.add(self.meemTab, text="Meem")
         self.tabControl.grid(column=0, row=0)
 

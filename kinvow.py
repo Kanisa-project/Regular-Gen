@@ -72,7 +72,7 @@ class KINVOW(ttk.LabelFrame):
                                'recipe': self.artay.recipeTab.gather_recipe_options,
                                'foto': self.artay.fotoTab.gather_foto_options,
                                'mujic': self.artay.mujicTab.gather_mujic_options,
-                               'gaym': self.artay.gaymTab.gather_gaym_options,
+                               'gaim': self.artay.gaimTab.gather_gaim_options,
                                'meem': self.artay.meemTab.gather_meem_options,
                                }
 
@@ -124,8 +124,8 @@ class KINVOW(ttk.LabelFrame):
                 self.create_recipe(nim, kre8dict, abt)
             if artyle.lower() == "mujic":
                 self.create_mujic(nim, kre8dict, abt)
-            if artyle.lower() == "gaym":
-                self.create_gaym(nim, kre8dict, abt)
+            if artyle.lower() == "gaim":
+                self.create_gaim(nim, kre8dict, abt)
 
     def create_glyth(self, img: Image, kre8dict: dict, abt="masterpiece"):
         self.artay.glythTab.add_glyth(img, kre8dict, abt)
@@ -148,8 +148,8 @@ class KINVOW(ttk.LabelFrame):
     def create_mujic(self, img: Image, kre8dict: dict, abt='masterpiece'):
         self.artay.mujicTab.add_mujic(img, kre8dict, abt)
 
-    def create_gaym(self, img: Image, kre8dict: dict, abt='masterpiece'):
-        self.artay.gaymTab.add_gaym(img, kre8dict, abt)
+    def create_gaim(self, img: Image, kre8dict: dict, abt='masterpiece'):
+        self.artay.gaimTab.add_gaim(img, kre8dict, abt)
 
     def set_pen_masterpiece(self, args) -> dict:
         """

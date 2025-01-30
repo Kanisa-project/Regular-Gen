@@ -52,6 +52,10 @@ class TEXITY(tk.Entry):
         text_input = self.command_string_var.get()
         return text_input
 
+    def parse_gaim_play(self) -> str:
+        text_input = self.command_string_var.get()
+        return text_input
+
     def command_list_previous(self):
         """Changes the input box to the previous command in the list."""
         if self.command_string_var.get() == '':

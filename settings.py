@@ -541,7 +541,7 @@ ALPHANUMERIC_COLORS = {
     "a": MAROON,
     "b": MEDIUM_WOOD,
     "c": CORNSILK,
-    "d": DRS_PURPLE,
+    "d": NAVAJO_WHITE,
     "e": DEEP_SKY_BLUE,
     "f": SKY_BLUE,
     "g": DUSTY_ROSE,
@@ -723,14 +723,14 @@ available_profiles = {
 
 LOADING_TERMS = ["Downloading", "Updating", "Executing", "Finding", "Searching for", "Deleting",
                  "Creating", "Mixing", "Baking", "Loading", "Uploading", "Rolling", "Planting",
-                 "Growing", "Typing", "Brewing", "Chopping", "Fishing for", "Stashing", "Formatting",
+                 "Growing", "Typing", "Brewing", "Shopping for", "Fishing for", "Stashing", "Formatting",
                  "Coiling", "Breaking", "Toasting", "Meowing", "Pouring"]
 MID_TERMS = ["a", "all the", "some", "the most", "that", "this", "many", "the entire", "the empty"]
 LOADED_TERMS = ["cookie", "cache", "chip", "lock", "keyboard", "logic", "code", "math", "cereal",
-                "vape", "water", "juice", "rug", "cord", "port", "puppy", "kitten", "gaym", "key",
+                "vape", "water", "juice", "rug", "cord", "port", "puppy", "kitten", "gaim", "key",
                 "phone", "table", "mouse", "coffee", "tea", "python", "java", "screen", "virus",
                 "bread", "toast", "ball", "cloud", "recycling bin", "mug", "desk"]
-LOADING_BRACKETS = ["{}", "[]", "()", "<>", "‹›", "«»"]
+LOADING_BRACKETS = ["{}", "[]", "()", "<>", "‹›", "«»", "↻↺"]
 
 
 def random_loading_phrase() -> str:

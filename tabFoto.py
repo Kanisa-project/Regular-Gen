@@ -24,11 +24,12 @@ class Fotoes(artstyle.Artyle):
         self.use_data_dict = None
         self.tab_name = "Foto"
         # self.home_folder_path = 'C:\\Users\\thisr\\PycharmProjects\\Regular-Gen\\'
-        self.setup_button_choices(["Change Foto 1", "Change Foto 2", "Shuffle Sliders", "Shuffle Filters"])
+        self.setup_button_choices(["Change Foto 1", "Change Foto 2", "Shuffle Sliders", "Reset Sliders", "Shuffle Filters"])
         self.button_dict["Change Foto 1"][1].configure(command=self.update_foto_button)
         self.button_dict["Change Foto 2"][1].configure(command=self.update_foto2_button)
         self.button_dict["Shuffle Sliders"][1].configure(command=self.randomize_sliders)
         self.button_dict["Shuffle Filters"][1].configure(command=self.randomize_filters)
+        self.button_dict["Reset Sliders"][1].configure(command=self.reset_sliders)
         self.checkbutton_choice_list = ["HSB filter", "RGB filter", "Blur", "Contour", "Detail",
                                         "Edge Enhance", "Emboss", "Find Edges", "Smooth", "Shuffled"]
         self.slider_choice_list = ["Hue", "Saturation", "Brightness",
@@ -139,8 +140,14 @@ class Fotoes(artstyle.Artyle):
     def randomize_filters(self):
         for option in self.checkbutton_choice_list:
             self.checkbutton_dict[option][0].set(random.randint(0, 1))
+        self.checkbutton_dict["Shuffled"][0].set(0)
+
+    def reset_sliders(self):
+        for slider in self.slider_choice_list:
+            reset_num = self.slider_dict[slider][2].cget("to") // 2
+            self.slider_dict[slider][0].set(reset_num)
 
 
 def openfilename_str() -> str:
-    filename = filedialog.askopenfilename(title='Open')
+    filename = filedialog.askopenfilename(title='Open..')
     return filename

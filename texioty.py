@@ -68,6 +68,7 @@ class TEXIOTY(tk.LabelFrame):
         :param master: Parent widget
         """
         super(TEXIOTY, self).__init__(master)
+        self.in_play_gaim_mode = False
         self.diary_line_length = 75
         self.diarySentenceList = []
         self.in_diary_mode = False
@@ -108,7 +109,11 @@ class TEXIOTY(tk.LabelFrame):
             "/until_next_time": [self.stop_diary_mode, "Ends and saves the .diary/ entry.",
                                  {}, [], s.rgb_to_hex(s.LIGHT_GREEN), s.rgb_to_hex(s.BLACK)],
             "echo": [self.handle_errors, "Echo some errors.",
+                     {}, [], s.rgb_to_hex(s.LIGHT_GREEN), s.rgb_to_hex(s.BLACK)],
+            "quit": [self.quit_gaim, "Quit any gaim you might be playing.",
                      {}, [], s.rgb_to_hex(s.LIGHT_GREEN), s.rgb_to_hex(s.BLACK)]
+
+
         }
 
         # Add the basic commands for Texioty.
@@ -226,6 +231,9 @@ class TEXIOTY(tk.LabelFrame):
         if self.in_questionnaire_mode:
             parsed_input = self.texity.parse_question_response()
             self.store_response(parsed_input)
+        elif self.in_play_gaim_mode and self.texity.parse_gaim_play() != "quit":
+            parsed_input = self.texity.parse_gaim_play()
+            self.execute_gaim_play(parsed_input)
         elif self.in_diary_mode and self.texity.parse_diary_line() != "/until_next_time":
             parsed_input = self.texity.parse_diary_line()
             self.add_diary_line(parsed_input)
@@ -234,7 +242,10 @@ class TEXIOTY(tk.LabelFrame):
             command = parsed_input[0]
             arguments = parsed_input[1:]
             self.execute_command(command, arguments)
-        self.texity.command_string_var.set("")
+        if self.in_play_gaim_mode:
+            self.texity.command_string_var.set("guess ")
+        else:
+            self.texity.command_string_var.set("")
 
     def execute_command(self, command, arguments):
         """
@@ -245,13 +256,16 @@ class TEXIOTY(tk.LabelFrame):
         """
         # self.clear_texoty()
         if command in self.registry.commands:
+            if "play" in command:
+                self.in_play_gaim_mode = True
             self.registry.execute_command(command, arguments)
-            self.texoty.priont_string("⦓⦙ " + s.random_loading_phrase())
         else:
             self.texoty.priont_string(f"⦓⦙ Uhh, I don't recognize '{command}'")
             # self.texoty.priont_string(f"⦓⦙ Uhh, I don't recognize '{command}'. Try one of these instead:")
             # self.display_help_message(arguments)
         self.texity.full_command_list.append(self.texity.command_string_var.get())
+        if not self.in_play_gaim_mode:
+            self.texoty.priont_string("⦓⦙ " + s.random_loading_phrase())
 
     def start_question_prompt(self, question_dict: dict):
         """
@@ -356,8 +370,6 @@ class TEXIOTY(tk.LabelFrame):
         self.display_question()
         if question_key == "confirmation":
             if answer.startswith('y'):
-                # new_miners_window = poppyMiners.BatchMinerPoppy(self, 420, 420, batch_dict=self.question_prompt_dict)
-                # new_miners_window.mainloop()
                 pass
             else:
                 self.texoty.priont_string("Canceling, please restart the prompt.")
@@ -369,8 +381,14 @@ class TEXIOTY(tk.LabelFrame):
         text_color = s.BLACK
         if severity == "ERROR":
             text_color = s.ORANGE_RED
-
         self.texoty.priont_string(f"⦓⦙ {severity}: {error_message}")
+
+    def execute_gaim_play(self, parsed_input):
+        self.texoty.priont_string(f"execute gaimplay: {parsed_input}")
+
+    def quit_gaim(self, args):
+        self.texoty.priont_string("Quitting, you quitter.")
+        self.in_play_gaim_mode = False
 
 
 def create_date_entry(entry_time: datetime, entry_list: list):

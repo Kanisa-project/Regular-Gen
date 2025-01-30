@@ -6,18 +6,18 @@ from PIL import Image
 from PIL import ImageTk
 import shutil
 import artstyle
-import gaym
+import gaim
 import spirite
 from settings import *
 import codecs
 
 
-class Gaym(artstyle.Artyle):
+class Gaim(artstyle.Artyle):
     def __init__(self, width, height, master=None, idutc=None):
-        super(Gaym, self).__init__(master=master, idutc=idutc, width=width, height=height)
+        super(Gaim, self).__init__(master=master, idutc=idutc, width=width, height=height)
         self.disp_img = None
-        self.tab_name = "Gaym"
-        self.gaym_optionmenu_choice_list = ["SpaceDits", "ABF", "ThurBo", "Othaido", "BootyDefence"]
+        self.tab_name = "Gaim"
+        self.gaim_optionmenu_choice_list = ["SpaceDits", "ABF", "ThurBo", "Othaido", "BootyDefence"]
         # self.spirite_option_dict = {
         #     "Othaido": ["RTJ", "Boat"],
         #     "SpaceDits": ["Alien", "Ship", "Asteroid"],
@@ -25,21 +25,21 @@ class Gaym(artstyle.Artyle):
         #     "ThurBo": ["Sword", "Tribloc"],
         #     "Booty Race": ["Boat", "RTJ"],
         # }
-        # self.update_gaym_spirites_button = Button(self, text="Update", command=self.generate_populate_spirite_choices)
-        # self.update_gaym_spirites_button.grid(column=0, row=1)
+        # self.update_gaim_spirites_button = Button(self, text="Update", command=self.generate_populate_spirite_choices)
+        # self.update_gaim_spirites_button.grid(column=0, row=1)
         self.spirite_type_str_var = StringVar()
         self.spirite_type_str_var.set("ABF")
-        spirite_type_dropmenu = OptionMenu(self, self.spirite_type_str_var, *self.gaym_optionmenu_choice_list)
+        spirite_type_dropmenu = OptionMenu(self, self.spirite_type_str_var, *self.gaim_optionmenu_choice_list)
         spirite_type_dropmenu.grid(column=0, row=0)
 
-        self.gaym_sheet_index_dict = {
+        self.gaim_sheet_index_dict = {
             "A": ["Player", "player", "Enemy", "Ally"],
             "B": ["Obstacle", "Goal", "Collectible", "Portal"],
             "C": ["Obstacle", "Goal", "Collectible", "Portal"],
             "D": ["Obstacle", "Goal", "Collectible", "Portal"],
         }
 
-        self.gaym_sheet_dict = {
+        self.gaim_sheet_dict = {
             "A": {},
             "B": {},
             "C": {},
@@ -48,76 +48,76 @@ class Gaym(artstyle.Artyle):
         ci = 0
         ri = 0
 
-        for ltr, options_list in self.gaym_sheet_index_dict.items():
+        for ltr, options_list in self.gaim_sheet_index_dict.items():
             for col_num in range(3):
                 ltr_str_var = StringVar()
                 ltr_str_var.set(random.choice(options_list))
-                self.gaym_sheet_dict[ltr][str(col_num)] = []
-                self.gaym_sheet_dict[ltr][str(col_num)].append(ltr_str_var)
-                self.gaym_sheet_dict[ltr][str(col_num)].append(OptionMenu(self, ltr_str_var, *options_list))
+                self.gaim_sheet_dict[ltr][str(col_num)] = []
+                self.gaim_sheet_dict[ltr][str(col_num)].append(ltr_str_var)
+                self.gaim_sheet_dict[ltr][str(col_num)].append(OptionMenu(self, ltr_str_var, *options_list))
                 if ci > 2:
                     ci -= 3
                     ri += 1
-                self.gaym_sheet_dict[ltr][str(col_num)][1].grid(column=ci + 1, row=ri + 1)
+                self.gaim_sheet_dict[ltr][str(col_num)][1].grid(column=ci + 1, row=ri + 1)
                 ci += 1
 
-    def gather_gaym_options(self) -> dict:
+    def gather_gaim_options(self) -> dict:
         """
         Gather and return options for factor lists, spirites and rule sets.
 
         @return:
         """
-        chosen_gaym_options = {}
-        for ltr, chosen_options in self.gaym_sheet_dict.items():
-            chosen_gaym_options[ltr] = {}
+        chosen_gaim_options = {}
+        for ltr, chosen_options in self.gaim_sheet_dict.items():
+            chosen_gaim_options[ltr] = {}
             for nbr, option_choice in chosen_options.items():
-                chosen_gaym_options[ltr][nbr] = option_choice[0].get()
-        chosen_gaym_options["gaym_play"] = self.spirite_type_str_var.get()
-        chosen_gaym_options["MovementProfile"] = random.choice(["LR", "UD"])
-        if chosen_gaym_options["gaym_play"] == "ABF":
-            chosen_gaym_options["MovementProfile"] = "LR"
-        return chosen_gaym_options
+                chosen_gaim_options[ltr][nbr] = option_choice[0].get()
+        chosen_gaim_options["gaim_play"] = self.spirite_type_str_var.get()
+        chosen_gaim_options["MovementProfile"] = random.choice(["LR", "UD"])
+        if chosen_gaim_options["gaim_play"] == "ABF":
+            chosen_gaim_options["MovementProfile"] = "LR"
+        return chosen_gaim_options
 
     def generate_populate_spirite_choices(self):
-        # print(self.gaym_sheet_dict["A"]["1"][0].get())
+        # print(self.gaim_sheet_dict["A"]["1"][0].get())
         self.destroy_word_optionmenus()
         self.setup_dropdown_menus()
 
     def destroy_word_optionmenus(self):
         """Destroy each of the optionmenus that contain wordlists"""
-        # print(self.gaym_sheet_dict)
-        for ltr in self.gaym_sheet_dict:
-            for nbr in self.gaym_sheet_dict[ltr]:
-                self.gaym_sheet_dict[ltr][nbr][1]['menu'].delete("0", END)
-                # self.gaym_sheet_dict[ltr][nbr][1].destroy()
+        # print(self.gaim_sheet_dict)
+        for ltr in self.gaim_sheet_dict:
+            for nbr in self.gaim_sheet_dict[ltr]:
+                self.gaim_sheet_dict[ltr][nbr][1]['menu'].delete("0", END)
+                # self.gaim_sheet_dict[ltr][nbr][1].destroy()
 
     # def setup_wordlist_optionmenus(self):
     #     """Create optionmenus for each wordlist."""
     #     ci = 0
     #     ri = 0
-    #     for ltr in self.gaym_sheet_index_dict:
-    #         for nbr in self.gaym_sheet_index_dict[ltr]:
+    #     for ltr in self.gaim_sheet_index_dict:
+    #         for nbr in self.gaim_sheet_index_dict[ltr]:
     #             print(ltr, nbr)
-    #             self.gaym_sheet_dict[ltr][nbr][0].set(list(self.gaym_sheet_dict[ltr].keys())[0])
-    #             self.gaym_sheet_dict[ltr][nbr].append(OptionMenu(self, self.gaym_sheet_dict[ltr][nbr][0],
-    #                                                              *list(self.gaym_sheet_dict[ltr].keys())))
+    #             self.gaim_sheet_dict[ltr][nbr][0].set(list(self.gaim_sheet_dict[ltr].keys())[0])
+    #             self.gaim_sheet_dict[ltr][nbr].append(OptionMenu(self, self.gaim_sheet_dict[ltr][nbr][0],
+    #                                                              *list(self.gaim_sheet_dict[ltr].keys())))
     #             if ci > 3:
     #                 ci -= 4
     #                 ri += 1
-    #             self.gaym_sheet_dict[ltr][nbr][1].grid(column=ci + 1, row=ri + 1)
+    #             self.gaim_sheet_dict[ltr][nbr][1].grid(column=ci + 1, row=ri + 1)
     #             ci += 1
 
-    # def create_gaym(self, kre8dict: dict):
+    # def create_gaim(self, kre8dict: dict):
     #     """
-    #     Create spirite sheet for a gaym.
+    #     Create spirite sheet for a gaim.
     #     :return:
     #     """
     #     img = self.create_spirite_sheet(kre8dict)
     #     self.disp_img = ImageTk.PhotoImage(img)
     #     kre8dict["Canvas"].create_image(0, 0, image=self.disp_img)
-    #     for ltr in kre8dict["gaym"]:
+    #     for ltr in kre8dict["gaim"]:
     #         for nbr in range(4):
-    #             fraim = stack_layers(kre8dict["gaym"][ltr][nbr], kre8dict["number_list"], kre8dict["color_list"])
+    #             fraim = stack_layers(kre8dict["gaim"][ltr][nbr], kre8dict["number_list"], kre8dict["color_list"])
     #     self.create_spirite(kre8dict, slot_pos=(xw, yh))
 
     def create_spirite_sheet(self, img: Image, kre8dict: dict) -> Image:
@@ -129,18 +129,18 @@ class Gaym(artstyle.Artyle):
         for ltr in ['A', 'B', 'C', 'D']:
 
             for nbr in range(3):
-                print("POKL", kre8dict["gaym"][ltr][str(nbr)])
-                fraim = self.stack_layers(kre8dict["gaym"][ltr][str(nbr)], kre8dict["number_list"],
+                print("POKL", kre8dict["gaim"][ltr][str(nbr)])
+                fraim = self.stack_layers(kre8dict["gaim"][ltr][str(nbr)], kre8dict["number_list"],
                                           kre8dict["color_list"], (iw, ih))
                 img.paste(fraim, (nbr * iw, yh * ih), mask=fraim)
                 # fraim = fraim.resize((64, 64))
                 # fraim.save(f'GAYM/{kre8dict["artributes"][3]}/{kre8dict["name"]}/{ltr}{nbr}_'
-                #            f'{kre8dict["gaym"][ltr][nbr]}.png')
+                #            f'{kre8dict["gaim"][ltr][nbr]}.png')
             yh += 1
         return img
 
-    def add_gaym(self, img: Image, kre8dict: dict, abt='masterpiece') -> Image:
-        # gaym.create_directory(img, kre8dict, gaym_str=kre8dict["gaym"]["gaym_play"])
+    def add_gaim(self, img: Image, kre8dict: dict, abt='masterpiece') -> Image:
+        # gaim.create_directory(img, kre8dict, gaim_str=kre8dict["gaim"]["gaim_play"])
 
         # for filename in os.listdir(f"GAYM/Components/BTNassets"):
         #     if filename.endswith(".png"):
@@ -169,13 +169,13 @@ class Gaym(artstyle.Artyle):
     #     nim = Image.new('RGBA', (640, 640), (0, 0, 0, 0))
     #     print(slot_pos)
     #     # spirite_layers.append(addColor(random.choice(cl), fraim))
-    #     for ltr in kre8dict["gaym"]:
+    #     for ltr in kre8dict["gaim"]:
     #         for nbr in range(4):
-    #             fraim = stack_layers(kre8dict["gaym"][ltr][nbr], kre8dict["number_list"], kre8dict["color_list"])
+    #             fraim = stack_layers(kre8dict["gaim"][ltr][nbr], kre8dict["number_list"], kre8dict["color_list"])
     #             spirite_layers.append(fraim)
-    #             print('gaymkre8dict' + str(kre8dict["gaym"][ltr][nbr]))
+    #             print('gaimkre8dict' + str(kre8dict["gaim"][ltr][nbr]))
     #
-    #     for layer in kre8dict["gaym"]:
+    #     for layer in kre8dict["gaim"]:
     #         nim.paste(layer, (128, 128), mask=layer)
     #     # nim.paste(fraim, (0, 0), mask=fraim)
     #
@@ -192,7 +192,7 @@ class Gaym(artstyle.Artyle):
                        int(color[1] * 255),
                        int(color[2] * 255),
                        int(1.0 * 255)))
-        obj_dict = gaym.GAYM_OBJECT_DICT[self.spirite_type_str_var.get()]
+        obj_dict = gaim.GAYM_OBJECT_DICT[self.spirite_type_str_var.get()]
         layer_dict = LAYER_DICT[obj_dict[spirite_choice][0]]
         layers_list = list(layer_dict.keys())
         object_image = Image.new('RGBA', (128, 128), (0, 0, 0, 0))

@@ -16,7 +16,7 @@ from settings import *
 ttf = ImageFont.truetype(f'{os.getcwd()}/assets/Fonts/emonob.ttf', 22)
 
 font_names = ["emono", "Parkinsans-Medium", "rogue", "Cookie-Regular", "berkshireswash-regular", "Akt-Medium",
-              "AguafineScript-Regular", "Charlie", "emonob", "fontello"]
+              "AguafinaScript-Regular", "Charlie", "emonob", "fontello"]
 
 HANGMAN_TEXTMAN_LIST = ["  ╔═════╕   \n"
                         "  ║     ┇   \n"
@@ -93,16 +93,15 @@ def prompto(img: Image, kre8dict: dict) -> Image:
     pass
 
 
-def hangman(img: Image, kre8dict: dict) -> Image:
-    nl = kre8dict["number_list"]
-    cl = kre8dict["color_list"]
+def hangman(img: Image, artribute_dict: dict, option_dict: dict) -> Image:
+    width_list = artribute_dict["accuracy"]
+    cl = artribute_dict["colors"]
     draw = ImageDraw.Draw(img)
     w, h = img.size
-    chosen_word = kre8dict["wordie"]["hangman"]["chosen"]
-    hidden_word = kre8dict["wordie"]["hangman"]["hidden"]
-    draw.multiline_text((w // 2, h // 6), text=HANGMAN_TEXTMAN_LIST[0], font=ttf)
-    draw.text((w // 2, int(h * (5 / 7))), text=dict_to_str(hidden_word), font=ttf)
-    draw.text((w // 8, h // 6), text="Missed Letters:", font=ttf)
+    hidden_word = phrase_to_hidden_dict(option_dict["Phrase"])
+    draw.multiline_text((w // 2, h // 6), text=HANGMAN_TEXTMAN_LIST[0], font=ttf, fill=random.choice(cl))
+    draw.text((w // 2, int(h * (5 / 7))), text=dict_to_str(hidden_word), font=ttf, fill=random.choice(cl))
+    draw.text((w // 8, h // 6), text="Missed Letters:", font=ttf, fill=random.choice(cl))
     return img
 
 
@@ -129,13 +128,22 @@ def dict_to_str(kre8dict: dict) -> str:
     return hidden_word_str
 
 
+def phrase_to_hidden_dict(phrase: str) -> dict:
+    hidden_phrase_dict = {}
+    for c in phrase:
+        if c in hidden_phrase_dict:
+            c += c
+        hidden_phrase_dict[c] = "◙"
+    return hidden_phrase_dict
+
+
 def check_hangman_letter(letter_to_check: str, kre8dict: dict) -> dict:
     chosen_word = kre8dict["wordie"]["hangman"]["chosen"]
     hidden_word = kre8dict["wordie"]["hangman"]["hidden"]
     if letter_to_check in chosen_word:
         for i in range(len(chosen_word)):
             if letter_to_check * (i + 1) in hidden_word:
-                if hidden_word[letter_to_check * (i + 1)] == " ◙ ":
+                if hidden_word[letter_to_check * (i + 1)] == "◙":
                     hidden_word[letter_to_check * (i + 1)] = f' {letter_to_check} '
     else:
         if letter_to_check in kre8dict["wordie"]["hangman"]["missed_letters"]:
@@ -214,16 +222,20 @@ def kollage(img: Image, artribute_dict: dict, area_dict: dict) -> Image:
     cl = artribute_dict["colors"]
     draw = ImageDraw.Draw(img)
     w, h = img.size
+    # draw.rectangle((0, 0, w, h), fill=random.choice(cl))
     font = random.choice(font_names)
     print(font)
-    font = ImageFont.truetype(f'{os.getcwd()}/assets/Fonts/{font}.ttf', random.choice(width_list) * 16)
-    draw.text((random.randint(0, w - 256), random.randint(0, h // 2)), font=font, text=area_dict["Top"][0].get(),
+    font = ImageFont.truetype(f'{os.getcwd()}/assets/Fonts/{font}.ttf', (random.choice(width_list) + 1) * 8)
+    draw.text((random.randint(32, w - 256), random.randint(0, h // 8)), font=font, text=area_dict["Top"][0].get(),
               fill=random.choice(cl))
-    draw.text((random.randint(0, w - 256), random.randint(h // 2, h)), font=font, text=area_dict["Bottom"][0].get(),
+    draw.text((random.randint(32, w - 256), random.randint((h * 7) // 8, h - 64)), font=font,
+              text=area_dict["Bottom"][0].get(),
               fill=random.choice(cl))
-    draw.text((random.randint(w // 2, w), random.randint(0, h)), font=font, text='\n'.join(area_dict["Right"][0].get()),
-                        fill=random.choice(cl))
-    draw.text((random.randint(0, w // 2), random.randint(0, h)), font=font, text=area_dict["Left"][0].get(),
+    draw.text((random.randint(w // 2, w), random.randint(0, h // 8)), font=font,
+              text='\n'.join(area_dict["Right"][0].get()),
+              fill=random.choice(cl))
+    draw.text((random.randint(0, w // 2), random.randint(0, h // 8)), font=font,
+              text='\n'.join(area_dict["Left"][0].get()),
               fill=random.choice(cl))
     return img
 
