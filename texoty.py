@@ -102,7 +102,7 @@ class TEXOTY(Text):
             else:
                 self.priont_string(f"{'║'}{' ' * (self.texoty_w - 2)}{'║'}")
 
-    def clear_add_header(self):
+    def clear_add_header(self, header_msg=""):
         """ Clear Texoty display and replace the header. """
         self.delete("0.0", 'end')
         self.set_header()

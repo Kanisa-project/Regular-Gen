@@ -30,7 +30,6 @@ class gaimPlayer(tk.LabelFrame):
         }
 
     def start_gaim(self, args):
-        print(args)
         if "hangman" in args:
             self.loaded_gaim = "Hangman"
             self.start_hangman(args)
@@ -45,6 +44,7 @@ class gaimPlayer(tk.LabelFrame):
 
     def start_hangman(self, args):
         self.hangman_hidden_dict = phrase_to_hidden_dict("It's just a phrase.")
+        self.txo.clear_add_header("Hangman")
         self.txo.priont_string(hm.HANGMAN_TEXTMAN_LIST[0])
         self.txo.priont_string(dict_to_str(self.hangman_hidden_dict))
 
@@ -54,10 +54,13 @@ class gaimPlayer(tk.LabelFrame):
     #         pass
 
     def guess_play(self, args):
-        print("guess:", args)
+        self.txo.clear_add_header("Hangman")
+        self.txo.priont_string(hm.HANGMAN_TEXTMAN_LIST[s.clamp(len(hm.missed_letters), 0, 6)])
         if len(args[0]) == 1:
-            hm.check_hangman_letter(args[0])
-            self.txo.priont_string(str(args))
+            self.hangman_hidden_dict = hm.check_hangman_letter(args[0], self.hangman_hidden_dict)
+            self.txo.priont_string(dict_to_str(self.hangman_hidden_dict))
+            self.txo.priont_list(hm.missed_letters, list_key="Missed: ")
+            print(hm.missed_letters)
 
 
 def dict_to_str(hidden_word_dict: dict) -> str:

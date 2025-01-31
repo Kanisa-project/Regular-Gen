@@ -71,6 +71,9 @@ HANGMAN_TEXTMAN_LIST = ["  ╔═════╕   \n"
                         "  ║         \n"
                         "══╩═════════\n"
                         ]
+missed_letters = []
+gaim_phrase = "This is one two."
+max_guesses = 0
 
 
 class Hangman(wordieTab.Wordietab):
@@ -79,30 +82,34 @@ class Hangman(wordieTab.Wordietab):
         self.setup_button_choices(["Random Phrase"])
         self.button_dict["Random Phrase"][1].config(command=self.randomize_phrase)
         self.setup_text_boxes({"Phrase": random.choice(PHRASE_LIST)}, start_x_cell=1, width=42)
-        self.setup_number_wheel("max_guesses", self.call_this_back)
+        self.setup_number_wheel("max_guesses", self.call_this_back, start_y_cell=1)
         self.max_guesses = 0
 
         self.gaim_phrase = self.textbox_dict["Phrase"][0].get()
 
     def call_this_back(self, extra):
         self.max_guesses = extra
+        set_local_max(extra)
 
     def randomize_phrase(self):
         self.textbox_dict["Phrase"][0].set(random.choice(PHRASE_LIST))
 
 
-def check_hangman_letter(letter_to_check: str) -> dict:
-    chosen_word = self.gaim_phrase
-    hidden_word = kre8dict["wordie"]["hangman"]["hidden"]
-    if letter_to_check in chosen_word:
-        for i in range(len(chosen_word)):
-            if letter_to_check * (i + 1) in hidden_word:
-                if hidden_word[letter_to_check * (i + 1)] == "◙":
-                    hidden_word[letter_to_check * (i + 1)] = f' {letter_to_check} '
+# def set_local_max(new_maxNone):
+#     max_guesses += new_max
+
+
+def check_hangman_letter(letter_to_check: str, hidden_dict: dict) -> dict:
+    if letter_to_check in gaim_phrase:
+        for i in range(len(gaim_phrase)):
+            if letter_to_check * (i + 1) in hidden_dict:
+                if hidden_dict[letter_to_check * (i + 1)] == "◙":
+                    hidden_dict[letter_to_check * (i + 1)] = letter_to_check
     else:
-        if letter_to_check in kre8dict["wordie"]["hangman"]["missed_letters"]:
+        if letter_to_check in missed_letters:
             pass
         else:
-            kre8dict["wordie"]["hangman"]["missed_letters"].append(letter_to_check)
-
-    return hidden_word
+            missed_letters.append(letter_to_check)
+    # if len(missed_letters) >= max_guesses:
+    #     missed_letters.clear()
+    return hidden_dict

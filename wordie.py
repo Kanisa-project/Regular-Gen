@@ -3,6 +3,8 @@ import random
 import uu
 import os
 
+import settings
+
 # -*- coding: utf-8 -*-
 
 """
@@ -154,25 +156,25 @@ def check_hangman_letter(letter_to_check: str, kre8dict: dict) -> dict:
     return hidden_word
 
 
-def word_search(img: Image, kre8dict: dict) -> Image:
+def word_search(img: Image, artribute_dict: dict, word_search_dict: dict) -> Image:
     """
     Create a 2d-array of letters with words in order.
 
+    :param word_search_dict:
+    :param artribute_dict:
     :param img:
-    :param kre8dict:
     :return:
     """
-    nl = kre8dict["number_list"]
-    cl = kre8dict["color_list"]
+    width_list = artribute_dict["accuracy"]
+    cl = artribute_dict["colors"]
     draw = ImageDraw.Draw(img)
     w, h = img.size
     letters_array = []
-    word_list = ["KANISA", "BLUE"]
+    word_list = []
     font = ImageFont.truetype('trebucbd.ttf', 16)
-    for word in kre8dict["wordie"]:
-        if word != "type" and word != "word_search":
-            word_list.append(word.upper())
-    kre8dict["wordie"]["word_search"]["word_list"] = word_list
+    for word in list(word_search_dict.values()):
+        word_list.append(word.upper())
+    # kre8dict["wordie"]["word_search"]["word_list"] = word_list
     for x in range(0, w, 16):
         letters_array.append([])
         for y in range(0, h, 16):
@@ -186,19 +188,19 @@ def word_search(img: Image, kre8dict: dict) -> Image:
             for c in word:
                 print(cx, cy)
                 letters_array[cx][cy] = c.upper()
-                draw.text((cx * 16 + 4, cy * 16 - 2), font=font, text=c.upper(), fill=cl[0], align='right')
+                draw.text((cx * 16 + 4, cy * 16 - 2), font=font, text=c.upper(), fill=settings.QUARTZ, align='right')
                 cy += 1
         elif orientation == "Horizontal":
             for c in word:
                 print(cx, cy)
                 letters_array[cx][cy] = c.upper()
-                draw.text((cx * 16 + 4, cy * 16 - 2), font=font, text=c.upper(), fill=cl[0], align='right')
+                draw.text((cx * 16 + 4, cy * 16 - 2), font=font, text=c.upper(), fill=settings.QUARTZ, align='right')
                 cx += 1
         elif orientation == "Diagonal":
             for c in word:
                 print(cx, cy)
                 letters_array[cx][cy] = c.upper()
-                draw.text((cx * 16 + 4, cy * 16 - 2), font=font, text=c.upper(), fill=cl[0], align='right')
+                draw.text((cx * 16 + 4, cy * 16 - 2), font=font, text=c.upper(), fill=settings.QUARTZ, align='right')
                 cx += 1
                 cy += 1
         # cy += 1
@@ -210,7 +212,7 @@ def word_search(img: Image, kre8dict: dict) -> Image:
                 c = random.choice("abcdefghijklmnopqrstuvwxyz")
                 letters_array[cx][cy] = c.upper()
                 draw.text((cx * 16 + 4, cy * 16 - 2), font=font, text=c.upper(), fill=random.choice(cl), align='right')
-    kre8dict["wordie"]["word_search"]["letter_array"] = letters_array
+    # kre8dict["wordie"]["word_search"]["letter_array"] = letters_array
     return img
 
 
@@ -226,16 +228,16 @@ def kollage(img: Image, artribute_dict: dict, area_dict: dict) -> Image:
     font = random.choice(font_names)
     print(font)
     font = ImageFont.truetype(f'{os.getcwd()}/assets/Fonts/{font}.ttf', (random.choice(width_list) + 1) * 8)
-    draw.text((random.randint(32, w - 256), random.randint(0, h // 8)), font=font, text=area_dict["Top"][0].get(),
+    draw.text((random.randint(32, w - 256), random.randint(0, h // 8)), font=font, text=area_dict["Top"],
               fill=random.choice(cl))
     draw.text((random.randint(32, w - 256), random.randint((h * 7) // 8, h - 64)), font=font,
-              text=area_dict["Bottom"][0].get(),
+              text=area_dict["Bottom"],
               fill=random.choice(cl))
     draw.text((random.randint(w // 2, w), random.randint(0, h // 8)), font=font,
-              text='\n'.join(area_dict["Right"][0].get()),
+              text='\n'.join(area_dict["Right"]),
               fill=random.choice(cl))
     draw.text((random.randint(0, w // 2), random.randint(0, h // 8)), font=font,
-              text='\n'.join(area_dict["Left"][0].get()),
+              text='\n'.join(area_dict["Left"]),
               fill=random.choice(cl))
     return img
 
@@ -262,3 +264,11 @@ def digiary(img: Image, kre8dict: dict) -> Image:
     Create a masterpiece from a digiary entry. Or create a digiary entry.
     """
     pass
+
+
+def riddler(img, artribute_dict, param):
+    return None
+
+
+def crossword(img, artribute_dict, param):
+    return None

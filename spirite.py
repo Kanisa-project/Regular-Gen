@@ -23,7 +23,7 @@ def stack_layers(img: Image, artribute_dict: dict, size=(128, 128)) -> Image:
             print(object_str)
         if layer_list.startswith('layer_'):
             # print(f'assets/{object_str}/{artribute_dict[layer_list][0].get()}{artribute_dict[layer_list][1].get()}.png')
-            pim = Image.open(f'assets/{object_str}/{artribute_dict["spirite"][layer_list][0].get()}{artribute_dict["spirite"][layer_list][1].get()}.png')
+            pim = Image.open(f'assets/{object_str}/{artribute_dict["spirite"][layer_list][0]}{artribute_dict["spirite"][layer_list][1]}.png')
             cim = Image.new('RGBA', (128, 128), random.choice(cl))
             pim = pim.convert(mode='RGBA')
             cim = Image.blend(pim, cim, artribute_dict['transparency'])

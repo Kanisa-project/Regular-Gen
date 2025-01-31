@@ -26,6 +26,7 @@ class Wordie(artstyle.Artyle):
         super(Wordie, self).__init__(master=master, idutc=idutc, width=width, height=height)
         # Set up the name and add the possible choices.
         self.tab_name = "Wordie"
+        self.idutc_frame = idutc
         self.wordie_choices = ["Collage", "Riddle", "Word Search", "Hangman", "Crossword"]
         self.setup_radiobutton_choices(self.wordie_choices)
         self.wordieBook = ttk.Notebook(master=self)
@@ -61,14 +62,27 @@ class Wordie(artstyle.Artyle):
             "type": self.radiobutton_dict["Collage"][0].get()
         }
         if self.radiobutton_dict["Collage"][0].get() == 0:
-            chosen_wordie_options["Collage"] = self.collageTab.textbox_dict
+            chosen_wordie_options["Collage"] = {}
+            for i, word in enumerate(self.collageTab.textbox_dict):
+                chosen_wordie_options["Collage"][word] = self.collageTab.textbox_dict[word][0].get()
         if self.radiobutton_dict["Riddle"][0].get() == 1:
-            chosen_wordie_options["Riddle"] = self.riddleTab.textbox_dict
+            chosen_wordie_options["Riddle"] = {}
+            for i, word in enumerate(self.riddleTab.textbox_dict):
+                chosen_wordie_options["Riddle"][word] = self.riddleTab.textbox_dict[word][0].get()
+        if self.radiobutton_dict["Word Search"][0].get() == 2:
+            chosen_wordie_options["Word Search"] = {}
+            for i, word in enumerate(self.wordsearchTab.textbox_dict):
+                chosen_wordie_options["Word Search"][str(i)] = self.wordsearchTab.textbox_dict[word][0].get()
         if self.radiobutton_dict["Hangman"][0].get() == 3:
             chosen_wordie_options["Hangman"] = {
                 'Phrase': self.hangmanTab.textbox_dict["Phrase"][0].get(),
                 'Max Guesses': self.hangmanTab.max_guesses
             }
+        if self.radiobutton_dict["Crossword"][0].get() == 4:
+            chosen_wordie_options["Crossword"] = {}
+            for i, word in enumerate(self.crosswordTab.textbox_dict):
+                chosen_wordie_options["Crossword"][str(i)] = self.crosswordTab.textbox_dict[word][0].get()
+
         return chosen_wordie_options
 
     def gather_random_options(self) -> dict:
@@ -90,9 +104,18 @@ class Wordie(artstyle.Artyle):
         if kre8dict["wordie"]["type"] == 0:
             kre8dict["wordie"]["type"] = "Collage"
             wordie.kollage(img, artribute_dict, kre8dict["wordie"]["Collage"])
+        if kre8dict["wordie"]["type"] == 1:
+            kre8dict["wordie"]["type"] = "Riddle"
+            wordie.riddler(img, artribute_dict, kre8dict["wordie"]["Riddle"])
+        if kre8dict["wordie"]["type"] == 2:
+            kre8dict["wordie"]["type"] = "Word Search"
+            wordie.word_search(img, artribute_dict, kre8dict["wordie"]["Word Search"])
         if kre8dict["wordie"]["type"] == 3:
             kre8dict["wordie"]["type"] = "Hangman"
             wordie.hangman(img, artribute_dict, kre8dict["wordie"]["Hangman"])
+        if kre8dict["wordie"]["type"] == 4:
+            kre8dict["wordie"]["type"] = "Crossword"
+            wordie.crossword(img, artribute_dict, kre8dict["wordie"]["Crossword"])
 
         return img
 

@@ -384,7 +384,11 @@ class TEXIOTY(tk.LabelFrame):
         self.texoty.priont_string(f"⦓⦙ {severity}: {error_message}")
 
     def execute_gaim_play(self, parsed_input):
-        self.texoty.priont_string(f"execute gaimplay: {parsed_input}")
+        gaim_command = parsed_input.split()[0]
+        gaim_args = parsed_input.split()[1]
+        if gaim_command == "guess":
+            self.texoty.priont_string(f"execute gaimplay: {parsed_input}")
+            self.registry.execute_command(gaim_command, gaim_args)
 
     def quit_gaim(self, args):
         self.texoty.priont_string("Quitting, you quitter.")

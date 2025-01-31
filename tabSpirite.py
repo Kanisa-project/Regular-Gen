@@ -89,10 +89,14 @@ class Spirite(artstyle.Artyle):
         chosen_spirite_type = self.dropdown_menu_dict["spirite_type"][0].get()
         chosen_spirite_options = {
             chosen_spirite_type: LAYER_DICT[chosen_spirite_type],
-            "layer_one_list": self.layer_number_wheel_dict['layer_0'],
-            "layer_two_list": self.layer_number_wheel_dict['layer_1'],
-            "layer_three_list": self.layer_number_wheel_dict['layer_2'],
-            "layer_four_list": self.layer_number_wheel_dict['layer_3']
+            "layer_one_list": [self.layer_number_wheel_dict['layer_0'][0].get(),
+                               self.layer_number_wheel_dict['layer_0'][1].get()],
+            "layer_two_list": [self.layer_number_wheel_dict['layer_1'][0].get(),
+                               self.layer_number_wheel_dict['layer_1'][1].get()],
+            "layer_three_list": [self.layer_number_wheel_dict['layer_2'][0].get(),
+                                 self.layer_number_wheel_dict['layer_2'][1].get()],
+            "layer_four_list": [self.layer_number_wheel_dict['layer_3'][0].get(),
+                                self.layer_number_wheel_dict['layer_3'][1].get()]
         }
         return chosen_spirite_options
 

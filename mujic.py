@@ -10,27 +10,34 @@ samplerate = 44100
 freq = 420
 
 
+def get_mixed_tones(freaq):
+    possible_tones = [get_sin_wave(freaq),
+                      get_sweep_poly(freaq),
+                      get_chirp(freaq)]
+    return random.choice(possible_tones)
+
+
 def generate_tone_notes(kre8dict: dict) -> dict:
     """
     Generate a dictionary of notes from a-z, 0-9
     :param kre8dict:
     :return:
     """
-    base_freq = kre8dict["Mujic"]["Base frequency"]
+    base_freq = kre8dict["mujic"]["Base frequency"]
     i = 0
     tone_freq_dict = {}
     for c in ALPHANUMERIC:
         # set tone frequency for each character
         frequencee = base_freq * (i + 1)
         # tone_freq_dict[c] = get_wave(frequencee, kre8dict)
-        tone_freq_dict[c] = [get_sin_wave(frequencee),
-                             get_sweep_poly(frequencee),
-                             get_chirp(frequencee),
-                             get_convolve_wave(kre8dict['number_list'])]
+        tone_freq_dict[c] = {"Sine": get_sin_wave(frequencee),
+                             "Sweep": get_sweep_poly(frequencee),
+                             "Chirp": get_chirp(frequencee),
+                             "Convolve": get_convolve_wave(kre8dict['number_list'])}
         # kre8dict["Mujic"]["Wave type"] = 1
         # kre8dict["Mujic"]["Wave type"] = random.randint(0, 3)
         i += 1
-    print(tone_freq_dict)
+    # print(tone_freq_dict)
     return tone_freq_dict
 
 
@@ -105,13 +112,14 @@ def create_song_data(kre8dict: dict) -> np.ndarray:
     """
     Function to concatenate all the waves (notes)
     """
+    print(kre8dict)
     music_notes = kre8dict['use_id']
     tone_freq_dict = generate_tone_notes(kre8dict)
     song = []
     new_notes = ""
     for c in music_notes:
         # new_notes += random.choice(ALPHANUMERIC_NOTE_PATTERNS[c])
-        new_notes += ALPHANUMERIC_NOTE_PATTERNS[c][0]
+        new_notes += random.choice(ALPHANUMERIC_NOTE_PATTERNS[c])
     new_notes = new_notes.replace("=", music_notes[0])
     new_notes = new_notes.replace(".", music_notes[1])
     new_notes = new_notes.replace("-", music_notes[2])
@@ -119,7 +127,7 @@ def create_song_data(kre8dict: dict) -> np.ndarray:
     new_notes = new_notes.replace("/", music_notes[4])
     new_notes = new_notes.replace("_", music_notes[5])
     for c in new_notes:
-        song.append(tone_freq_dict[c][kre8dict["Mujic"]["Wave type"]])
+        song.append(tone_freq_dict[c][kre8dict["mujic"]["Wave type"]])
         # song.append(tone_freq_dict[c][random.randint(1, 3)])
     song = np.concatenate(song)
     return song

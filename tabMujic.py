@@ -38,14 +38,20 @@ class Mujic(artstyle.Artyle):
         """Gather and return the options Mujic will use to make what it make."""
         chosen_mujic_options = {}
         dict_key_list = list(self.dropdown_menu_dict.keys())
-        print(self.dropdown_menu_dict)
         chosen_mujic_options["First Pat"] = self.dropdown_menu_dict[dict_key_list[0]][0].get()
         chosen_mujic_options["Second Pat"] = self.dropdown_menu_dict[dict_key_list[1]][0].get()
         chosen_mujic_options["Third Pat"] = self.dropdown_menu_dict[dict_key_list[2]][0].get()
         chosen_mujic_options["Fourth Pat"] = self.dropdown_menu_dict[dict_key_list[3]][0].get()
         chosen_mujic_options["Note duration"] = self.slider_dict["Note duration"][0].get()
         chosen_mujic_options["Base frequency"] = self.slider_dict["Base frequency"][0].get()
-        chosen_mujic_options["Wave type"] = self.radiobutton_dict["Chirp"][0].get()
+        if self.radiobutton_dict["Chirp"][0].get() == 0:
+            chosen_mujic_options["Wave type"] = "Sine"
+        if self.radiobutton_dict["Chirp"][0].get() == 1:
+            chosen_mujic_options["Wave type"] = "Sweep"
+        if self.radiobutton_dict["Chirp"][0].get() == 2:
+            chosen_mujic_options["Wave type"] = "Chirp"
+        if self.radiobutton_dict["Chirp"][0].get() == 3:
+            chosen_mujic_options["Wave type"] = "Convolve"
         return chosen_mujic_options
 
     def destroy_word_optionmenus(self):
@@ -78,5 +84,5 @@ class Mujic(artstyle.Artyle):
         # mujic_data = mujic.get_song_data(kre8dict['use_id'])
         mujic_data = mujic_data * (16300 / np.max(mujic_data))
         mujic_data = mujic_data.astype(np.int16)
-        wavio.write(f"MUJIC/{kre8dict['name']}.wav", mujic_data, 44100)
+        wavio.write(f"{kre8dict['use_id']}/{kre8dict['use_utc']}.wav", mujic_data, 44100)
         return img

@@ -66,7 +66,7 @@ class ARTAY(ttk.LabelFrame):
                       {"0-9": "Number of Glyph to make."}, [], s.rgb_to_hex(s.BLACK), s.rgb_to_hex(s.LIGHT_GOLDENROD_YELLOW)]
         }
 
-    def draw_on_kinvow(self):
+    def draw_on_kinvow(self, num):
         pass
 
     def add_osrs_recipes(self):
