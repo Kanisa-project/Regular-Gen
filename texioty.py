@@ -7,6 +7,7 @@ from dataclasses import dataclass
 from os.path import exists
 from typing import Dict, Any
 
+import gaimPlay
 import settings as s
 import texoty
 import texity
@@ -68,10 +69,15 @@ class TEXIOTY(tk.LabelFrame):
         :param master: Parent widget
         """
         super(TEXIOTY, self).__init__(master)
+        self.current_mode = "Texioty"
         self.in_play_gaim_mode = False
+        self.configure(text="Texioty:  ")
+
+        # INITIATE DIARY VARIABLES
         self.diary_line_length = 75
         self.diarySentenceList = []
         self.in_diary_mode = False
+
         self.question_prompt_dict = {}
         self.question_keys = []
         self.current_question_index = 0
@@ -79,6 +85,7 @@ class TEXIOTY(tk.LabelFrame):
         self.helper_dict = {}
         self.available_profiles = s.available_profiles
         self.active_profile = self.available_profiles["bluebeard"]
+        self.gaim_player: gaimPlay.gaimPlayer = None
 
         self.texoty = texoty.TEXOTY(int(width) + 16, int(height), master=self)
         self.texoty.grid(column=0, row=0)
@@ -104,15 +111,16 @@ class TEXIOTY(tk.LabelFrame):
                       s.rgb_to_hex(s.BLACK)],
             "logout": [self.log_profile_out, "This logs the user out of a profile.",
                        {}, [], s.rgb_to_hex(s.LIGHT_GREEN), s.rgb_to_hex(s.BLACK)],
-            "dear_sys,": [self.start_diary_mode, "Creates a new .diary/ entry.",
-                          {}, [], s.rgb_to_hex(s.LIGHT_GREEN), s.rgb_to_hex(s.BLACK)],
-            "/until_next_time": [self.stop_diary_mode, "Ends and saves the .diary/ entry.",
-                                 {}, [], s.rgb_to_hex(s.LIGHT_GREEN), s.rgb_to_hex(s.BLACK)],
-            "echo": [self.handle_errors, "Echo some errors.",
-                     {}, [], s.rgb_to_hex(s.LIGHT_GREEN), s.rgb_to_hex(s.BLACK)],
+            # "dear_sys,": [self.start_diary_mode, "Creates a new .diary/ entry.",
+            #               {}, [], s.rgb_to_hex(s.LIGHT_GREEN), s.rgb_to_hex(s.BLACK)],
+            # "/until_next_time": [self.stop_diary_mode, "Ends and saves the .diary/ entry.",
+            #                      {}, [], s.rgb_to_hex(s.LIGHT_GREEN), s.rgb_to_hex(s.BLACK)],
+            # "echo": [self.handle_errors, "Echo some errors.",
+            #          {}, [], s.rgb_to_hex(s.LIGHT_GREEN), s.rgb_to_hex(s.BLACK)],
             "quit": [self.quit_gaim, "Quit any gaim you might be playing.",
-                     {}, [], s.rgb_to_hex(s.LIGHT_GREEN), s.rgb_to_hex(s.BLACK)]
-
+                     {}, [], s.rgb_to_hex(s.LIGHT_GREEN), s.rgb_to_hex(s.BLACK)],
+            # "add_recipe": [self.prepare_new_recipe, "Add a new recipe.",
+            #                {}, [], s.rgb_to_hex(s.LIGHT_GREEN), s.rgb_to_hex(s.BLACK)]
 
         }
 
@@ -242,8 +250,10 @@ class TEXIOTY(tk.LabelFrame):
             command = parsed_input[0]
             arguments = parsed_input[1:]
             self.execute_command(command, arguments)
-        if self.in_play_gaim_mode:
+        if self.in_play_gaim_mode and self.gaim_player.loaded_gaim == "Hangman":
             self.texity.command_string_var.set("guess ")
+        elif self.in_play_gaim_mode and self.gaim_player.loaded_gaim == "Blackjack":
+            self.texity.command_string_var.set("blackjack ")
         else:
             self.texity.command_string_var.set("")
 
@@ -256,15 +266,24 @@ class TEXIOTY(tk.LabelFrame):
         """
         # self.clear_texoty()
         if command in self.registry.commands:
+            try:
+                self.registry.execute_command(command, arguments)
+            except PermissionError as e:
+                print(e)
+                self.texoty.priont_string("Sorry dude, you ain't got hangman.")
+            except KeyError as e:
+                print(e)
+                self.texoty.priont_string("Missing some type of key or something.")
             if "play" in command:
-                self.in_play_gaim_mode = True
-            self.registry.execute_command(command, arguments)
+                self.in_play_gaim_mode = self.gaim_player.inGaim
         else:
             self.texoty.priont_string(f"⦓⦙ Uhh, I don't recognize '{command}'")
             # self.texoty.priont_string(f"⦓⦙ Uhh, I don't recognize '{command}'. Try one of these instead:")
             # self.display_help_message(arguments)
         self.texity.full_command_list.append(self.texity.command_string_var.get())
-        if not self.in_play_gaim_mode:
+        if self.in_play_gaim_mode or self.in_questionnaire_mode:
+            pass
+        else:
             self.texoty.priont_string("⦓⦙ " + s.random_loading_phrase())
 
     def start_question_prompt(self, question_dict: dict):
@@ -283,6 +302,7 @@ class TEXIOTY(tk.LabelFrame):
             self.display_question()
         else:
             self.texoty.priont_string("Already in a questionnaire prompt.")
+            self.display_question()
 
     def display_question(self):
         """Displays a question from the loaded questionnaire prompt dictionary."""
@@ -366,13 +386,14 @@ class TEXIOTY(tk.LabelFrame):
         else:
             self.texoty.priont_string("|>  " + str(answer))
         self.question_prompt_dict[question_key][1] = answer
+
         self.current_question_index += 1
         self.display_question()
-        if question_key == "confirmation":
-            if answer.startswith('y'):
-                pass
-            else:
-                self.texoty.priont_string("Canceling, please restart the prompt.")
+        # if question_key == "confirmation":
+        #     if answer.startswith('y'):
+        #         pass
+        #     else:
+        #         self.texoty.priont_string("Canceling, please restart the prompt.")
 
     def get_responses(self):
         self.texoty.priont_dict(self.question_prompt_dict)
@@ -386,13 +407,36 @@ class TEXIOTY(tk.LabelFrame):
     def execute_gaim_play(self, parsed_input):
         gaim_command = parsed_input.split()[0]
         gaim_args = parsed_input.split()[1]
+        # print(gaim_command, gaim_args)
         if gaim_command == "guess":
+            self.texoty.priont_string(f"execute gaimplay: {parsed_input}")
+            self.registry.execute_command(gaim_command, gaim_args)
+        if "hit" in gaim_args or "stay" in gaim_args:
             self.texoty.priont_string(f"execute gaimplay: {parsed_input}")
             self.registry.execute_command(gaim_command, gaim_args)
 
     def quit_gaim(self, args):
         self.texoty.priont_string("Quitting, you quitter.")
         self.in_play_gaim_mode = False
+
+    def prepare_new_recipe(self, args):
+        prep_new_recipe_dict = {}
+        if "new_recipe_name" in list(self.question_prompt_dict.keys()):
+            self.elaborate_new_recipe(self.question_prompt_dict)
+        else:
+            prep_new_recipe_dict = {"new_recipe_name": ["What is the name of the recipe?", "", "NewReci"],
+                                    "num_ingreds": ["How many individual ingredients? ", "", "3"],
+                                    "num_directs": ['How many different directions?', '', '3']}
+        self.start_question_prompt(prep_new_recipe_dict)
+
+    def elaborate_new_recipe(self, prepped_question_dict: dict):
+        new_recipe_question_dict = {}
+        for i in range(int(prepped_question_dict['num_ingreds'][1])):
+            new_recipe_question_dict[f'ingred_{i}'] = [f'ingredient {i}: ', "", "Nodefault"]
+        for i in range(int(prepped_question_dict['num_directs'][1])):
+            new_recipe_question_dict[f'direct_{i}'] = [f'direction {i}: ', "", "Nodefault"]
+        self.texoty.priont_string("List each amount and ingredient separately:   (7 potatoes)")
+        self.start_question_prompt(new_recipe_question_dict)
 
 
 def create_date_entry(entry_time: datetime, entry_list: list):

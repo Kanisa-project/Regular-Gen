@@ -35,7 +35,7 @@ class Mujic(artstyle.Artyle):
         # self.tone_freq_dict = mujic.generate_tone_notes(0.25)
 
     def gather_mujic_options(self) -> dict:
-        """Gather and return the options Mujic will use to make what it make."""
+        """Gather and return the options Mujic will use to make what it makes."""
         chosen_mujic_options = {}
         dict_key_list = list(self.dropdown_menu_dict.keys())
         chosen_mujic_options["First Pat"] = self.dropdown_menu_dict[dict_key_list[0]][0].get()

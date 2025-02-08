@@ -34,7 +34,7 @@ class Recitab(ttk.Frame):
 
     def set_used_recipe(self, recipe_dict: dict) -> dict:
         self.master.master.chosen_recipe_dict = recipe_dict
-        print(self.master)
+        # print(self.master)
         self.delete_text_boxes()
         self.setup_ingredient_text_boxes(recipe_dict["ingredients"], start_x_cell=6, start_y_cell=0)
         self.setup_direction_text_boxes(recipe_dict["directions"], start_x_cell=6, start_y_cell=6)

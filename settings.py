@@ -70,8 +70,10 @@ DARK_BLUE = (47, 47, 79)
 
 # SHADES
 BLACK = (0, 0, 0)
-SPACE_GREY = (22, 22, 22, 69)
+SPACE_GREY = (22, 22, 22)
+# SPACE_GREY = (22, 22, 22, 69)
 DARK_GREY = (60, 60, 60)
+SUPER_DARK_GREY = (40, 40, 40)
 DARK_SLATE_GREY = (47, 79, 79)
 DIM_GREY = (105, 105, 105)
 FREE_SPEECH_GREY = (99, 86, 136)
@@ -84,6 +86,8 @@ LIGHT_GREY = (211, 211, 211)
 SLATE_GREY = (112, 128, 144)
 VERY_LIGHT_GREY = (205, 205, 205)
 WHITE = (255, 255, 255)
+EGGSHELL_WHITE = (240, 234, 214)
+X_RAY_GRAY = (90, 111, 106)
 
 # BLUES
 ALICE_BLUE = (240, 248, 255)
@@ -174,6 +178,7 @@ SPRING_GREEN = (0, 255, 127)
 YELLOW_GREEN = (154, 205, 50)
 SAGE_GREEN = (157, 193, 131)
 ARMY_GREEN = (75, 83, 32)
+JUNGLE_GREEN = (30, 56, 33)
 
 # ORANGES
 BISQUE = (255, 228, 196)
@@ -230,6 +235,7 @@ PURPLE = (160, 32, 240)
 THISTLE = (216, 191, 216)
 VIOLET = (238, 130, 238)
 VIOLET_BLUE = (159, 95, 159)
+UBE_PURPLE = (136, 120, 195)
 
 # YELLOWS/GOLDS
 BLANCHED_ALMOND = (255, 235, 205)
@@ -248,6 +254,7 @@ GOLD = (255, 215, 0)
 MEDIUM_GOLDENROD = (234, 234, 174)
 MUSTARD_YELLOW = (254, 220, 86)
 BURNT_YELLOW = ()
+ZENYTE_YELLOW = (218, 132, 25)
 
 # WHITES/OFF-WHITES
 ANTIQUE_WHITE = (250, 235, 215)
@@ -582,32 +589,38 @@ ALPHANUMERIC_COLORS = {
     "7": MEDIUM_PURPLE,
     "8": SEMI_SWEET_CHOCOLATE,
     "9": MOCCASIN,
-    "a": MAROON,
-    "b": MEDIUM_WOOD,
+    # "a": BLACK,
+    # "b": YELLOW,
+    # "c": BLACK,
+    # "d": MUSTARD_YELLOW,
+    # "e": ZENYTE_YELLOW,
+    # "f": LIGHT_GOLDENROD_YELLOW,
+    "a": AQUA,
+    "b": BROWN,
     "c": CORNSILK,
-    "d": NAVAJO_WHITE,
-    "e": DEEP_SKY_BLUE,
-    "f": SKY_BLUE,
-    "g": DUSTY_ROSE,
-    "h": POWDER_BLUE,
-    "i": DARK_SLATE_BLUE,
-    "j": DARK_ORCHID,
-    "k": RED,
-    "l": SADDLE_BROWN,
-    "m": DARK_VIOLET,
-    "n": DARK_PURPLE,
-    "o": DARK_TURQUOISE,
-    "p": VERY_DARK_BROWN,
-    "q": PLUM,
-    "r": FOREST_GREEN,
-    "s": MEDIUM_VIOLET_RED,
-    "t": VIOLET_BLUE,
-    "u": MEDIUM_SLATE_BLUE,
-    "v": DARK_GOLDENROD,
-    "w": ROYAL_BLUE,
-    "x": QUARTZ,
-    "y": KHAKI,
-    "z": GAINSBORO,
+    "d": DARK_WOOD,
+    "e": EGGSHELL_WHITE,
+    "f": FLESH,
+    "g": GOLD,
+    "h": HONEYDEW,
+    "i": IVORY,
+    "j": JUNGLE_GREEN,
+    "k": KHAKI,
+    "l": LAVENDER,
+    "m": MAGENTA,
+    "n": NAVAJO_WHITE,
+    "o": OLIVE,
+    "p": PURPLE,
+    "q": QUARTZ,
+    "r": RED,
+    "s": SKY_BLUE,
+    "t": TAN,
+    "u": UBE_PURPLE,
+    "v": VIOLET,
+    "w": WHEAT,
+    "x": X_RAY_GRAY,
+    "y": YELLOW,
+    "z": ZENYTE_YELLOW
 }
 
 PUNCTUATION_WORD_LISTS = {

@@ -26,6 +26,7 @@ class Wordietab(ttk.Frame):
         self.dropdown_menu_dict = {}
 
         self.labels_dict = {}
+        self.label_group_names = []
 
         self.chosen_options_dict = {}
         self.widget_display_array = []
@@ -48,25 +49,37 @@ class Wordietab(ttk.Frame):
             self.textbox_dict[textbox][3].destroy()
         self.textbox_dict = {}
 
-    def setup_labels(self, word_list: list, start_x_cell=0, start_y_cell=0):
+    def setup_labels(self, word_list: list, group_name="default", start_x_cell=0, start_y_cell=0):
         """
         Set up a dictionary of labels for the given word_list.
+        :param group_name:
         :param start_y_cell:
         :param start_x_cell:
         :param word_list: List of words to use as labels.
         :return:
         """
-        if word_list in self.widget_display_array:
-            print("already done in")
-        else:
-            self.widget_display_array.append(word_list)
+        if group_name not in self.label_group_names:
+            self.labels_dict[group_name] = {}
+            self.label_group_names.append(group_name)
+            print(self.label_group_names)
+
+        # if word_list in self.widget_display_array:
+        #     print("already done in")
+        # else:
+        #     self.widget_display_array.append(word_list)
         for i, word in enumerate(word_list):
             str_var = StringVar(value=word)
             label = Label(self, textvariable=str_var)
-            self.labels_dict[word] = [str_var, label]
+            self.labels_dict[group_name][word] = [str_var, label]
             row = i % 10
             col = i // 10
             label.grid(column=col + start_x_cell, row=row + start_y_cell)
+
+    def update_labels(self, word_list: list, group_name="default"):
+        for i, word_lbl in enumerate(self.labels_dict[group_name]):
+            print(self.labels_dict)
+            self.labels_dict[group_name][word_lbl][0].set(word_list[i])
+            print("updating", word_lbl)
 
     def setup_text_boxes(self, keyed_dict: dict, start_x_cell=0, start_y_cell=0, width=10):
         """
@@ -151,6 +164,11 @@ class Wordietab(ttk.Frame):
             col = (i // 10)
 
             checkbutton.grid(column=len(self.widget_display_array) + col, row=row)
+
+    def destroy_word_optionmenus(self):
+        """Destroy each of the optionmenus that contain wordlists"""
+        for c in self.dropdown_menu_dict:
+            self.dropdown_menu_dict[c][1].destroy()
 
     def setup_dropdown_menus(self, word_list=None, word_str=None, dropdown_name="", start_x_cell=0, start_y_cell=0):
         if word_str:

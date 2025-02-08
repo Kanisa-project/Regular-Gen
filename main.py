@@ -13,7 +13,7 @@ import kalendar
 import gaimPlay
 
 large_widgets = ["Texioty", "Kinvow"]
-small_widgets = ["Calendar", "IDUTC", "Artay"]
+small_widgets = ["Calendar", "IDUTC", "aRtay", "Gaim Player"]
 
 
 def start_simple_client():
@@ -28,11 +28,11 @@ class Application(tk.Frame):
         :param master:
         """
         super().__init__(master)
+        self.texioty_frame = texioty.TEXIOTY(width=screen_w//3, height=screen_h*.93)
+
         self.idutc_frame = idutc.IDUTC(width=screen_w*.333, height=screen_h*.4)
 
         self.artay_frame = artay.ARTAY(width=screen_w*.333, height=screen_h*.4, idutc_frame=self.idutc_frame)
-
-        self.texioty_frame = texioty.TEXIOTY(width=screen_w//3, height=screen_h*.93)
 
         self.kinvow_frame = kinvow.KINVOW(width=screen_w//3, height=screen_h*.93,
                                           idutc_frame=self.idutc_frame, artay_frame=self.artay_frame)
@@ -41,8 +41,9 @@ class Application(tk.Frame):
         self.calendar_frame = kalendar.Kalendar(width=screen_w*.333, height=screen_h*.4)
         self.calendar_frame.txo = self.texioty_frame.texoty
 
-        self.gaimplay_frame = gaimPlay.gaimPlayer(width=screen_w*.333, height=screen_h*.4)
+        self.gaimplay_frame = gaimPlay.gaimPlayer(width=screen_w*.333, height=screen_h*.4, idutc_frame=self.idutc_frame)
         self.gaimplay_frame.txo = self.texioty_frame.texoty
+        self.texioty_frame.gaim_player = self.gaimplay_frame
 
         self.texioty_frame.add_helper_widget("CLDR", self.calendar_frame)
         self.texioty_frame.add_helper_widget("IDUT", self.idutc_frame)
@@ -55,8 +56,8 @@ class Application(tk.Frame):
             "Calendar": self.calendar_frame,
             "IDUTC": self.idutc_frame,
             "Kinvow": self.kinvow_frame,
-            "Artay": self.artay_frame,
-            "gaimPlay": self.gaimplay_frame
+            "aRtay": self.artay_frame,
+            "Gaim Player": self.gaimplay_frame
         }
         self.center_frame = SpotLighter(widget_dict=self.widget_dict, width=screen_w//3, height=screen_h//4)
         self.center_frame.grid(column=1, row=1, columnspan=1, rowspan=1, padx=1, pady=1, sticky='nesw')
@@ -102,13 +103,13 @@ class SpotLighter(tk.LabelFrame):
         :return:
         """
         north_light_var = tk.StringVar()
-        north_light_var.set('North')
+        north_light_var.set('IDUTC')
         south_light_var = tk.StringVar()
-        south_light_var.set('South')
+        south_light_var.set('aRtay')
         east_light_var = tk.StringVar()
-        east_light_var.set('East')
+        east_light_var.set('Kinvow')
         west_light_var = tk.StringVar()
-        west_light_var.set('West')
+        west_light_var.set('Texioty')
         north_dropdown = tk.OptionMenu(self, north_light_var, *small_widgets,
                                        command=lambda n: self.change_northern_light(self.widget_dict[north_light_var.get()]))
         south_dropdown = tk.OptionMenu(self, south_light_var, *small_widgets,

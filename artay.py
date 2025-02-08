@@ -24,7 +24,7 @@ class ARTAY(ttk.LabelFrame):
         """
 
         super(ARTAY, self).__init__(master, width=int(width), height=int(height))
-        self.config(text="aRtay")
+        self.config(text="aRtay:  ")
         self.IDUTC_frame = idutc_frame
         # self.mp_img = None
         self.grid_propagate(False)
@@ -58,13 +58,14 @@ class ARTAY(ttk.LabelFrame):
         self.tabControl.add(self.gaimTab, text="Gaim")
         self.tabControl.add(self.meemTab, text="Meem")
         self.tabControl.grid(column=0, row=0)
+        self.texioty_commands = {}
 
-        self.texioty_commands = {
-            "glyth": [self.draw_on_kinvow, "Add Glyth options to the kre8dict.",
-                      {"0-9": "Number of Glyth to make."}, [], s.rgb_to_hex(s.BLACK), s.rgb_to_hex(s.LIGHT_GOLDENROD_YELLOW)],
-            "glyph": [self.draw_on_kinvow, "Add Glyph options to the kre8dict.",
-                      {"0-9": "Number of Glyph to make."}, [], s.rgb_to_hex(s.BLACK), s.rgb_to_hex(s.LIGHT_GOLDENROD_YELLOW)]
-        }
+        # self.texioty_commands = {
+        #     # "add_recipe": [self.add_recipe_to_tab, "Add Glyth options to the kre8dict.",
+        #     #           {"0-9": "Number of Glyth to make."}, [], s.rgb_to_hex(s.BLACK), s.rgb_to_hex(s.LIGHT_GOLDENROD_YELLOW)],
+        #     "glyph": [self.draw_on_kinvow, "Add Glyph options to the kre8dict.",
+        #               {"0-9": "Number of Glyph to make."}, [], s.rgb_to_hex(s.BLACK), s.rgb_to_hex(s.LIGHT_GOLDENROD_YELLOW)]
+        # }
 
     def draw_on_kinvow(self, num):
         pass
@@ -95,4 +96,7 @@ class ARTAY(ttk.LabelFrame):
 
     def barcode_kre8shun(self):
         """Barcode artwork. Think about it."""
+        pass
+
+    def add_recipe_to_tab(self, args):
         pass

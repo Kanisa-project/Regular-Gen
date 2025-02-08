@@ -91,15 +91,17 @@ def spiral_bity(img: Image, color_list: list) -> Image:
 
 def up_bity(img: Image, color_list: list) -> Image:
     draw = ImageDraw.Draw(img)
-    for w in range(64):
-        draw.line((w*2, 0, w, 64), width=w, fill=random.choice(color_list))
+    w, h = (64, 64)
+    for i in range(96):
+        draw.regular_polygon((w//2, h//2, (i+1)), 3, outline=random.choice(color_list))
     return img
 
 
 def down_bity(img: Image, color_list: list) -> Image:
     draw = ImageDraw.Draw(img)
-    for w in range(64):
-        draw.line((w, 0, 64, 64-w), width=64-w, fill=random.choice(color_list))
+    w, h = (64, 64)
+    for i in range(96):
+        draw.regular_polygon((w//2, h//2, (i+1)), 3, rotation=180, outline=random.choice(color_list))
     return img
 
 
@@ -129,29 +131,29 @@ def round_bity(img: Image, color_list: list) -> Image:
 
 def ring_bity(img: Image, color_list: list) -> Image:
     draw = ImageDraw.Draw(img)
-    w, h = img.size
-    cl = random.choices(color_list, k=8)
-    for i in range(1, 9):
-        offset = i * 32
-        if w - offset <= offset or h - offset <= offset:
-            break
-        ellipse_coordinates = (offset, offset, w - offset, h - offset)
-        draw.ellipse(ellipse_coordinates, outline=cl[i - 1], width=3)
+    w, h = (64, 64)
+    for i in range(64):
+        draw.circle((w//2, h//2), radius=64-i, fill=random.choice(color_list), outline=random.choice(color_list))
+        # draw.ellipse(((w // 2, h // 2), (w, h)), fill=random.choice(color_list), outline=random.choice(color_list))
+        # draw.ellipse(((w // 2, 0), (w, h // 2)), fill=random.choice(color_list), outline=random.choice(color_list))
+        # draw.ellipse(((0, h*.75), (w*.25, h)), fill=random.choice(color_list), outline=random.choice(color_list))
     return img
 
 
 def scales_bity(img: Image, color_list: list) -> Image:
     draw = ImageDraw.Draw(img)
-    w, h = img.size
-    cl = random.choices(color_list, k=8)
-    for i in range(1, 9):
-        offset = i * 32
-        if w - offset <= offset or h - offset <= offset:
-            break
-        draw.ellipse((32-(i * 1), 32-(i * 1), (w+32) - (i * 1), (h+32) - (i * 1)), outline=cl[i - 1], width=3)
-        draw.ellipse(((i * 1), 32 - (i * 1), w - (i * 1), (h + 32) - (i * 1)), outline=cl[i - 1], width=3)
-        draw.ellipse((32 - (i * 1), (i * 1), (w+32) - (i * 1), h - (i * 1)), outline=cl[i - 1], width=3)
+    w, h = (64, 64)
+    for i in range(96):
+        draw.regular_polygon((w//2, h//2, (96-i)), random.randint(3, 10), fill=random.choice(color_list), outline=random.choice(color_list))
     return img
+
+
+# def scales_bity(img: Image, color_list: list) -> Image:
+#     draw = ImageDraw.Draw(img)
+#     w, h = (64, 64)
+#     for i in range(96):
+#         draw.regular_polygon((w//2, h//2, (96-i)), random.randint(3, 10), rotation=270, outline=random.choice(color_list))
+#     return img
 
 
 # def greytone_gridder(img: Image, kre8dict: dict) -> Image:
@@ -195,58 +197,58 @@ def scales_bity(img: Image, color_list: list) -> Image:
 #     return new_img
 
 
-def addColor(color_to_add: tuple, image_to_color: Image) -> Image:
-    """Add some color to an image."""
-    print(color_to_add)
-    int_color = (int(color_to_add[0] * 255), int(color_to_add[1] * 255), int(color_to_add[2] * 255), int(.5 * 255))
-    im_overlay = Image.new(size=image_to_color.size, color=int_color, mode='RGBA')
-    image_to_color.paste(im_overlay, None, mask=im_overlay)
-    return image_to_color
+# def addColor(color_to_add: tuple, image_to_color: Image) -> Image:
+#     """Add some color to an image."""
+#     print(color_to_add)
+#     int_color = (int(color_to_add[0] * 255), int(color_to_add[1] * 255), int(color_to_add[2] * 255), int(.5 * 255))
+#     im_overlay = Image.new(size=image_to_color.size, color=int_color, mode='RGBA')
+#     image_to_color.paste(im_overlay, None, mask=im_overlay)
+#     return image_to_color
 
 
 def slant_up_bity(img: Image, color_list: list) -> Image:
     draw = ImageDraw.Draw(img)
     w, h = img.size
-    for i in range(64):
-        draw.line((0, 64, w, i*2), fill=random.choice(color_list))
+    for i in range(-4, 72):
+        draw.line((0, i, 64, i-4), fill=random.choice(color_list))
     return img
 
 
 def slant_down_bity(img: Image, color_list: list) -> Image:
     draw = ImageDraw.Draw(img)
     w, h = img.size
-    for i in range(64):
-        draw.line((0, 0, h, i//2), fill=random.choice(color_list))
+    for i in range(-4, 72):
+        draw.line((0, i, 64, i+4), fill=random.choice(color_list))
     return img
 
 
 def slant_left_bity(img: Image, color_list: list) -> Image:
     draw = ImageDraw.Draw(img)
     w, h = img.size
-    for i in range(64):
-        draw.arc(((i, i), (w, h)), 0.01, 0.6, fill=random.choice(color_list), width=i % 10)
+    for i in range(-4, 72):
+        draw.line((i, 0, i-4, 64), fill=random.choice(color_list))
     return img
 
 
 def slant_right_bity(img: Image, color_list: list) -> Image:
     draw = ImageDraw.Draw(img)
     w, h = img.size
-    for i in range(64):
-        draw.regular_polygon((w//(i+1), h//2, (i+1)), 3, outline=random.choice(color_list))
+    for i in range(-4, 72):
+        draw.line((i, 0, i+4, 64), fill=random.choice(color_list))
     return img
 
 
 def left_bity(img: Image, color_list: list) -> Image:
     draw = ImageDraw.Draw(img)
-    w, h = img.size
-    for i in range(64):
-        draw.regular_polygon((w//2, h//3, (i+16)), 12, outline=random.choice(color_list))
+    w, h = (64, 64)
+    for i in range(96):
+        draw.regular_polygon((w//2, h//2, (i+1)), 3, rotation=90, outline=random.choice(color_list))
     return img
 
 
 def right_bity(img: Image, color_list: list) -> Image:
     draw = ImageDraw.Draw(img)
-    w, h = img.size
-    for i in range(64):
-        draw.regular_polygon((i, h//2, (i+1)), 5, outline=random.choice(color_list))
+    w, h = (64, 64)
+    for i in range(96):
+        draw.regular_polygon((w//2, h//2, (i+1)), 3, rotation=270, outline=random.choice(color_list))
     return img

@@ -107,19 +107,19 @@ def hangman(img: Image, artribute_dict: dict, option_dict: dict) -> Image:
     return img
 
 
-def update_hangman(img: Image, kre8dict: dict) -> Image:
-    nl = kre8dict["number_list"]
-    cl = kre8dict["color_list"]
-    draw = ImageDraw.Draw(img)
-    w, h = img.size
-    chosen_word = kre8dict["wordie"]["hangman"]["chosen"]
-    hidden_word = kre8dict["wordie"]["hangman"]["hidden"]
-    missed_count = len(kre8dict["wordie"]["hangman"]["missed_letters"])
-    draw.multiline_text((w // 2, h // 6), text=HANGMAN_TEXTMAN_LIST[missed_count], font=ttf)
-    draw.text((w // 2, int(h * (5 / 7))), text=dict_to_str(hidden_word), font=ttf)
-    draw.text((w // 8, h // 6), text="Missed Letters:", font=ttf)
-    draw.multiline_text((w // 8, h // 5), text=", ".join(kre8dict["wordie"]["hangman"]["missed_letters"]), font=ttf)
-    return img
+# def update_hangman(img: Image, kre8dict: dict) -> Image:
+#     nl = kre8dict["number_list"]
+#     cl = kre8dict["color_list"]
+#     draw = ImageDraw.Draw(img)
+#     w, h = img.size
+#     chosen_word = kre8dict["wordie"]["hangman"]["chosen"]
+#     hidden_word = kre8dict["wordie"]["hangman"]["hidden"]
+#     missed_count = len(kre8dict["wordie"]["hangman"]["missed_letters"])
+#     draw.multiline_text((w // 2, h // 6), text=HANGMAN_TEXTMAN_LIST[missed_count], font=ttf)
+#     draw.text((w // 2, int(h * (5 / 7))), text=dict_to_str(hidden_word), font=ttf)
+#     draw.text((w // 8, h // 6), text="Missed Letters:", font=ttf)
+#     draw.multiline_text((w // 8, h // 5), text=", ".join(kre8dict["wordie"]["hangman"]["missed_letters"]), font=ttf)
+#     return img
 
 
 def dict_to_str(kre8dict: dict) -> str:
@@ -135,25 +135,28 @@ def phrase_to_hidden_dict(phrase: str) -> dict:
     for c in phrase:
         if c in hidden_phrase_dict:
             c += c
-        hidden_phrase_dict[c] = "◙"
+        if c not in "abcdefghijklmnopqrstuvwxyz":
+            hidden_phrase_dict[c] = c[0]
+        else:
+            hidden_phrase_dict[c] = "◙"
     return hidden_phrase_dict
 
 
-def check_hangman_letter(letter_to_check: str, kre8dict: dict) -> dict:
-    chosen_word = kre8dict["wordie"]["hangman"]["chosen"]
-    hidden_word = kre8dict["wordie"]["hangman"]["hidden"]
-    if letter_to_check in chosen_word:
-        for i in range(len(chosen_word)):
-            if letter_to_check * (i + 1) in hidden_word:
-                if hidden_word[letter_to_check * (i + 1)] == "◙":
-                    hidden_word[letter_to_check * (i + 1)] = f' {letter_to_check} '
-    else:
-        if letter_to_check in kre8dict["wordie"]["hangman"]["missed_letters"]:
-            pass
-        else:
-            kre8dict["wordie"]["hangman"]["missed_letters"].append(letter_to_check)
-
-    return hidden_word
+# def check_hangman_letter(letter_to_check: str, kre8dict: dict) -> dict:
+#     chosen_word = kre8dict["wordie"]["hangman"]["chosen"]
+#     hidden_word = kre8dict["wordie"]["hangman"]["hidden"]
+#     if letter_to_check in chosen_word:
+#         for i in range(len(chosen_word)):
+#             if letter_to_check * (i + 1) in hidden_word:
+#                 if hidden_word[letter_to_check * (i + 1)] == "◙":
+#                     hidden_word[letter_to_check * (i + 1)] = f' {letter_to_check} '
+#     else:
+#         if letter_to_check in kre8dict["wordie"]["hangman"]["missed_letters"]:
+#             pass
+#         else:
+#             kre8dict["wordie"]["hangman"]["missed_letters"].append(letter_to_check)
+#
+#     return hidden_word
 
 
 def word_search(img: Image, artribute_dict: dict, word_search_dict: dict) -> Image:
@@ -266,9 +269,42 @@ def digiary(img: Image, kre8dict: dict) -> Image:
     pass
 
 
-def riddler(img, artribute_dict, param):
-    return None
+def riddler(img, artribute_dict, riddle_dict: dict) -> Image:
+    width_list = artribute_dict["accuracy"]
+    cl = artribute_dict["colors"]
+    draw = ImageDraw.Draw(img)
+    w, h = img.size
+    # draw.rectangle((0, 0, w, h), fill=random.choice(cl))
+    font = random.choice(font_names)
+    print(font)
+    clue_1_str = "I " + riddle_dict['Clue 1'].lower() + ","
+    clue_2_str = "I still " + riddle_dict['Clue 2'].lower() + ","
+    clue_3_str = riddle_dict['Clue 3']
+    answer_str = riddle_dict["Answer"]
+    font = ImageFont.truetype(f'{os.getcwd()}/assets/Fonts/{font}.ttf', (random.choice(width_list) + 1) * 8)
+    draw.text((w * .333, h * .2), font=font, text=clue_1_str,
+              fill=random.choice(cl))
+    draw.text((w * .333, h * .4), font=font, text=clue_2_str,
+              fill=random.choice(cl))
+    draw.text((w * .333, h * .6), font=font, text=clue_3_str,
+              fill=random.choice(cl))
+    draw.text((w * .333, h * .8), font=font, text=answer_str,
+              fill=random.choice(cl))
+    return img
 
 
-def crossword(img, artribute_dict, param):
-    return None
+def crossword(img, artribute_dict, crossed_dict: dict) -> Image:
+    width_list = artribute_dict["accuracy"]
+    cl = artribute_dict["colors"]
+    draw = ImageDraw.Draw(img)
+    w, h = img.size
+    # draw.rectangle((0, 0, w, h), fill=random.choice(cl))
+    font = random.choice(font_names)
+    font = ImageFont.truetype(f'{os.getcwd()}/assets/Fonts/{font}.ttf', (random.choice(width_list) + 1) * 8)
+    spec_char = "◘" * 6
+    spec_char2 = "◘".join(["\n", "\n", "\n", "\n", "\n", "\n", "\n"])
+    draw.text((w * .333, h * .2), font=font, text=spec_char,
+              fill=random.choice(cl))
+    draw.text((w * .333, h * .2), font=font, text=spec_char2,
+              fill=random.choice(cl))
+    return img

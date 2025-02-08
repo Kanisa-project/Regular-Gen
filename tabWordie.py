@@ -56,8 +56,6 @@ class Wordie(artstyle.Artyle):
         Gather and return a dictionary of wordie options, such as the type of art it is. Hangman, poem, random sentence
         generator. Along with the phrase for hangman or list of words in a word search or crossword.
         """
-        # Needs to not be used with a 'word_search' key.
-        print(self.radiobutton_dict)
         chosen_wordie_options = {
             "type": self.radiobutton_dict["Collage"][0].get()
         }
@@ -74,14 +72,20 @@ class Wordie(artstyle.Artyle):
             for i, word in enumerate(self.wordsearchTab.textbox_dict):
                 chosen_wordie_options["Word Search"][str(i)] = self.wordsearchTab.textbox_dict[word][0].get()
         if self.radiobutton_dict["Hangman"][0].get() == 3:
+            # chosen_wordie_options["Hangman"] = {}
+            # for i, word in enumerate(self.hangmanTab.textbox_dict):
+            #     chosen_wordie_options["Hangman"][str(i)] = self.hangmanTab.textbox_dict[word][0].get()
             chosen_wordie_options["Hangman"] = {
                 'Phrase': self.hangmanTab.textbox_dict["Phrase"][0].get(),
                 'Max Guesses': self.hangmanTab.max_guesses
             }
         if self.radiobutton_dict["Crossword"][0].get() == 4:
-            chosen_wordie_options["Crossword"] = {}
-            for i, word in enumerate(self.crosswordTab.textbox_dict):
-                chosen_wordie_options["Crossword"][str(i)] = self.crosswordTab.textbox_dict[word][0].get()
+            chosen_wordie_options["Crossword"] = {
+                "Across": self.crosswordTab.across_hint_dict,
+                "Down": self.crosswordTab.down_hint_dict
+            }
+            # for i, word in enumerate(self.crosswordTab.labels_dict):
+            #     chosen_wordie_options["Crossword"] = self.crosswordTab.labels_dict[word][0].get()
 
         return chosen_wordie_options
 

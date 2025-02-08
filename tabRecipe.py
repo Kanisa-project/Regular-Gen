@@ -75,7 +75,7 @@ class AlaNFT(artstyle.Artyle):
             "Soups": rtabSoups.RECIPES_DICT,
             "Desserts": rtabDesserts.RECIPES_DICT,
             "Sandwiches": rtabSandwiches.RECIPES_DICT,
-            "Seasonings": rtabSeasonings.RECIPES_DICT,
+            "Seasonings": rtabSeasonings.RECIPES_DICT
         }
         ran_recipe = random.choice(list(recipe_dict[ran_category].keys()))
         chosen_recipe_options = recipe_dict[ran_category][ran_recipe]

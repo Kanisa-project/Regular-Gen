@@ -8,63 +8,63 @@ PHRASE_LIST = ["You gave Sally a cheese wheel, she buried it under a tree.",
                "Shane kicked your shin after you gave him a flower.",
                "This is just a phrase, we'll go out of it soon."]
 
-HANGMAN_TEXTMAN_LIST = ["  ╔═════╕   \n"
-                        "  ║     ┇   \n"
-                        "  ║         \n"
-                        "  ║         \n"
-                        "  ║         \n"
-                        "  ║         \n"
-                        "  ║         \n"
-                        "══╩═════════\n",
-
-                        "  ╔═════╕   \n"
-                        "  ║     ┇   \n"
-                        "  ║     ◯   \n"
+HANGMAN_TEXTMAN_LIST = ["  ╔╤╤═══╕   \n"
+                        "  ║╱╱   ┇   \n"
+                        "  ║╱        \n"
                         "  ║         \n"
                         "  ║         \n"
                         "  ║         \n"
                         "  ║         \n"
                         "══╩═════════\n",
 
-                        "  ╔═════╕   \n"
-                        "  ║     ┇   \n"
-                        "  ║     ◯   \n"
+                        "  ╔╤╤════╕   \n"
+                        "  ║╱╱    ┇   \n"
+                        "  ║╱     ◯   \n"
+                        "  ║         \n"
+                        "  ║         \n"
+                        "  ║         \n"
+                        "  ║         \n"
+                        "══╩═════════\n",
+
+                        "  ╔╤╤═══╕   \n"
+                        "  ║╱╱   ┇   \n"
+                        "  ║╱    ◯   \n"
                         "  ║     ‡   \n"
                         "  ║     ‡   \n"
                         "  ║         \n"
                         "  ║         \n"
                         "══╩═════════\n",
 
-                        "  ╔═════╕   \n"
-                        "  ║     ┇   \n"
-                        "  ║     ◯   \n"
+                        "  ╔╤╤═══╕   \n"
+                        "  ║╱╱   ┇   \n"
+                        "  ║╱    ◯   \n"
                         "  ║    /‡   \n"
                         "  ║     ‡   \n"
                         "  ║         \n"
                         "  ║         \n"
                         "══╩═════════\n",
 
-                        "  ╔═════╕   \n"
-                        "  ║     ┇   \n"
-                        "  ║     ◯   \n"
+                        "  ╔╤╤═══╕   \n"
+                        "  ║╱╱   ┇   \n"
+                        "  ║╱    ◯   \n"
                         "  ║    /‡\\ \n"
                         "  ║     ‡   \n"
                         "  ║         \n"
                         "  ║         \n"
                         "══╩═════════\n",
 
-                        "  ╔═════╕   \n"
-                        "  ║     ┇   \n"
-                        "  ║     ◯   \n"
+                        "  ╔╤╤═══╕   \n"
+                        "  ║╱╱   ┇   \n"
+                        "  ║╱    ◯   \n"
                         "  ║    /‡\\ \n"
                         "  ║     ‡   \n"
                         "  ║    /    \n"
                         "  ║         \n"
                         "══╩═════════\n",
 
-                        "  ╔═════╕   \n"
-                        "  ║     ┇   \n"
-                        "  ║     ◯   \n"
+                        "  ╔╤╤═══╕   \n"
+                        "  ║╱╱   ┇   \n"
+                        "  ║╱    ◯   \n"
                         "  ║    /‡\\ \n"
                         "  ║     ‡   \n"
                         "  ║    / \\ \n"
@@ -89,7 +89,7 @@ class Hangman(wordieTab.Wordietab):
 
     def call_this_back(self, extra):
         self.max_guesses = extra
-        set_local_max(extra)
+        # set_local_max(extra)
 
     def randomize_phrase(self):
         self.textbox_dict["Phrase"][0].set(random.choice(PHRASE_LIST))
@@ -100,6 +100,7 @@ class Hangman(wordieTab.Wordietab):
 
 
 def check_hangman_letter(letter_to_check: str, hidden_dict: dict) -> dict:
+    print(hidden_dict)
     if letter_to_check in gaim_phrase:
         for i in range(len(gaim_phrase)):
             if letter_to_check * (i + 1) in hidden_dict:
