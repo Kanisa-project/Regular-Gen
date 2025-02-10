@@ -15,10 +15,9 @@ from PIL import Image, ImageDraw, ImageFont
 
 from settings import *
 
-ttf = ImageFont.truetype(f'{os.getcwd()}/assets/Fonts/emonob.ttf', 22)
 
-font_names = ["emono", "Parkinsans-Medium", "rogue", "Cookie-Regular", "berkshireswash-regular", "Akt-Medium",
-              "AguafinaScript-Regular", "Charlie", "emonob", "fontello"]
+font_names = ["Parkinsans-Medium", "rogue", "Cookie-Regular", "berkshireswash-regular", "Akt-Medium",
+              "AguafinaScript-Regular", "Charlie", "fontello"]
 
 HANGMAN_TEXTMAN_LIST = ["  ╔═════╕   \n"
                         "  ║     ┇   \n"
@@ -100,10 +99,12 @@ def hangman(img: Image, artribute_dict: dict, option_dict: dict) -> Image:
     cl = artribute_dict["colors"]
     draw = ImageDraw.Draw(img)
     w, h = img.size
+    font = random.choice(font_names)
+    font = ImageFont.truetype(f'{os.getcwd()}/assets/Fonts/{font}.ttf', (random.choice(width_list) + 1) * 8)
     hidden_word = phrase_to_hidden_dict(option_dict["Phrase"])
-    draw.multiline_text((w // 2, h // 6), text=HANGMAN_TEXTMAN_LIST[0], font=ttf, fill=random.choice(cl))
-    draw.text((w // 2, int(h * (5 / 7))), text=dict_to_str(hidden_word), font=ttf, fill=random.choice(cl))
-    draw.text((w // 8, h // 6), text="Missed Letters:", font=ttf, fill=random.choice(cl))
+    draw.multiline_text((w // 2, h // 6), text=HANGMAN_TEXTMAN_LIST[0], font=font, fill=random.choice(cl))
+    draw.text((w // 2, int(h * (5 / 7))), text=dict_to_str(hidden_word), font=font, fill=random.choice(cl))
+    draw.text((w // 8, h // 6), text="Missed Letters:", font=font, fill=random.choice(cl))
     return img
 
 
@@ -227,9 +228,7 @@ def kollage(img: Image, artribute_dict: dict, area_dict: dict) -> Image:
     cl = artribute_dict["colors"]
     draw = ImageDraw.Draw(img)
     w, h = img.size
-    # draw.rectangle((0, 0, w, h), fill=random.choice(cl))
     font = random.choice(font_names)
-    print(font)
     font = ImageFont.truetype(f'{os.getcwd()}/assets/Fonts/{font}.ttf', (random.choice(width_list) + 1) * 8)
     draw.text((random.randint(32, w - 256), random.randint(0, h // 8)), font=font, text=area_dict["Top"],
               fill=random.choice(cl))

@@ -2,7 +2,7 @@ from PIL import Image, ImageDraw, ImageFont
 from settings import *
 
 
-font_names = ["Parkinsans-Medium", "Akt-Medium", "emonob", "fontello"]
+font_names = ["Parkinsans-Medium", "Akt-Medium", "fontello"]
 
 
 def add_caps_meem(img: Image, artribute_dict: dict, area_dict: dict) -> Image:
