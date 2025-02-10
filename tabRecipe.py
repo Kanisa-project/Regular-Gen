@@ -1,4 +1,5 @@
 # import random
+import os
 import random
 from tkinter import *
 from tkinter import ttk
@@ -17,8 +18,8 @@ import rtabSauces
 import rtabSeasonings
 import rtabSoups
 
-emonob16 = ImageFont.truetype("emonob.ttf", 16)
-emonob32 = ImageFont.truetype("emonob.ttf", 32)
+emonob16 = ImageFont.truetype(os.getcwd() + "/assets/Fonts/emonob.ttf", 16)
+emonob32 = ImageFont.truetype(os.getcwd() + "/assets/Fonts/emonob.ttf", 32)
 
 
 class AlaNFT(artstyle.Artyle):

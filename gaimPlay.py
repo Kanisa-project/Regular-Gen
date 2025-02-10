@@ -94,13 +94,21 @@ class gaimPlayer(tk.LabelFrame):
     def guess_play(self, args):
         if self.inGaim:
             self.txo.clear_add_header("Hangman")
-            self.txo.priont_string(hm.HANGMAN_TEXTMAN_LIST[s.clamp(len(hm.missed_letters), 0, 6)])
             if len(args[0]) == 1:
                 self.hangman_hidden_dict = hm.check_hangman_letter(args[0], self.hangman_hidden_dict)
-                self.txo.priont_string(dict_to_str(self.hangman_hidden_dict))
-                self.txo.priont_string("Missed: ")
-                self.txo.priont_list(hm.missed_letters, list_key="Missed: ")
-                print(hm.missed_letters)
+            self.txo.priont_string(hm.HANGMAN_TEXTMAN_LIST[s.clamp(len(hm.missed_letters), 0, 6)])
+            self.txo.priont_string(dict_to_str(self.hangman_hidden_dict))
+            self.txo.priont_list(hm.missed_letters, parent_key="\nMissed")
+            self.hangman_gaimover_check()
+
+    def hangman_gaimover_check(self):
+        if len(hm.missed_letters) >= 6:
+            self.inGaim = False
+            self.txo.priont_string("Dang, so close")
+            self.txo.priont_string(hm.gaim_phrase)
+        elif "◙" not in list(self.hangman_hidden_dict.values()):
+            self.inGaim = False
+            self.txo.priont_string("Congratulations!!!!")
 
     def black_jack_play(self, args):
         if "hit" in args:
@@ -110,7 +118,7 @@ class gaimPlayer(tk.LabelFrame):
         elif "stay" in args:
             self.player_stay = True
         self.display_dealer_hand()
-        self.display_hand()
+        self.display_player_hand()
 
     def display_dealer_hand(self):
         self.txo.clear_add_header()
@@ -126,7 +134,7 @@ class gaimPlayer(tk.LabelFrame):
             self.txo.priont_string(self.dealer_hand[0])
             self.txo.priont_string(f"Dealer showing: {self.dealer_value}")
 
-    def display_hand(self):
+    def display_player_hand(self):
         self.txo.priont_break_line()
         for card in self.blackjack_hand:
             self.txo.priont_string(card)
@@ -143,7 +151,7 @@ class gaimPlayer(tk.LabelFrame):
         self.blackjack_value += new_card3[1]
         self.dealer_value += new_card4[1]
         self.display_dealer_hand()
-        self.display_hand()
+        self.display_player_hand()
 
 
 def dict_to_str(hidden_word_dict: dict) -> str:
@@ -159,7 +167,7 @@ def phrase_to_hidden_dict(phrase: str) -> dict:
     hidden_phrase_dict = {}
     for c in phrase:
         while c in hidden_phrase_dict:
-            c += c
+            c += c[0]
         if c[0].lower() not in "abcdefghijklmnopqrstuvwxyz":
             hidden_phrase_dict[c] = c[0]
         else:

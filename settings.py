@@ -24,11 +24,11 @@ def set_masterpiece_size(image_size: str) -> (int, int):
         size = (640, 640)
     elif image_size == "Camel":
         size = (960, 960)
-    elif image_size == "Avatar":
+    elif image_size == "avatar":
         size = (500, 500)
-    elif image_size == "Tile":
+    elif image_size == "tile":
         size = (500, 700)
-    elif image_size == "Banner":
+    elif image_size == "banner":
         size = (1500, 500)
     return size
 

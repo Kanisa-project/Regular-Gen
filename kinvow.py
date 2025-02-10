@@ -29,6 +29,8 @@ class KINVOW(ttk.LabelFrame):
         self.use_canvas.grid(column=0, row=0, padx=3)
         self.canvas_w = width
         self.canvas_h = height
+        self.img_w = 0
+        self.img_h = 0
 
         # Configure the frame and grid settings.
         self.configure(text="Kinvow:  ")
@@ -55,6 +57,7 @@ class KINVOW(ttk.LabelFrame):
         """
         self.txo.clear_add_header()
         self.txo.priont_kre8dict(self.idutc.kre8dict)
+        # self.txo.priont_dict(self.idutc.kre8dict)
 
     def create_masterpiece(self, args):
         """
@@ -74,19 +77,37 @@ class KINVOW(ttk.LabelFrame):
                                'mujic': self.artay.mujicTab.gather_mujic_options,
                                'gaim': self.artay.gaimTab.gather_gaim_options,
                                'meem': self.artay.meemTab.gather_meem_options,
+                               "banner": print,
+                               "tile": print,
+                               "avatar": print
                                }
 
         # Cycle through each kommand argument to collect which options from which artyles.
+        size_type = "tile"
+        size = (64, 64)
         for mstr_pce in args:
+            print(args)
+            if mstr_pce in ["banner", "tile", "avatar"]:
+                print(mstr_pce)
+                size_type = mstr_pce
+                # kre8dict[mstr_pce].remove(mstr_pce)
+            if kre8dict['artributes'][0] == "Random":
+                size = s.set_masterpiece_size(kre8dict['artributes'][4])  # ANIMAL CANVAS
+            elif kre8dict['artributes'][0] == "Human":
+                size = (int(self.canvas_w) + 1, int(self.canvas_h) + 1)  # FULL CANVAS
+            else:
+                size = s.set_masterpiece_size(size_type)
             kre8dict[mstr_pce] = gather_options_dict[mstr_pce]()
 
         # Set the size of a new image to put the final masterpiece.
-        size = (int(self.canvas_w) + 1, int(self.canvas_h) + 1)
+        # size = (int(self.canvas_w) + 1, int(self.canvas_h) + 1) #FULL CANVAS
+        # size = s.set_masterpiece_size(kre8dict['artributes'][4]) #ANIMAL CANVAS
+        # size = s.set_masterpiece_size(size_type)
         nim = Image.new("RGBA", size, s.DRS_PURPLE)
 
         # As long as there is at least one artyle, add the options of each artyle on the new image.
         if len(kre8dict) >= 1:
-            self.create_artyles(nim, kre8dict, 'masterpiece', args)
+            self.create_artyles(nim, kre8dict, size_type, args)
             # Start creating the save path
             save_name = "_".join(args)
             save_path = f"{kre8dict['use_id']}/{save_name}.png"
@@ -126,6 +147,8 @@ class KINVOW(ttk.LabelFrame):
                 self.create_mujic(nim, kre8dict, abt)
             if artyle.lower() == "gaim":
                 self.create_gaim(nim, kre8dict, abt)
+            if artyle.lower() == "meem":
+                self.create_meem(nim, kre8dict, abt)
 
     # def create_glyth(self, args, abt="masterpiece"):
     #     kre8dict = self.idutc.kre8dict
@@ -180,6 +203,9 @@ class KINVOW(ttk.LabelFrame):
 
     def create_gaim(self, img: Image, kre8dict: dict, abt='masterpiece'):
         self.artay.gaimTab.add_gaim(img, kre8dict, abt)
+
+    def create_meem(self, img: Image, kre8dict: dict, abt='masterpiece'):
+        self.artay.meemTab.add_meem(img, kre8dict, abt)
 
     def set_pen_masterpiece(self, args) -> dict:
         """

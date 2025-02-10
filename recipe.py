@@ -1,9 +1,10 @@
+import os
 import random
 from PIL import Image, ImageDraw, ImageFont
 import settings as s
 
-emonob16 = ImageFont.truetype("emonob.ttf", 16)
-emonob32 = ImageFont.truetype("emonob.ttf", 32)
+emonob16 = ImageFont.truetype(os.getcwd() + "/assets/Fonts/emonob.ttf", 16)
+emonob32 = ImageFont.truetype(os.getcwd() + "/assets/Fonts/emonob.ttf", 32)
 
 
 def add_ingredients(img: Image, kre8dict: dict) -> Image:

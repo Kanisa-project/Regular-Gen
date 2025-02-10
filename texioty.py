@@ -269,11 +269,12 @@ class TEXIOTY(tk.LabelFrame):
             try:
                 self.registry.execute_command(command, arguments)
             except PermissionError as e:
-                print(e)
                 self.texoty.priont_string("Sorry dude, you ain't got hangman.")
+                self.texoty.priont_string(str(e))
             except KeyError as e:
-                print(e)
-                self.texoty.priont_string("Missing some type of key or something.")
+                self.texoty.priont_string(f"Missing the {e} key or something.")
+                self.texoty.priont_list(list(e.args))
+
             if "play" in command:
                 self.in_play_gaim_mode = self.gaim_player.inGaim
         else:

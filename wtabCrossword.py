@@ -91,7 +91,7 @@ class Crossword(wordieTab.Wordietab):
             card_list.append(card_b)
         self.update_labels(card_names, group_name="Across")
         for card in card_list:
-            self.across_hint_dict[card.name] = [card.type, card.mana_cost, card.power]
+            self.across_hint_dict[card.name] = [card.type, card.mana_cost, card.multiverse_id, card.image_url]
             print(f'{card.name}: {card.type}, {card.mana_cost}, {card.power}')
         print(f'{color_symbols}➚⇗➹⤴↗   ===================================')
 
@@ -107,6 +107,6 @@ class Crossword(wordieTab.Wordietab):
             card_list.append(card_b)
         self.update_labels(card_names, group_name="Down")
         for card in card_list:
-            self.down_hint_dict[card.name] = [card.type, card.mana_cost, card.power]
+            self.across_hint_dict[card.name] = [card.type, card.mana_cost, card.multiverse_id, card.image_url]
             print(f'{card.name}: {card.type}, {card.mana_cost}, {card.power}')
         print(f'{color_symbols}➚⇗➹⤴↗   ===================================')

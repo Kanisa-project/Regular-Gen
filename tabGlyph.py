@@ -60,7 +60,7 @@ class Glyphin(artstyle.Artyle):
         w, h = img.size
         # bity = Image.new("RGBA", (64, 64), DRS_PURPLE)
         selected_colors = []
-        print(kre8dict)
+        # print(kre8dict)
         if kre8dict["artributes"][2] == "Rainbow":
             for ltr in kre8dict["use_id"]:
                 selected_colors.append(ALPHANUMERIC_COLORS[ltr])
@@ -108,7 +108,7 @@ class Glyphin(artstyle.Artyle):
                     bity = glyphinator.emoji_bity(bity, selected_colors)
                 if bit_type == "Scales":
                     bity = glyphinator.scales_bity(bity, selected_colors)
-                print(bity, bit_type)
+                # print(bity, bit_type)
                 img.paste(bity, (x, y))
         return img
 

@@ -102,28 +102,30 @@ class Artyle(ttk.Frame):
         for i, option in enumerate(options_list):
             new_str_var = StringVar(value=option)
             radiobutton = Radiobutton(self, text=option, variable=int_var, value=i)
-            row = (i % 5)
-            col = (i // 5)
+            row = (i % 10)
+            col = (i // 10)
             radiobutton.grid(column=col + start_x_cell, row=row + start_y_cell)
             self.radiobutton_dict[option] = [int_var, new_str_var, radiobutton]
 
-    def setup_text_boxes(self, many: int):
+    def setup_text_boxes(self, keyed_dict: dict, start_x_cell=0, start_y_cell=0, width=10):
         """
-        Set up a specified number of text boxes in the artyle tab.
+        Set up a specified number of text boxes on the artyle tab.
 
-        :param many: The number of text boxes to set up.
+        :param keyed_dict:
+        :param width:
+        :param start_y_cell:
+        :param start_x_cell:
         """
-        self.widget_display_array.append([])
-        for i, _ in enumerate(range(many)):
-            str_var = StringVar(value="4x4")
-            entry = Entry(self, textvariable=str_var)
-            key = f"{i}"
-            self.textbox_dict[key] = [str_var, entry]
-
-            row = (i % 5 + 1)
+        for i, word in enumerate(keyed_dict):
+            lbl_str = StringVar(value=word + ": ")
+            lbl = Label(self, textvariable=lbl_str)
+            str_var = StringVar(value=keyed_dict[word])
+            entry = Entry(self, textvariable=str_var, width=width)
+            self.textbox_dict[word] = [str_var, entry]
+            row = (i % 5)
             col = (i // 5 + 1)
-
-            entry.grid(column=col + len(self.widget_display_array), row=row)
+            lbl.grid(column=col + start_x_cell - 1, row=row + start_y_cell, sticky='e')
+            entry.grid(column=col + start_x_cell, row=row + start_y_cell, columnspan=2)
 
     def setup_button_choices(self, button_list: list, start_x_cell=0, start_y_cell=0):
         """
@@ -159,8 +161,8 @@ class Artyle(ttk.Frame):
 
             self.checkbutton_dict[option] = [int_var, str_var, checkbutton]
 
-            row = (i % 8)
-            col = (i // 8)
+            row = (i % 10)
+            col = (i // 10)
 
             checkbutton.grid(column=len(self.widget_display_array) + col, row=row)
 
@@ -185,8 +187,16 @@ class Artyle(ttk.Frame):
                 selected_colors.append(((i + 1) * shadelvl, (i + 1) * shadelvl, (i + 1) * shadelvl))
         artribute_dict['colors'] = selected_colors
 
+        if kre8dict["artributes"][4] == "Chicken":
+            artribute_dict['size_scale'] = 0.2
+        elif kre8dict["artributes"][4] == "Dog":
+            artribute_dict['size_scale'] = 0.4
+        elif kre8dict["artributes"][4] == "Camel":
+            artribute_dict['size_scale'] = 0.8
+
         if kre8dict["artributes"][6] == "Pen":
             artribute_dict["accuracy"] = kre8dict["number_list"][:3]
         elif kre8dict["artributes"][6] == "Crayon":
             artribute_dict["accuracy"] = kre8dict["number_list"][3:]
+
         return artribute_dict

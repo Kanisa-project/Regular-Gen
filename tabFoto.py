@@ -45,7 +45,7 @@ class Fotoes(artstyle.Artyle):
         }
         self.setup_slider_bars(self.slider_choice_list)
         self.setup_checkbutton_choices(self.checkbutton_choice_list)
-        self.setup_text_boxes(1)
+        self.setup_text_boxes({"Shuffled": "4x4"}, start_x_cell=4)
 
     def gather_random_options(self) -> dict:
         pass

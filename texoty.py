@@ -1,5 +1,8 @@
 import random
 from tkinter import *
+from tkHyperLinkManager import HyperlinkManager
+import webbrowser
+from functools import partial
 
 import settings as s
 import texioty
@@ -40,6 +43,11 @@ class TEXOTY(Text):
             "pool": self.create_foto_line
         }
         self.set_header()
+        self.hyperlink = HyperlinkManager(self)
+
+    def priont_hyperlink(self, tex: str, link: str, line_index=END):
+        self.insert(line_index, tex, self.hyperlink.add(partial(webbrowser.open, link)))
+        self.yview(END)
 
     def set_header(self, msg="Welcome to Texioty"):
         """
@@ -118,6 +126,7 @@ class TEXOTY(Text):
         :param indent: 
         :return: 
         """
+        print(kre8dict)
         for key, value in kre8dict.items():
             self.priont_string(f'▐{key}╕')
             if isinstance(value, str):  # STRING
@@ -182,7 +191,8 @@ class TEXOTY(Text):
             for p_arg_i, p_arg_k in enumerate(command.possible_args):
                 prefix = " " * len(command.name)
                 prefix += "└" if p_arg_i == len(command.possible_args) - 1 else "├"
-                self.priont_command_colorized(prefix+p_arg_k + f"» {command.possible_args[p_arg_k]}", text_color=command.text_color, bg_color=command.bg_color)
+                self.priont_command_colorized(prefix + p_arg_k + f"» {command.possible_args[p_arg_k]}",
+                                              text_color=command.text_color, bg_color=command.bg_color)
         self.yview(END)
 
     def priont_break_line(self):
@@ -249,7 +259,7 @@ class TEXOTY(Text):
         :param flioat: The float to display.
         :return:
         """
-        leading_spaces = " " * (len(key_of_float)+1)
+        leading_spaces = " " * (len(key_of_float) + 1)
         self.priont_string(f'{leading_spaces}└{flioat}')
 
     def priont_number_list(self, number_list: list):
@@ -271,19 +281,28 @@ class TEXOTY(Text):
 
         if list_key:
             leading_spaces = " " * (len(list_key) + 1)
+        elif parent_key:
+            leading_spaces = " " * len(parent_key)
         else:
             leading_spaces = " "
 
         if list_key == "number_list":
             self.priont_string(str(f'{leading_spaces}└{items}'))
         elif parent_key:
-            extra_spaces = " " * (len(parent_key))
+            self.priont_string(parent_key + "┐")
             for item in items:
-                self.priont_string(f'{leading_spaces}{extra_spaces}└{item}')
+                prefix = "└" if items.index(item) == len(items) - 1 else "├"
+                if isinstance(item, str) and item.startswith('http'):
+                    self.priont_hyperlink("Click Me", item)
+                else:
+                    self.priont_string(f'{leading_spaces}{prefix}{item}')
         else:
             for item in items:
                 prefix = "└" if items.index(item) == len(items) - 1 else "├"
-                self.priont_string(f'{leading_spaces}{prefix}{item}')
+                if isinstance(item, str) and item.startswith('http'):
+                    self.priont_hyperlink("Click Me", item)
+                else:
+                    self.priont_string(f'{leading_spaces}{prefix}{item}')
 
     def priont_int(self, key_of_int: str, iont: int):
         """
@@ -292,7 +311,7 @@ class TEXOTY(Text):
         :param iont: Integer for displaying.
         :return:
         """
-        leading_spaces = " " * (len(key_of_int)+1)
+        leading_spaces = " " * (len(key_of_int) + 1)
         self.priont_string(f'{leading_spaces}└{iont}')
 
     def set_text_on_line(self, line_number: int, text: str):
@@ -355,3 +374,7 @@ def create_wordie_line(mstrpc_w, mstrpc_a) -> str:
     dots = random.choice('┐└┴┬├─┼┘┌')
     lines = random.choice('╚╔╩╦╠═╬')
     return f"{lines * (mstrpc_w - mstrpc_a)}{dots}{lines * mstrpc_a}"
+
+
+def hyperlink_callback(url):
+    webbrowser.open_new_tab(url)
