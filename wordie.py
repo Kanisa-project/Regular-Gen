@@ -16,8 +16,11 @@ from PIL import Image, ImageDraw, ImageFont
 from settings import *
 
 
-font_names = ["Parkinsans-Medium", "rogue", "Cookie-Regular", "berkshireswash-regular", "Akt-Medium",
-              "AguafinaScript-Regular", "Charlie", "fontello"]
+FONT_NAME = "Akt-Medium"
+font_names = ["Parkinsans-Medium", "rogue", "Cookie-Regular", "berkshireswash-regular",
+              "Akt-Medium", "AguafinaScript-Regular", "Charlie", "fontello", "CodygoonRegular-oweO0",
+              "Gisshiri-4nLDD", "Ancientsans-rvyrK", "MertalionPersonalUseOnlyReg-V4D0V", "SuboleyaRegular-qZeV1",
+              "Jemgonzademo-lgRqw", "Stars-DEa1", "MintsodaLimeGreen13X16Regular-KVvzA", "PixgamerRegular-OVD6A"]
 
 HANGMAN_TEXTMAN_LIST = ["  ╔═════╕   \n"
                         "  ║     ┇   \n"
@@ -99,7 +102,8 @@ def hangman(img: Image, artribute_dict: dict, option_dict: dict) -> Image:
     cl = artribute_dict["colors"]
     draw = ImageDraw.Draw(img)
     w, h = img.size
-    font = random.choice(font_names)
+    font = FONT_NAME
+    # print(font)
     font = ImageFont.truetype(f'{os.getcwd()}/assets/Fonts/{font}.ttf', (random.choice(width_list) + 1) * 8)
     hidden_word = phrase_to_hidden_dict(option_dict["Phrase"])
     draw.multiline_text((w // 2, h // 6), text=HANGMAN_TEXTMAN_LIST[0], font=font, fill=random.choice(cl))
@@ -228,7 +232,8 @@ def kollage(img: Image, artribute_dict: dict, area_dict: dict) -> Image:
     cl = artribute_dict["colors"]
     draw = ImageDraw.Draw(img)
     w, h = img.size
-    font = random.choice(font_names)
+    font = FONT_NAME
+    print(font)
     font = ImageFont.truetype(f'{os.getcwd()}/assets/Fonts/{font}.ttf', (random.choice(width_list) + 1) * 8)
     draw.text((random.randint(32, w - 256), random.randint(0, h // 8)), font=font, text=area_dict["Top"],
               fill=random.choice(cl))

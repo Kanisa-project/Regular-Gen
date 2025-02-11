@@ -12,6 +12,13 @@ import tabRecipe
 import tabWordie
 import tabSpirite
 import settings as s
+import texoty
+
+FONT_NAMES = ["Parkinsans-Medium", "rogue", "Cookie-Regular", "berkshireswash-regular",
+              "Akt-Medium", "AguafinaScript-Regular", "Charlie", "fontello", "CodygoonRegular-oweO0",
+              "Gisshiri-4nLDD", "Ancientsans-rvyrK", "MertalionPersonalUseOnlyReg-V4D0V", "SuboleyaRegular-qZeV1",
+              "Jemgonzademo-lgRqw", "Stars-DEa1", "MintsodaLimeGreen13X16Regular-KVvzA", "PixgamerRegular-OVD6A",
+              "Monofur-PK7og", "AnonymousPro-2O73w"]
 
 
 class ARTAY(ttk.LabelFrame):
@@ -28,6 +35,7 @@ class ARTAY(ttk.LabelFrame):
         self.IDUTC_frame = idutc_frame
         # self.mp_img = None
         self.grid_propagate(False)
+        self.txo: texoty.TEXOTY = None
 
         self.tabControl = ttk.Notebook(self, width=int(width), height=int(height))
         self.glythTab = tabGlyth.Glyther(master=self.tabControl, idutc=self.IDUTC_frame,
@@ -58,7 +66,12 @@ class ARTAY(ttk.LabelFrame):
         self.tabControl.add(self.gaimTab, text="Gaim")
         self.tabControl.add(self.meemTab, text="Meem")
         self.tabControl.grid(column=0, row=0)
-        self.texioty_commands = {}
+        self.texioty_commands = {
+            "wordie": [self.change_wordie_font, "Change wordie options and choices.",
+                       {"0-9": "Number of Wordies to make.",
+                        "font": "Select a new font for Kinvow to use."}, [], s.rgb_to_hex(s.MUSTARD_YELLOW),
+                       s.rgb_to_hex(s.DARK_SEA_GREEN)]
+        }
 
         # self.texioty_commands = {
         #     # "add_recipe": [self.add_recipe_to_tab, "Add Glyth options to the kre8dict.",
@@ -66,6 +79,14 @@ class ARTAY(ttk.LabelFrame):
         #     "glyph": [self.draw_on_kinvow, "Add Glyph options to the kre8dict.",
         #               {"0-9": "Number of Glyph to make."}, [], s.rgb_to_hex(s.BLACK), s.rgb_to_hex(s.LIGHT_GOLDENROD_YELLOW)]
         # }
+
+    def change_wordie_font(self, args: list):
+        if "font" in args:
+            self.txo.priont_list(FONT_NAMES, parent_key="Fonts--", numbered=True)
+            self.txo.master.start_question_prompt({"font_digit": ["Which font to use?", "", str(random.randint(0, 10))]},
+                                                  clear_txo=False)
+            if self.txo.master.response_dict['font_digit'][1]:
+                self.wordieTab.font_name = FONT_NAMES[int(self.txo.master.response_dict['font_digit'][1])]
 
     def draw_on_kinvow(self, num):
         pass

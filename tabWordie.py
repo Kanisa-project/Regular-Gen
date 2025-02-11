@@ -27,6 +27,7 @@ class Wordie(artstyle.Artyle):
         # Set up the name and add the possible choices.
         self.tab_name = "Wordie"
         self.idutc_frame = idutc
+        self.font_name = "Akt-Medium"
         self.wordie_choices = ["Collage", "Riddle", "Word Search", "Hangman", "Crossword"]
         self.setup_radiobutton_choices(self.wordie_choices)
         self.wordieBook = ttk.Notebook(master=self)
@@ -98,6 +99,8 @@ class Wordie(artstyle.Artyle):
         Adds the wordie type of wordie on the img provided.
         """
         # Set up the colors being used to display in the Kinvow.
+        wordie.FONT_NAME = self.font_name
+        print(wordie.FONT_NAME, " = ", self.font_name)
         artribute_dict = self.set_artributes(kre8dict)
         if kre8dict["wordie"]["type"] == 0:
             kre8dict["wordie"]["type"] = "Collage"

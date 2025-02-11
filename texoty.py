@@ -1,5 +1,10 @@
+import os
 import random
+import tkinter.font
 from tkinter import *
+
+# import pyglet
+
 from tkHyperLinkManager import HyperlinkManager
 import webbrowser
 from functools import partial
@@ -44,6 +49,11 @@ class TEXOTY(Text):
         }
         self.set_header()
         self.hyperlink = HyperlinkManager(self)
+        # pyglet.font.add_file(f'{os.getcwd()}/assets/Fonts/AnonymousPro-2O73w.ttf')
+        # pyglet.font.add_file(f'{os.getcwd()}/assets/Fonts/MintsodaLimeGreen13X16Regular-KVvzA.ttf')
+        # pyglet.font.add_file(f'{os.getcwd()}/assets/Fonts/Monofur-PK7og.ttf')
+        #
+        # self.configure(font=("MintsodaLimeGreen13X16Regular-KVvzA", 10))
 
     def priont_hyperlink(self, tex: str, link: str, line_index=END):
         self.insert(line_index, tex, self.hyperlink.add(partial(webbrowser.open, link)))
@@ -270,13 +280,14 @@ class TEXOTY(Text):
         """
         self.priont_string(str(number_list))
 
-    def priont_list(self, items: list, list_key=None, parent_key=None):
+    def priont_list(self, items: list, list_key=None, parent_key=None, numbered=False):
         """
         Display a list of items on texoty, each item in the list on its own line.
 
         @param items:
         @param list_key:
         @param parent_key:
+        @param numbered:
         """
 
         if list_key:
@@ -292,17 +303,19 @@ class TEXOTY(Text):
             self.priont_string(parent_key + "┐")
             for item in items:
                 prefix = "└" if items.index(item) == len(items) - 1 else "├"
+                if numbered:
+                    prefix = str(items.index(item)) + prefix
                 if isinstance(item, str) and item.startswith('http'):
                     self.priont_hyperlink("Click Me", item)
                 else:
                     self.priont_string(f'{leading_spaces}{prefix}{item}')
-        else:
-            for item in items:
-                prefix = "└" if items.index(item) == len(items) - 1 else "├"
-                if isinstance(item, str) and item.startswith('http'):
-                    self.priont_hyperlink("Click Me", item)
-                else:
-                    self.priont_string(f'{leading_spaces}{prefix}{item}')
+        # else:
+        #     for item in items:
+        #         prefix = "└" if items.index(item) == len(items) - 1 else "├"
+        #         if isinstance(item, str) and item.startswith('http'):
+        #             self.priont_hyperlink("Click Me", item)
+        #         else:
+        #             self.priont_string(f'{leading_spaces}{prefix}{item}')
 
     def priont_int(self, key_of_int: str, iont: int):
         """

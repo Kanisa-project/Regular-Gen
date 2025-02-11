@@ -18,8 +18,8 @@ import rtabSauces
 import rtabSeasonings
 import rtabSoups
 
-akt16 = ImageFont.truetype(os.getcwd() + "/assets/Fonts/Akt-Medium.ttf", 16)
-akt32 = ImageFont.truetype(os.getcwd() + "/assets/Fonts/Akt-Medium.ttf", 32)
+# akt16 = ImageFont.truetype(os.getcwd() + "/assets/Fonts/Akt-Medium.ttf", 16)
+# akt32 = ImageFont.truetype(os.getcwd() + "/assets/Fonts/Akt-Medium.ttf", 32)
 
 
 class AlaNFT(artstyle.Artyle):

@@ -30,6 +30,8 @@ def set_masterpiece_size(image_size: str) -> (int, int):
         size = (500, 700)
     elif image_size == "banner":
         size = (1500, 500)
+    elif image_size == "pen":
+        size = (64, 64)
     return size
 
 

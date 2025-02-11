@@ -73,7 +73,7 @@ class Fotoes(artstyle.Artyle):
         """Add a single foto"""
         self.use_data_dict = self.IDUTC_frame.kre8dict
         x = ""
-        rn = random.randint(0, 29)
+        rn = random.randint(0, 9)
         orientation = random.choice(["landscape", "landscape"])
         if self.use_data_dict["artributes"][0] == "Random":
             x = f'/assets/Fotoes/OG/{orientation}{rn}.jpg'
@@ -86,7 +86,7 @@ class Fotoes(artstyle.Artyle):
         """Add a second foto"""
         self.use_data_dict = self.IDUTC_frame.kre8dict
         x = ""
-        rn = random.randint(0, 29)
+        rn = random.randint(0, 9)
         orientation = random.choice(["landscape", "landscape"])
         if self.use_data_dict["artributes"][0] == "Random":
             x = f'/assets/Fotoes/OG/{orientation}{rn}.jpg'

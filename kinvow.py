@@ -79,7 +79,8 @@ class KINVOW(ttk.LabelFrame):
                                'meem': self.artay.meemTab.gather_meem_options,
                                "banner": print,
                                "tile": print,
-                               "avatar": print
+                               "avatar": print,
+                               "pen": print
                                }
 
         # Cycle through each kommand argument to collect which options from which artyles.
@@ -87,7 +88,7 @@ class KINVOW(ttk.LabelFrame):
         size = (64, 64)
         for mstr_pce in args:
             print(args)
-            if mstr_pce in ["banner", "tile", "avatar"]:
+            if mstr_pce in ["banner", "tile", "avatar", 'pen']:
                 print(mstr_pce)
                 size_type = mstr_pce
                 # kre8dict[mstr_pce].remove(mstr_pce)

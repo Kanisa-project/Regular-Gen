@@ -15,6 +15,7 @@ FACE_DOWN_TEMPLATE = "╔╦╦╦╗\n" \
                      "╠╬╬╬╣\n" \
                      "╚╩╩╩╝\n"
 
+DIE_TEMPLATE = "⚀ ⚁ ⚂ ⚃ ⚄ ⚅"
 dealer_hand_value = 0
 
 

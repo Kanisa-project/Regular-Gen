@@ -93,6 +93,7 @@ class TEXIOTY(tk.LabelFrame):
         self.texity.grid(column=0, row=1)
         self.texo_w = self.texoty.texoty_w
         self.in_questionnaire_mode = False
+        self.response_dict = {}
 
         self.texity.focus_set()
         self.texity.bind('<KP_Enter>', lambda e: self.process_command())
@@ -287,14 +288,16 @@ class TEXIOTY(tk.LabelFrame):
         else:
             self.texoty.priont_string("⦓⦙ " + s.random_loading_phrase())
 
-    def start_question_prompt(self, question_dict: dict):
+    def start_question_prompt(self, question_dict: dict, clear_txo=True):
         """
         Checks if Textioty is already in a questionnaire prompt. If not, sets up the first question and starts the
         prompt to receive answers. Anything typed and sent in Texity will be saved as answers for the prompt questions.
-        :param question_dict: Dictionary of questions, consider making a dataclass.
+        @param clear_txo:
+        @param question_dict: Dictionary of questions, consider making a dataclass.
         :return:
         """
-        self.texoty.clear_add_header()
+        if clear_txo:
+            self.texoty.clear_add_header()
         if not self.in_questionnaire_mode:
             self.question_prompt_dict = question_dict
             self.question_keys = list(question_dict.keys())
@@ -310,14 +313,16 @@ class TEXIOTY(tk.LabelFrame):
         if self.current_question_index < len(self.question_keys):
             question_key = self.question_keys[self.current_question_index]
             question = self.question_prompt_dict[question_key][0]
-            self.texoty.priont_string(question)
+            self.texoty.priont_string(question + f"   [{self.question_prompt_dict[question_key][2]}]")
         else:
-            self.end_question_prompt(self.question_prompt_dict)
+            return self.end_question_prompt(self.question_prompt_dict)
 
-    def end_question_prompt(self, question_dict: dict):
+    def end_question_prompt(self, question_dict: dict) -> dict:
         self.texoty.priont_string("Prompt ended, here are the results: ")
         self.texoty.priont_dict(question_dict)
         self.in_questionnaire_mode = False
+        self.response_dict = question_dict
+        return question_dict
 
     def log_profile_in(self, args):
         """Check args[0] for a username and args[1] for a password. Logs in a profile if a match."""
