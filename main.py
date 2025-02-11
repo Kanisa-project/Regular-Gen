@@ -174,7 +174,7 @@ class SpotLighter(tk.LabelFrame):
 
 if __name__ == '__main__':
     root = tk.Tk()
-    root.title('kanisaGen - v0.16.01')
+    root.title('kanisaGen - v0.16.08')
 
     # ~~ ALLOW FOR FULLSCREEN HERE
     # root.attributes("-fullscreen", True)

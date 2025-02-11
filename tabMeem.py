@@ -7,10 +7,10 @@ from PIL import Image
 import artstyle
 
 SENSES = ["see", "pick up", "eat", "sniff", "hear", "reach for"]
-PHYS_OBJ = ["t-shirt", "glove", "apple", "egg", "cricket", "mouse"]
-COMPL = ["dripping", "spinning", "wrapped", "covered", "rolling", "squeezing"]
-EMENT = ["honey", "newspaper", "cinnamon bark", "coffee", "pebbles"]
-QUANTITY = ["a", "some"]
+PHYS_OBJ = ["t-shirt", "glove", "apple", "egg", "cricket", "bag", "slug", "eraser"]
+COMPL = ["dripping", "spinning", "wrapped", "covered", "rolling", "squeezing", "dancing", "baked"]
+EMENT = ["honey", "newspaper", "napkin", "coffee", "pebbles"]
+QUANTITY = ["a", "some", "about"]
 
 
 class Meem(artstyle.Artyle):
@@ -47,13 +47,17 @@ class Meem(artstyle.Artyle):
         rand_compl = random.choice(COMPL)
         rand_ement = random.choice(EMENT)
         rand_quant = random.choice(QUANTITY)
-        comp_subj = "it"
+        comp_subj = "it's"
         if rand_quant == "a" and rand_obj[0] in ['a', 'e', 'i', 'o', 'u']:
             rand_quant += "n"
         if rand_quant == "some":
             rand_obj += 's'
             comp_subj = "they"
+        if rand_quant == "about":
+            rand_quant += f" {random.randint(0, 14)}"
+            comp_subj = "they"
+            rand_obj += 's'
         rand_top = f"When you {rand_sense} {rand_quant} {rand_obj}"
-        rand_bot = f"{random.choice(['but', 'and'])} {comp_subj} started {rand_compl} in {rand_ement}"
+        rand_bot = f"{random.choice(['but', 'and'])} {comp_subj} {rand_compl} in {rand_ement}"
         self.textbox_dict["Top"][0].set(rand_top)
         self.textbox_dict["Bottom"][0].set(rand_bot)

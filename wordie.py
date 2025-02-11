@@ -19,7 +19,7 @@ from settings import *
 FONT_NAME = "Akt-Medium"
 font_names = ["Parkinsans-Medium", "rogue", "Cookie-Regular", "berkshireswash-regular",
               "Akt-Medium", "AguafinaScript-Regular", "Charlie", "fontello", "CodygoonRegular-oweO0",
-              "Gisshiri-4nLDD", "Ancientsans-rvyrK", "MertalionPersonalUseOnlyReg-V4D0V", "SuboleyaRegular-qZeV1",
+              "Gisshiri-4nLDD", "SuboleyaRegular-qZeV1",
               "Jemgonzademo-lgRqw", "Stars-DEa1", "MintsodaLimeGreen13X16Regular-KVvzA", "PixgamerRegular-OVD6A"]
 
 HANGMAN_TEXTMAN_LIST = ["  ╔═════╕   \n"
