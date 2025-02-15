@@ -52,7 +52,7 @@ class Wordie(artstyle.Artyle):
         for c in self.optionmenu_dict:
             self.optionmenu_dict[c][1].destroy()
 
-    def gather_wordie_options(self) -> dict:
+    def gather_wordie_options(self, command_arg='') -> dict:
         """
         Gather and return a dictionary of wordie options, such as the type of art it is. Hangman, poem, random sentence
         generator. Along with the phrase for hangman or list of words in a word search or crossword.
@@ -64,24 +64,58 @@ class Wordie(artstyle.Artyle):
             chosen_wordie_options["Collage"] = {}
             for i, word in enumerate(self.collageTab.textbox_dict):
                 chosen_wordie_options["Collage"][word] = self.collageTab.textbox_dict[word][0].get()
-        if self.radiobutton_dict["Riddle"][0].get() == 1:
+        elif self.radiobutton_dict["Riddle"][0].get() == 1:
             chosen_wordie_options["Riddle"] = {}
             for i, word in enumerate(self.riddleTab.textbox_dict):
                 chosen_wordie_options["Riddle"][word] = self.riddleTab.textbox_dict[word][0].get()
-        if self.radiobutton_dict["Word Search"][0].get() == 2:
+        elif self.radiobutton_dict["Word Search"][0].get() == 2:
             chosen_wordie_options["Word Search"] = {}
             for i, word in enumerate(self.wordsearchTab.textbox_dict):
                 chosen_wordie_options["Word Search"][str(i)] = self.wordsearchTab.textbox_dict[word][0].get()
-        if self.radiobutton_dict["Hangman"][0].get() == 3:
+        elif self.radiobutton_dict["Hangman"][0].get() == 3:
             chosen_wordie_options["Hangman"] = {
                 'Phrase': self.hangmanTab.textbox_dict["Phrase"][0].get(),
                 'Max Guesses': self.hangmanTab.max_guesses
             }
-        if self.radiobutton_dict["Crossword"][0].get() == 4:
+        elif self.radiobutton_dict["Crossword"][0].get() == 4:
             chosen_wordie_options["Crossword"] = {
                 "Across": self.crosswordTab.across_hint_dict,
                 "Down": self.crosswordTab.down_hint_dict
             }
+
+        return chosen_wordie_options
+
+    def command_wordie_options(self, command_arg: str) -> dict:
+        """
+        Gather and return a dictionary of wordie options, such as the type of art it is. Hangman, poem, random sentence
+        generator. Along with the phrase for hangman or list of words in a word search or crossword.
+        """
+        chosen_wordie_options = {
+            "type": command_arg.title()
+        }
+        if command_arg == "collage":
+            chosen_wordie_options["Collage"] = {}
+            for i, word in enumerate(self.collageTab.textbox_dict):
+                chosen_wordie_options["Collage"][word] = self.collageTab.textbox_dict[word][0].get()
+        if command_arg == "riddle":
+            chosen_wordie_options["Riddle"] = {}
+            for i, word in enumerate(self.riddleTab.textbox_dict):
+                chosen_wordie_options["Riddle"][word] = self.riddleTab.textbox_dict[word][0].get()
+        if command_arg == "word_search":
+            chosen_wordie_options["Word Search"] = {}
+            for i, word in enumerate(self.wordsearchTab.textbox_dict):
+                chosen_wordie_options["Word Search"][str(i)] = self.wordsearchTab.textbox_dict[word][0].get()
+        if command_arg == "hangman":
+            chosen_wordie_options["Hangman"] = {
+                'Phrase': self.hangmanTab.textbox_dict["Phrase"][0].get(),
+                'Max Guesses': self.hangmanTab.max_guesses
+            }
+        if command_arg == "crossword":
+            chosen_wordie_options["Crossword"] = {
+                "Across": self.crosswordTab.across_hint_dict,
+                "Down": self.crosswordTab.down_hint_dict
+            }
+
         return chosen_wordie_options
 
     def gather_random_options(self) -> dict:
@@ -100,7 +134,7 @@ class Wordie(artstyle.Artyle):
         """
         # Set up the colors being used to display in the Kinvow.
         wordie.FONT_NAME = self.font_name
-        print(wordie.FONT_NAME, " = ", self.font_name)
+        # print(wordie.FONT_NAME, " = ", self.font_name)
         artribute_dict = self.set_artributes(kre8dict)
         if kre8dict["wordie"]["type"] == 0:
             kre8dict["wordie"]["type"] = "Collage"

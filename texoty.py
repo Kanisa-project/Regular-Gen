@@ -41,13 +41,12 @@ class TEXOTY(Text):
             "wordie": create_wordie_line,
             # "foto": self.create_foto_line
         }
-        self.new_something_dict = {
-            "miner": create_glyth_line,
-            "owner": create_glyph_line,
-            "tech": create_wordie_line,
-            "pool": self.create_foto_line
-        }
-        self.set_header()
+        # self.new_something_dict = {
+        #     "miner": create_glyth_line,
+        #     "owner": create_glyph_line,
+        #     "tech": create_wordie_line,
+        #     "pool": self.create_foto_line
+        # }
         self.hyperlink = HyperlinkManager(self)
         # pyglet.font.add_file(f'{os.getcwd()}/assets/Fonts/AnonymousPro-2O73w.ttf')
         # pyglet.font.add_file(f'{os.getcwd()}/assets/Fonts/MintsodaLimeGreen13X16Regular-KVvzA.ttf')
@@ -94,15 +93,14 @@ class TEXOTY(Text):
     def make_text_colored(self, fg_color, bg_color, start_index, end_index):
         self.tag_configure(f"{fg_color}_{bg_color}", background=bg_color, foreground=fg_color)
         self.tag_add(f"{fg_color}_{bg_color}", start_index, end_index)
-        # self.tag_ranges(f'{fg_color}_{bg_color}')
-        # self.tag_delete(f'{fg_color}_{bg_color}', '1.5', END)
 
-    def create_masterpiece(self, *args):
+    def create_from_masterpiece(self, args):
         """
         Adds an artistic frame around the Texoty textuality.
         :param args: 
         :return: 
         """
+        self.clear_no_header()
         size = (35, 20)
         mstrpc_w = size[0]
         mstrpc_h = size[1]
@@ -114,7 +112,7 @@ class TEXOTY(Text):
                 self.priont_string(f"{'╚'}{'═' * (self.texoty_w - 2)}{'╝'}")
             elif mstrpc_h >= th >= self.texoty_h - mstrpc_h:
                 mstrpc_a += 1
-                mstrpc_str = self.artay_method_dict[random.choice(*args)](mstrpc_w, mstrpc_a)
+                mstrpc_str = self.artay_method_dict['glyth'](mstrpc_w, mstrpc_a)
                 self.priont_string(
                     f"{'║'}{' ' * (((self.texoty_w - mstrpc_w) // 2) - 1)}{mstrpc_str}{' ' * (((self.texoty_w - mstrpc_w) // 2) - 2)}{'║'}")
             else:
@@ -123,7 +121,8 @@ class TEXOTY(Text):
     def clear_add_header(self, header_msg=""):
         """ Clear Texoty display and replace the header. """
         self.delete("0.0", 'end')
-        self.set_header()
+        self.set_header(header_msg)
+        # self.set_header('THIS THE ONE')
 
     def clear_no_header(self):
         """ Clear Texoty display and do not replace the header. """
@@ -190,7 +189,7 @@ class TEXOTY(Text):
         :param command:
         :return:
         """
-        self.priont_break_line()
+        # self.priont_break_line()
         self.priont_command_colorized(f'{command.name}╕', command.text_color, command.bg_color)
         if not command.possible_args:
             help_message_text = f'{" " * len(command.name)}╘► {command.help_message}'
@@ -201,7 +200,7 @@ class TEXOTY(Text):
             for p_arg_i, p_arg_k in enumerate(command.possible_args):
                 prefix = " " * len(command.name)
                 prefix += "└" if p_arg_i == len(command.possible_args) - 1 else "├"
-                self.priont_command_colorized(prefix + p_arg_k + f"» {command.possible_args[p_arg_k]}",
+                self.priont_command_colorized(prefix + p_arg_k + f" » {command.possible_args[p_arg_k]}",
                                               text_color=command.text_color, bg_color=command.bg_color)
         self.yview(END)
 
@@ -218,14 +217,18 @@ class TEXOTY(Text):
             break_line += random.choice('═─')
         self.insert(END, f"\n╫{break_line}╫", 'break_line')
 
-    def priont_string(self, striong: str, line_index=END):
+    def priont_string(self, striong: str, link_text="Click me!", line_index=END):
         """
         Display a string of text at line_index.
 
         @param line_index: Index of where on the line to insert text.
         @param striong: String to display.
+        @param link_text:
         """
-        self.insert(line_index, "\n" + striong)
+        if striong.startswith("http"):
+            self.priont_hyperlink(link_text, striong, line_index=line_index)
+        else:
+            self.insert(line_index, "\n" + striong)
         self.yview(END)
 
     def priont_echo(self, striong: str, text_color='', bg_color=''):
@@ -255,7 +258,8 @@ class TEXOTY(Text):
         """
         tag_name = f'{bg_color}_{text_color}'
         self.tag_configure(tag_name, foreground=text_color, background=bg_color)
-        start_pos = f'1.0'
+        # start_pos = f'1.0'
+        start_pos = f'0.0'
         end_pos = f'1.{len(striong)}'
         self.tag_add(tag_name, start_pos, end_pos)
         self.insert(END, striong, tag_name)
@@ -308,14 +312,14 @@ class TEXOTY(Text):
                 if isinstance(item, str) and item.startswith('http'):
                     self.priont_hyperlink("Click Me", item)
                 else:
+                    self.priont_string(f'{leading_spaces[len(str(items.index(item))):]}{prefix}{item}')
+        else:
+            for item in items:
+                prefix = "└" if items.index(item) == len(items) - 1 else "├"
+                if isinstance(item, str) and item.startswith('http'):
+                    self.priont_hyperlink("Click Me", item)
+                else:
                     self.priont_string(f'{leading_spaces}{prefix}{item}')
-        # else:
-        #     for item in items:
-        #         prefix = "└" if items.index(item) == len(items) - 1 else "├"
-        #         if isinstance(item, str) and item.startswith('http'):
-        #             self.priont_hyperlink("Click Me", item)
-        #         else:
-        #             self.priont_string(f'{leading_spaces}{prefix}{item}')
 
     def priont_int(self, key_of_int: str, iont: int):
         """

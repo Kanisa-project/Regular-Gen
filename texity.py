@@ -41,8 +41,7 @@ class TEXITY(tk.Entry):
         return text_input.split()
 
     def parse_diary_line(self) -> str:
-        text_input = self.command_string_var.get()
-        return text_input
+        return self.command_string_var.get()
 
     def parse_question_response(self) -> str:
         """

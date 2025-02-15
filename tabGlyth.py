@@ -113,3 +113,11 @@ class Glyther(artstyle.Artyle):
     def select_random(self):
         for option in self.checkbutton_choice_list:
             self.checkbutton_dict[option][0].set(random.randint(0, 1))
+
+    def command_glyth_options(self, command_arg) -> list:
+        chosen_glyth_options = []
+        if isinstance(command_arg, str):
+            for i in range(int(command_arg)):
+                option = random.choice(self.checkbutton_choice_list)
+                chosen_glyth_options.append(option)
+        return chosen_glyth_options

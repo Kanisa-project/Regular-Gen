@@ -183,8 +183,11 @@ class Artyle(ttk.Frame):
                     selected_colors.append(PUNCTUATION_COLORS[ltr.lower()])
         elif kre8dict["artributes"][2] == "Cloud":
             shadelvl = 255 // len(kre8dict["use_id"])
-            for i in range(len(kre8dict["use_id"])):
+            selected_colors.append((0, 0, 0))
+            for i in range(len(kre8dict["use_id"])-2):
                 selected_colors.append(((i + 1) * shadelvl, (i + 1) * shadelvl, (i + 1) * shadelvl))
+            selected_colors.append((255, 255, 255))
+        print("COLORS: ", selected_colors)
         artribute_dict['colors'] = selected_colors
 
         if kre8dict["artributes"][4] == "Chicken":

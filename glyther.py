@@ -3,23 +3,39 @@ import random
 from PIL import Image, ImageDraw
 import settings as s
 import math
+
+
 # import numpy as np
 
 
 # import matplotlib
 
 
-def glyth_formation(img: Image, number_list: list, color_list: list) -> Image:
+def glyth_formation(img: Image, artribute_dict: dict) -> Image:
     """
     Basic glyth formation to add to an image.
     """
-    name: str
-    filter_function: callable
-    w, h = img.size
+    width_list = artribute_dict["accuracy"]
+    cl = artribute_dict["colors"]
     draw = ImageDraw.Draw(img)
-    print((w, h), number_list, color_list)
-    for i in range(number_list[9]):
-        draw.line((w // (i + 1), h // (i + 1)), fill="blue", width=6)
+    w, h = img.size
+    center = h // 2
+    x_increment = random.choice(width_list) + 2
+    # WIDTH STRETCH
+    x_factor = random.choice(width_list)
+    # HEIGHT STRETCH
+    y_amplitude = random.randint(-10, 10)
+    lt = random.choice(width_list)
+    if lt == 0:
+        lt += 1
+    sine_list = []
+    for y in range(-15, 15):
+        for x in range(-h, h):
+            y_amplitude += .001 * lt
+            sine_list.append(x * x_increment)
+            sine_list.append(int(math.cos(x * x_factor) * y_amplitude) + center)
+            # sine_list.append(int(math.sin(x * x_factor) * y_amplitude) + center)
+    draw.line(sine_list, random.choice(cl))
     return img
 
 
@@ -148,6 +164,7 @@ def waves(img: Image, artribute_dict: dict) -> Image:
 
 
 def flame(img: Image, artribute_dict: dict) -> Image:
+    # TODO Implement segmented_line_run, lsystem or plan_angled_line
     width_list = artribute_dict["accuracy"]
     cl = artribute_dict["colors"]
     draw = ImageDraw.Draw(img)
@@ -160,6 +177,7 @@ def flame(img: Image, artribute_dict: dict) -> Image:
 
 
 def pebbles(img: Image, artribute_dict: dict) -> Image:
+    # TODO Implement segmented_line_run, lsystem or plan_angled_line
     width_list = artribute_dict["accuracy"]
     cl = artribute_dict["colors"]
     draw = ImageDraw.Draw(img)
@@ -183,6 +201,7 @@ def pebbles(img: Image, artribute_dict: dict) -> Image:
 
 
 def grid(img: Image, artribute_dict: dict) -> Image:
+    # TODO Implement segmented_line_run, lsystem or plan_angled_line
     width_list = artribute_dict["accuracy"]
     cl = artribute_dict["colors"]
     draw = ImageDraw.Draw(img)
@@ -195,46 +214,47 @@ def grid(img: Image, artribute_dict: dict) -> Image:
     return img
 
 
-def llines(img: Image, artribute_dict: dict) -> Image:
-    width_list = artribute_dict["accuracy"]
-    cl = artribute_dict["colors"]
-    draw = ImageDraw.Draw(img)
-    w, h = img.size
-    prev_point = (w // 2, h // 2, w // 128, h // 2)
-    prev_width = 1
-    prev_color = (0, 0, 0)
-    str_axiom = list(f"llinness".join('genurary'))
-    # str_axiom.append(str_axiom)
-    random.shuffle(str_axiom)
-    print(str_axiom)
-    # str_axiom = random.choice(artribute_dict['use_id']) + str(random.choice(nl)) + artribute_dict['use_id']
-    # str_axiom += random.choice(artribute_dict['use_id']) + artribute_dict['use_id'] + str(random.choice(nl))
-    rooz = lsystem_string_maker(''.join(str_axiom), s.MORSE_CODE_AXIOMS, 3)
-    # roost = lsystem_rule_parser(rooz, start_color=s.RANDOM_COLOR2)
-    roost = lsystem_morse_coder(rooz, start_color=s.RANDOM_COLOR2)
-    for roo in roost:
-        # print("roo:", roo)
-        line_points = (roo[0][0], roo[0][1], roo[0][2], roo[0][3])
-        width = roo[1]
-        color = roo[2]
-        draw.line(line_points, fill=color, width=width)
-        for i in range(1, 9):
-            offset = i * 32
-            if w - offset <= offset or h - offset <= offset:
-                break
-            ellipse_coordinates = (roo[0][0], roo[0][1], w - offset, h - offset)
-            draw.ellipse(ellipse_coordinates, outline=random.choice(cl), width=random.choice(nl))
-            ellipse_coordinates = (-roo[0][2], -roo[0][3], (w - offset) / 2, (h - offset) / 2)
-            draw.ellipse(ellipse_coordinates, outline=random.choice(cl), width=random.choice(nl))
-        # draw.line((point[2], point[3], prev_point[1], prev_point[0]), fill=prev_color, width=prev_width)
-        # draw.line((point[0], point[1], prev_point[0], prev_point[1]), fill=prev_color, width=prev_width)
-        prev_point = line_points
-        prev_width = width
-        prev_color = color
-    return img
+# def llines(img: Image, artribute_dict: dict) -> Image:
+#     width_list = artribute_dict["accuracy"]
+#     cl = artribute_dict["colors"]
+#     draw = ImageDraw.Draw(img)
+#     w, h = img.size
+#     prev_point = (w // 2, h // 2, w // 128, h // 2)
+#     prev_width = 1
+#     prev_color = (0, 0, 0)
+#     str_axiom = list(f"llinness".join('genurary'))
+#     # str_axiom.append(str_axiom)
+#     random.shuffle(str_axiom)
+#     print(str_axiom)
+#     # str_axiom = random.choice(artribute_dict['use_id']) + str(random.choice(nl)) + artribute_dict['use_id']
+#     # str_axiom += random.choice(artribute_dict['use_id']) + artribute_dict['use_id'] + str(random.choice(nl))
+#     rooz = lsystem_string_maker(''.join(str_axiom), s.MORSE_CODE_AXIOMS, 3)
+#     # roost = lsystem_rule_parser(rooz, start_color=s.RANDOM_COLOR2)
+#     roost = lsystem_morse_coder(rooz, start_color=s.RANDOM_COLOR2)
+#     for roo in roost:
+#         # print("roo:", roo)
+#         line_points = (roo[0][0], roo[0][1], roo[0][2], roo[0][3])
+#         width = roo[1]
+#         color = roo[2]
+#         draw.line(line_points, fill=color, width=width)
+#         for i in range(1, 9):
+#             offset = i * 32
+#             if w - offset <= offset or h - offset <= offset:
+#                 break
+#             ellipse_coordinates = (roo[0][0], roo[0][1], w - offset, h - offset)
+#             draw.ellipse(ellipse_coordinates, outline=random.choice(cl), width=random.choice(nl))
+#             ellipse_coordinates = (-roo[0][2], -roo[0][3], (w - offset) / 2, (h - offset) / 2)
+#             draw.ellipse(ellipse_coordinates, outline=random.choice(cl), width=random.choice(nl))
+#         # draw.line((point[2], point[3], prev_point[1], prev_point[0]), fill=prev_color, width=prev_width)
+#         # draw.line((point[0], point[1], prev_point[0], prev_point[1]), fill=prev_color, width=prev_width)
+#         prev_point = line_points
+#         prev_width = width
+#         prev_color = color
+#     return img
 
 
 def smoke(img: Image, artribute_dict: dict) -> Image:
+    # TODO Implement segmented_line_run, lsystem or plan_angled_line
     width_list = artribute_dict["accuracy"]
     cl = artribute_dict["colors"]
     draw = ImageDraw.Draw(img)

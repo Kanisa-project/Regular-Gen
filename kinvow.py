@@ -43,8 +43,18 @@ class KINVOW(ttk.LabelFrame):
         # Start setup of Texioty.
         self.txo: texoty.TEXOTY = None
         self.texioty_commands = {
-            "kin8": [self.create_masterpiece, "Create a masterpiece on Kinvow.",
-                     {}, [], s.rgb_to_hex(s.BLACK), s.rgb_to_hex(s.LIGHT_GOLDENROD_YELLOW)],
+            "kin8": [self.create_from_masterpiece, "Create a masterpiece on Kinvow.",
+                     {
+                         "glyth": "Gather glyth options and create something on Kinvow.",
+                         "glyph": "Gather glyph options and create something on Kinvow.",
+                         "wordie": "Gather wordie options and create something on Kinvow.",
+                         "spirite": "Gather spirite options and create something on Kinvow.",
+                         "recipe": "Gather recipe options and create something on Kinvow.",
+                         "foto": "Gather foto options and create something on Kinvow.",
+                         "mujic": "Gather mujic options and create something on Kinvow.",
+                         "gaim": "Gather gaim options and create something on Kinvow.",
+                         "meem": "Gather meem options and create something on Kinvow."
+                     }, [], s.rgb_to_hex(s.BLACK), s.rgb_to_hex(s.LIGHT_GOLDENROD_YELLOW)],
             "kre8dict": [self.priont_kre8dict, "Show the creationary dictionary.",
                          {}, [], s.rgb_to_hex(s.BLACK), s.rgb_to_hex(s.LIGHT_GOLDENROD_YELLOW)]
         }
@@ -55,11 +65,18 @@ class KINVOW(ttk.LabelFrame):
         :param args:
         :return:
         """
-        self.txo.clear_add_header()
+        self.txo.clear_add_header("kre8dict")
         self.txo.priont_kre8dict(self.idutc.kre8dict)
         # self.txo.priont_dict(self.idutc.kre8dict)
 
-    def create_masterpiece(self, args):
+    def starter_image(self, size_type="full_canvas"):
+        if size_type == 'full_canvas':
+            size = (int(self.canvas_w) + 1, int(self.canvas_h) + 1)  # FULL CANVAS
+        else:
+            size = s.set_masterpiece_size(size_type)
+        return Image.new("RGBA", size, s.DRS_PURPLE)
+
+    def create_from_masterpiece(self, args):
         """
         Create a masterpiece inside Kinvow with the selected options from the artyles selected by the kommand
         being used in Texoty.
@@ -80,46 +97,42 @@ class KINVOW(ttk.LabelFrame):
                                "banner": print,
                                "tile": print,
                                "avatar": print,
-                               "pen": print
-                               }
+                               "pen": print}
 
         # Cycle through each kommand argument to collect which options from which artyles.
         size_type = "tile"
-        size = (64, 64)
-        for mstr_pce in args:
-            print(args)
-            if mstr_pce in ["banner", "tile", "avatar", 'pen']:
-                print(mstr_pce)
-                size_type = mstr_pce
-                # kre8dict[mstr_pce].remove(mstr_pce)
-            if kre8dict['artributes'][0] == "Random":
-                size = s.set_masterpiece_size(kre8dict['artributes'][4])  # ANIMAL CANVAS
-            elif kre8dict['artributes'][0] == "Human":
-                size = (int(self.canvas_w) + 1, int(self.canvas_h) + 1)  # FULL CANVAS
-            else:
-                size = s.set_masterpiece_size(size_type)
-            kre8dict[mstr_pce] = gather_options_dict[mstr_pce]()
-
-        # Set the size of a new image to put the final masterpiece.
-        # size = (int(self.canvas_w) + 1, int(self.canvas_h) + 1) #FULL CANVAS
-        # size = s.set_masterpiece_size(kre8dict['artributes'][4]) #ANIMAL CANVAS
-        # size = s.set_masterpiece_size(size_type)
-        nim = Image.new("RGBA", size, s.DRS_PURPLE)
-
-        # As long as there is at least one artyle, add the options of each artyle on the new image.
-        if len(kre8dict) >= 1:
-            self.create_artyles(nim, kre8dict, size_type, args)
-            # Start creating the save path
+        if len(args) == 0:
+            nim = self.starter_image(kre8dict['artributes'][4])
+            self.create_artyles(nim, kre8dict, size_type, list(kre8dict.keys()))
+            save_name = kre8dict['use_id']
+            save_path = f"{kre8dict['use_id']}/{save_name}.png"
+            for c in save_path:
+                if c in "?!&":
+                    save_path = save_path.replace(c, "")
+            nim.save(save_path)
+        else:
+            nim = self.starter_image()
+            for artyle in args:
+                print(artyle)
+                kre8dict[artyle] = gather_options_dict[artyle]()
+            self.create_artyles(nim, kre8dict, size_type, list(kre8dict.keys()))
             save_name = "_".join(args)
             save_path = f"{kre8dict['use_id']}/{save_name}.png"
             for c in save_path:
                 if c in "?!&":
                     save_path = save_path.replace(c, "")
-            # Save the created image and then place it inside Kinvow and add the file path to the kre8dict.
             nim.save(save_path)
-            self.kinvow_img = PhotoImage(file=save_path)
-            self.use_canvas.create_image(self.canvas_w // 2, self.canvas_h // 2, image=self.kinvow_img)
-            kre8dict["file_path"] = save_path
+        kre8dict["file_path"] = save_path
+        self.display_on_kinvow(save_path)
+
+    def display_on_kinvow(self, save_path):
+        """
+        Displays whatever the save_path is pointing to.
+        :param save_path: Needs to be an image.
+        :return:
+        """
+        self.kinvow_img = PhotoImage(file=save_path)
+        self.use_canvas.create_image(self.canvas_w // 2, self.canvas_h // 2, image=self.kinvow_img)
 
     def create_artyles(self, nim, kre8dict, abt, args):
         """

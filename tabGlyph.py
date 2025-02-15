@@ -21,7 +21,7 @@ class Glyphin(artstyle.Artyle):
         # self.radiobutton_choice_list = ["masterpiece", "Avatar", "Banner", "Tile"]
         self.checkbutton_choice_list = ["Square", "Round", "SlantUp", "SlantDown", "SlantLeft", "SlantRight", "Ring",
                                         "Vertical", "Horizontal", "Up", "Down", "Left", "Right", "Snow", "Scales",
-                                        "Plaid"]
+                                        "Plaid", "Emoji", "Spiral", "Whut"]
         self.selection_button_list = ["All", "None", "Random"]
         # self.tone_int_var = IntVar()
         # self.disp_img = None
@@ -59,15 +59,7 @@ class Glyphin(artstyle.Artyle):
         """
         w, h = img.size
         # bity = Image.new("RGBA", (64, 64), DRS_PURPLE)
-        selected_colors = []
-        # print(kre8dict)
-        if kre8dict["artributes"][2] == "Rainbow":
-            for ltr in kre8dict["use_id"]:
-                selected_colors.append(ALPHANUMERIC_COLORS[ltr])
-        elif kre8dict["artributes"][2] == "Cloud":
-            shadelvl = 255 // len(kre8dict["use_id"])
-            for i in range(len(kre8dict["use_id"])):
-                selected_colors.append(((i + 1) * shadelvl, (i + 1) * shadelvl, (i + 1) * shadelvl))
+        artributes = self.set_artributes(kre8dict)
         for x in range(0, w, 64):
             for y in range(0, h, 64):
                 # if len(kre8dict) == 0:
@@ -75,39 +67,43 @@ class Glyphin(artstyle.Artyle):
                 bit_type = random.choice(kre8dict["glyph"])
                 bity = Image.new("RGBA", (64, 64), DRS_PURPLE)
                 if bit_type == "Vertical":
-                    bity = glyphinator.vertical_bity(bity, selected_colors)
+                    bity = glyphinator.vertical_bity(bity, artributes)
                 if bit_type == "Horizontal":
-                    bity = glyphinator.horizontal_bity(bity, selected_colors)
+                    bity = glyphinator.horizontal_bity(bity, artributes)
                 if bit_type == "SlantUp":
-                    bity = glyphinator.slant_up_bity(bity, selected_colors)
+                    bity = glyphinator.slant_up_bity(bity, artributes)
                 if bit_type == "SlantDown":
-                    bity = glyphinator.slant_down_bity(bity, selected_colors)
+                    bity = glyphinator.slant_down_bity(bity, artributes)
                 if bit_type == "SlantLeft":
-                    bity = glyphinator.slant_left_bity(bity, selected_colors)
+                    bity = glyphinator.slant_left_bity(bity, artributes)
                 if bit_type == "SlantRight":
-                    bity = glyphinator.slant_right_bity(bity, selected_colors)
+                    bity = glyphinator.slant_right_bity(bity, artributes)
                 if bit_type == "Up":
-                    bity = glyphinator.up_bity(bity, selected_colors)
+                    bity = glyphinator.up_bity(bity, artributes)
                 if bit_type == "Down":
-                    bity = glyphinator.down_bity(bity, selected_colors)
+                    bity = glyphinator.down_bity(bity, artributes)
                 if bit_type == "Left":
-                    bity = glyphinator.left_bity(bity, selected_colors)
+                    bity = glyphinator.left_bity(bity, artributes)
                 if bit_type == "Right":
-                    bity = glyphinator.right_bity(bity, selected_colors)
+                    bity = glyphinator.right_bity(bity, artributes)
                 if bit_type == "Square":
-                    bity = glyphinator.square_bity(bity, selected_colors)
+                    bity = glyphinator.square_bity(bity, artributes)
                 if bit_type == "Round":
-                    bity = glyphinator.round_bity(bity, selected_colors)
+                    bity = glyphinator.round_bity(bity, artributes)
                 if bit_type == "Ring":
-                    bity = glyphinator.ring_bity(bity, selected_colors)
+                    bity = glyphinator.ring_bity(bity, artributes)
                 if bit_type == "Snow":
-                    bity = glyphinator.snow_bity(bity, selected_colors)
+                    bity = glyphinator.snow_bity(bity, artributes)
                 if bit_type == "Plaid":
-                    bity = glyphinator.plaid_bity(bity, selected_colors)
+                    bity = glyphinator.plaid_bity(bity, artributes)
                 if bit_type == "Emoji":
-                    bity = glyphinator.emoji_bity(bity, selected_colors)
+                    bity = glyphinator.emoji_bity(bity, artributes)
                 if bit_type == "Scales":
-                    bity = glyphinator.scales_bity(bity, selected_colors)
+                    bity = glyphinator.scales_bity(bity, artributes)
+                if bit_type == "Spiral":
+                    bity = glyphinator.spiral_bity(bity, artributes)
+                if bit_type == "Whut":
+                    bity = glyphinator.whut_bity(bity, artributes)
                 # print(bity, bit_type)
                 img.paste(bity, (x, y))
         return img
@@ -125,3 +121,6 @@ class Glyphin(artstyle.Artyle):
     def select_random(self):
         for option in self.checkbutton_choice_list:
             self.checkbutton_dict[option][0].set(random.randint(0, 1))
+
+    def command_glyph_options(self, command_arg) -> list:
+        return self.gather_random_options()

@@ -16,9 +16,10 @@ class gaimPlayer(tk.LabelFrame):
         self.inGaim = False
         self.width = width
         self.height = height
-        self.loaded_gaim = "Hangman"
+        self.loaded_gaim = ""
         self.hangman_hidden_dict = {}
         self.player_stay = False
+        self.dealer_stay = False
         self.blackjack_hand = []
         self.dealer_hand = []
         self.blackjack_value = 0
@@ -82,7 +83,7 @@ class gaimPlayer(tk.LabelFrame):
         hm.gaim_phrase = phrase
         hm.max_guesses = max_misses
         self.hangman_hidden_dict = phrase_to_hidden_dict(phrase)
-        self.txo.clear_add_header("Hangman")
+        self.txo.clear_add_header("Playing Hangman")
         self.txo.priont_string(hm.HANGMAN_TEXTMAN_LIST[0])
         self.txo.priont_string(dict_to_str(self.hangman_hidden_dict))
 
@@ -93,7 +94,7 @@ class gaimPlayer(tk.LabelFrame):
 
     def guess_play(self, args):
         if self.inGaim:
-            self.txo.clear_add_header("Hangman")
+            # self.txo.clear_add_header("Hangman")
             if len(args[0]) == 1:
                 self.hangman_hidden_dict = hm.check_hangman_letter(args[0], self.hangman_hidden_dict)
             self.txo.priont_string(hm.HANGMAN_TEXTMAN_LIST[s.clamp(len(hm.missed_letters), 0, 6)])
@@ -117,11 +118,36 @@ class gaimPlayer(tk.LabelFrame):
             self.blackjack_value += new_card[1]
         elif "stay" in args:
             self.player_stay = True
+            self.dealers_turn()
         self.display_dealer_hand()
         self.display_player_hand()
+        self.blackjack_gaimover_check()
+
+    def dealers_turn(self):
+        if self.dealer_value <= 16 and not self.dealer_stay:
+            new_card = cas.draw_a_card()
+            self.dealer_hand.append(cas.apply_card_template(new_card[0]))
+            self.dealer_value += new_card[1]
+            self.dealers_turn()
+        else:
+            self.dealer_stay = True
+            self.blackjack_gaimover_check()
+
+    def blackjack_gaimover_check(self):
+        if self.blackjack_value > 21:
+            self.txo.priont_string("Player went bust!")
+            self.black_jack_play('stay')
+        elif self.dealer_value > 21:
+            self.txo.priont_string("Dealer went bust!")
+
+        if self.player_stay and self.dealer_stay:
+            if self.dealer_value > self.blackjack_value:
+                self.txo.priont_string("Dealer has higher!")
+            elif self.dealer_value <= self.blackjack_value:
+                self.txo.priont_string("Player wins!")
 
     def display_dealer_hand(self):
-        self.txo.clear_add_header()
+        self.txo.clear_add_header("Playing Blackjack")
         if self.player_stay:
             new_card = cas.draw_a_card()
             self.dealer_hand.append(cas.apply_card_template(new_card[0]))
