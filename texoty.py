@@ -1,5 +1,6 @@
 import os
 import random
+import tkinter
 import tkinter.font
 from tkinter import *
 
@@ -33,8 +34,8 @@ class TEXOTY(Text):
         self.master: texioty.TEXIOTY = master
         self.active_profile = self.master.active_profile
         super(TEXOTY, self).__init__(master=master, bg=self.active_profile.color_theme[2], height=self.texoty_h,
-                                     width=self.texoty_w,
-                                     spacing2=0)
+                                     width=self.texoty_w, spacing2=0)
+                                     # width=self.texoty_w, spacing2=0, wrap=tkinter.WORD)
         self.artay_method_dict = {
             "glyth": create_glyth_line,
             "glyph": create_glyph_line,
@@ -86,11 +87,27 @@ class TEXOTY(Text):
         self.configure(bg=self.active_profile.color_theme[2])
 
     def set_header_theme(self, primary_color: str, secondary_color: str, len_msg: int, font_color: str = "black"):
+        """
+        Change the colors of the header, should eventually make it
+        :param primary_color: Color present in each part.
+        :param secondary_color:
+        :param len_msg: Length of the short message.
+        :param font_color: Color of font for the short message.
+        :return:
+        """
         self.make_text_colored(font_color, primary_color, f"1.0", f"1.{self.texoty_w - len_msg}")
         self.make_text_colored(secondary_color, primary_color, f"1.{self.texoty_w - len_msg}", f"1.{self.texoty_w}")
         self.make_text_colored(font_color, primary_color, f"1.{self.texoty_w}", f"1.end")
 
     def make_text_colored(self, fg_color, bg_color, start_index, end_index):
+        """
+        Apply coloring to the text.
+        :param fg_color: Color of the font.
+        :param bg_color: Color the font appears ontop of.
+        :param start_index: Beginning of coloration.
+        :param end_index: Ending of coloration.
+        :return:
+        """
         self.tag_configure(f"{fg_color}_{bg_color}", background=bg_color, foreground=fg_color)
         self.tag_add(f"{fg_color}_{bg_color}", start_index, end_index)
 
@@ -119,10 +136,13 @@ class TEXOTY(Text):
                 self.priont_string(f"{'║'}{' ' * (self.texoty_w - 2)}{'║'}")
 
     def clear_add_header(self, header_msg=""):
-        """ Clear Texoty display and replace the header. """
+        """
+        Clear Texoty display and replace the header with a message.
+        :param header_msg: Message for display
+        :return:
+        """
         self.delete("0.0", 'end')
         self.set_header(header_msg)
-        # self.set_header('THIS THE ONE')
 
     def clear_no_header(self):
         """ Clear Texoty display and do not replace the header. """
@@ -135,7 +155,6 @@ class TEXOTY(Text):
         :param indent: 
         :return: 
         """
-        print(kre8dict)
         for key, value in kre8dict.items():
             self.priont_string(f'▐{key}╕')
             if isinstance(value, str):  # STRING
@@ -183,28 +202,164 @@ class TEXOTY(Text):
                 else:
                     self.priont_dict(dioct[key], parent_key=key, indent=indent + 1)
 
-    def priont_command(self, command: texity.Command):
+    # def priont_command(self, command: texity.Command):
+    #     """
+    #     Display a command on Texoty in a stylized and slightly complicated fashion.
+    #     :param command:
+    #     :return:
+    #     """
+    #     # self.priont_break_line()
+    #     self.priont_string(f'{command.name}╕', command.bg_color, command.text_color)
+    #     # self.priont_command_colorized(f'{command.name}╕', command.text_color, command.bg_color)
+    #     if not command.possible_args:
+    #         help_message_text = f'{" " * len(command.name)}╘► {command.help_message}'
+    #         self.colorized_command_help(help_message_text, command.text_color, command.bg_color)
+    #     else:
+    #         help_message_text = f'{" " * len(command.name)}╞► {command.help_message}'
+    #         self.colorized_command_help(help_message_text, command.text_color, command.bg_color)
+    #         for p_arg_i, p_arg_k in enumerate(command.possible_args):
+    #             prefix = " " * len(command.name)
+    #             prefix += "├" if p_arg_i != len(command.possible_args) - 1 else "└"
+    #             self.colorized_command_args(prefix + p_arg_k + f" » {command.possible_args[p_arg_k]}",
+    #                                         text_color=command.bg_color, bg_color=command.text_color)
+    #     self.yview(END)
+    #
+    def priont_command(self, command: texity.Command) -> (list, list, list):
         """
         Display a command on Texoty in a stylized and slightly complicated fashion.
         :param command:
         :return:
         """
-        # self.priont_break_line()
-        self.priont_command_colorized(f'{command.name}╕', command.text_color, command.bg_color)
+        readonly_list = []
+        argsonly_list = []
+        names_list = []
+        self.priont_string(f'{command.name}╕')
         if not command.possible_args:
             help_message_text = f'{" " * len(command.name)}╘► {command.help_message}'
-            self.priont_command_colorized(help_message_text, command.text_color, command.bg_color)
+            self.priont_string(help_message_text)
         else:
             help_message_text = f'{" " * len(command.name)}╞► {command.help_message}'
-            self.priont_command_colorized(help_message_text, command.text_color, command.bg_color)
+            self.priont_string(help_message_text)
             for p_arg_i, p_arg_k in enumerate(command.possible_args):
                 prefix = " " * len(command.name)
-                prefix += "└" if p_arg_i == len(command.possible_args) - 1 else "├"
-                self.priont_command_colorized(prefix + p_arg_k + f" » {command.possible_args[p_arg_k]}",
-                                              text_color=command.text_color, bg_color=command.bg_color)
+                prefix += "├" if p_arg_i != len(command.possible_args) - 1 else "└"
+                self.priont_string(f"{prefix}{p_arg_k} » {command.possible_args[p_arg_k]}")
+                readonly_list.append(command.possible_args[p_arg_k])
+                argsonly_list.append(p_arg_k)
+        readonly_list.append(command.help_message)
+        # readonly_list.append(command.helper_type)
+        # names_list.append(command.name)
+        # self.colorize_arguments(argsonly_list, command.text_color, command.bg_color, command.helper_type)
+        # self.colorize_names(names_list, command.text_color, command.bg_color, command.helper_type)
+        self.colorize_readonly(readonly_list, command.text_color, command.bg_color, command.helper_type)
+
+        self.yview(END)
+        return readonly_list, names_list, argsonly_list
+
+    def colorize_readonly(self, read_onlys: list, text_color: str, bg_color: str, help_type: str):
+        for reading in read_onlys:
+            tag_read = f'{help_type}_{reading}_readable'
+            self.tag_configure(tag_read, foreground=text_color, background=bg_color)
+            countVar = tkinter.StringVar()
+            pos = self.search(f"{reading}", "0.0", stopindex=END, count=countVar)
+            while pos:
+                length = len(reading)
+                row, col = pos.split('.')
+                end = int(col) + length
+                end = row + '.' + str(end)
+                self.tag_add(tag_read, pos, end)
+                start = end
+                pos = self.search(reading, start, stopindex=END, exact=True)
+
+    def colorize_names(self, cmnd_names: list, text_color: str, bg_color: str, help_type: str):
+        for cmnd_name in cmnd_names:
+            tag_name = f'{help_type}_{cmnd_name}_name'
+            self.tag_configure(tag_name, foreground=bg_color, background=text_color,
+                               underline=True)
+            countVar = tkinter.StringVar()
+            pos = self.search(f"{cmnd_name}", "0.0", stopindex=END, count=countVar)
+            while pos:
+                length = len(cmnd_name)
+                row, col = pos.split('.')
+                end = int(col) + length
+                end = row + '.' + str(end)
+                self.tag_add(tag_name, pos, end)
+                start = end
+                pos = self.search(cmnd_name, start, stopindex=END, exact=True)
+
+    def colorize_arguments(self, typable_args: list, text_color: str, bg_color: str, help_type: str):
+        for typable in typable_args:
+            tag_name = f'{help_type}_{typable}_argument'
+            self.tag_configure(tag_name, foreground=bg_color, background=text_color,
+                               underline=True)
+            countVar = tkinter.StringVar()
+            pos = self.search(f"{typable}", "0.0", stopindex=END, count=countVar)
+            while pos:
+                length = len(typable)
+                row, col = pos.split('.')
+                end = int(col) + length
+                end = row + '.' + str(end)
+                self.tag_add(tag_name, pos, end)
+                start = end
+                pos = self.search(typable, start, stopindex=END, exact=True)
+
+    def colorize_command_name(self, cmnd_name: str, bg_color, text_color):
+        start = '1.0'
+        for cmnd in cmnd_names:
+            tag_name = f'{cmnd}_colorized'
+            self.tag_configure(tag_name, foreground=bg_color, background=text_color,
+                               underline=True)
+            countVar = tkinter.StringVar()
+            pos = self.search(f"{cmnd}", start, stopindex=END, count=countVar)
+            while pos:
+                length = len(cmnd)
+                row, col = pos.split('.')
+                end = int(col) + length
+                end = row + '.' + str(end)
+                self.tag_add(tag_name, pos, end)
+                start = end
+                pos = self.search(cmnd, start, stopindex=END)
+
+    # def colorize_command_names(self, cmnd_names: list, bg_color, text_color):
+    #     start = '1.0'
+    #     for cmnd in cmnd_names:
+    #         tag_name = f'{cmnd}_colorized'
+    #         self.tag_configure(tag_name, foreground=bg_color, background=text_color,
+    #                            underline=True)
+    #         countVar = tkinter.StringVar()
+    #         pos = self.search(f"{cmnd}", "0.0", stopindex=END, count=countVar)
+    #         while pos:
+    #             length = len(cmnd)
+    #             row, col = pos.split('.')
+    #             end = int(col) + length
+    #             end = row + '.' + str(end)
+    #             self.tag_add(tag_name, pos, end)
+    #             start = end
+    #             pos = self.search(cmnd, start, stopindex=END)
+
+    def colorize_command_helps(self, help_msg: str, text_color='', bg_color=''):
+        tag_name = f'{help_msg}'
+        self.tag_configure(tag_name, foreground=text_color, background=bg_color)
+        # start_pos = f'1.0'
+        start_pos = f'0.0'
+        end_pos = f'1.{len(help_msg)}'
+        self.tag_add(tag_name, start_pos, end_pos)
+        self.insert(END, help_msg, tag_name)
+        self.insert(END, '\n')
         self.yview(END)
 
-    def priont_break_line(self):
+    def colorized_command_args(self, arg_name: str, text_color='', bg_color=''):
+        tag_name = f'{bg_color}_{text_color}'
+        self.tag_configure(tag_name, foreground=text_color, background=bg_color)
+        # start_pos = f'1.0'
+        start_pos = f'0.0'
+        end_pos = f'1.{len(arg_name)}'
+        self.tag_add(tag_name, start_pos, end_pos)
+        self.insert(END, arg_name, tag_name)
+        self.insert(END, '\n')
+        self.yview(END)
+
+    def priont_break_line(self, left_text="", right_text=""):
         """
         Adds a break line in Texoty with style.
         :return:
@@ -213,9 +368,9 @@ class TEXOTY(Text):
         bg = self.active_profile.color_theme[2]
         fg = self.active_profile.color_theme[0]
         self.tag_configure('break_line', foreground=fg, background=bg)
-        for _ in range(self.texoty_w - 2):
+        for _ in range(self.texoty_w - 2 - len(left_text) - len(right_text)):
             break_line += random.choice('═─')
-        self.insert(END, f"\n╫{break_line}╫", 'break_line')
+        self.insert(END, f"\n╫{left_text}{break_line}{right_text}╫", 'break_line')
 
     def priont_string(self, striong: str, link_text="Click me!", line_index=END):
         """
@@ -260,7 +415,7 @@ class TEXOTY(Text):
         self.tag_configure(tag_name, foreground=text_color, background=bg_color)
         # start_pos = f'1.0'
         start_pos = f'0.0'
-        end_pos = f'1.{len(striong)}'
+        end_pos = f'0.{len(striong)-1}'
         self.tag_add(tag_name, start_pos, end_pos)
         self.insert(END, striong, tag_name)
         self.insert(END, '\n')
@@ -297,7 +452,7 @@ class TEXOTY(Text):
         if list_key:
             leading_spaces = " " * (len(list_key) + 1)
         elif parent_key:
-            leading_spaces = " " * len(parent_key)
+            leading_spaces = " " * (len(parent_key) + 1)
         else:
             leading_spaces = " "
 
@@ -355,6 +510,7 @@ class TEXOTY(Text):
             else:
                 start_x += 1
                 self.set_char_on_line(0, 0, f"{' ' * i}└\n")
+
 
 
 def create_glyth_line(mstrpc_w, mstrpc_a) -> str:

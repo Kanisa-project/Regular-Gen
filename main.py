@@ -4,6 +4,8 @@ import artay
 import idutc
 # import helperLRC
 import tkinter as tk
+
+import mujicPlay
 import settings as s
 import texioty
 import kinvow
@@ -13,7 +15,7 @@ import kalendar
 import gaimPlay
 
 large_widgets = ["Texioty", "Kinvow"]
-small_widgets = ["Calendar", "IDUTC", "aRtay", "Gaim Player"]
+small_widgets = ["Calendar", "IDUTC", "aRtay", "Gaim Player", "Mujic Player"]
 
 
 def start_simple_client():
@@ -45,11 +47,16 @@ class Application(tk.Frame):
         self.gaimplay_frame.txo = self.texioty_frame.texoty
         self.texioty_frame.gaim_player = self.gaimplay_frame
 
+        self.mujicplay_frame = mujicPlay.mujicPlayer(width=screen_w*.333, height=screen_h*.4, idutc_frame=self.idutc_frame)
+        self.mujicplay_frame.txo = self.texioty_frame.texoty
+        self.texioty_frame.gaim_player = self.mujicplay_frame
+
         self.texioty_frame.add_helper_widget("CLDR", self.calendar_frame)
         self.texioty_frame.add_helper_widget("IDUT", self.idutc_frame)
         self.texioty_frame.add_helper_widget("KNVO", self.kinvow_frame)
         self.texioty_frame.add_helper_widget("ARTY", self.artay_frame)
-        self.texioty_frame.add_helper_widget("PLAY", self.gaimplay_frame)
+        self.texioty_frame.add_helper_widget("GAIM", self.gaimplay_frame)
+        self.texioty_frame.add_helper_widget("MUJC", self.mujicplay_frame)
 
         self.widget_dict = {
             "Texioty": self.texioty_frame,
@@ -57,7 +64,8 @@ class Application(tk.Frame):
             "IDUTC": self.idutc_frame,
             "Kinvow": self.kinvow_frame,
             "aRtay": self.artay_frame,
-            "Gaim Player": self.gaimplay_frame
+            "Gaim Player": self.gaimplay_frame,
+            "Mujic Player": self.mujicplay_frame
         }
         self.center_frame = SpotLighter(widget_dict=self.widget_dict, width=screen_w//3, height=screen_h//4)
         self.center_frame.grid(column=1, row=1, columnspan=1, rowspan=1, padx=1, pady=1, sticky='nesw')
@@ -68,8 +76,6 @@ class Application(tk.Frame):
         self.center_frame.change_eastern_light(self.kinvow_frame)
         self.center_frame.change_southern_light(self.artay_frame)
         self.center_frame.change_northern_light(self.idutc_frame)
-
-        # self.API_helper.txo = self.texioty_frame.texoty
 
 
 class SpotLighter(tk.LabelFrame):
@@ -174,7 +180,7 @@ class SpotLighter(tk.LabelFrame):
 
 if __name__ == '__main__':
     root = tk.Tk()
-    root.title('kanisaGen - v0.16.14')
+    root.title('kanisaGen - v0.16.29')
 
     # ~~ ALLOW FOR FULLSCREEN HERE
     # root.attributes("-fullscreen", True)

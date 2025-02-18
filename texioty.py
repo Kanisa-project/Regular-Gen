@@ -8,6 +8,7 @@ from os.path import exists
 from typing import Dict, Any
 
 import gaimPlay
+import helper_widget
 import settings as s
 import texoty
 import texity
@@ -22,7 +23,7 @@ class CommandRegistry:
     """
     commands: Dict[str, texity.Command]
 
-    def add_command(self, name: str, handler: Any, msg: str, p_args: Any, e_args: Any,
+    def add_command(self, name: str, handler: Any, msg: str, p_args: Any, helper_type: Any,
                     t_color: str, b_color: str) -> None:
         """
         Add a new command that Texity will recognize and Texoty can display.
@@ -30,7 +31,7 @@ class CommandRegistry:
         :param handler: Defined function for execution.
         :param msg: A message of helping for the help display.
         :param p_args: Possible arguments for Texity.
-        :param e_args: Exact arguments for Texity to use.
+        :param helper_type: Exact arguments for Texity to use.
         :param t_color: Text color for help display.
         :param b_color: Background color for help display.
         :return:
@@ -39,7 +40,7 @@ class CommandRegistry:
                                              handler=handler,
                                              help_message=msg,
                                              possible_args=p_args,
-                                             executed_args=e_args,
+                                             helper_type=helper_type,
                                              text_color=t_color,
                                              bg_color=b_color)
 
@@ -83,7 +84,7 @@ class TEXIOTY(tk.LabelFrame):
         self.question_keys = []
         self.current_question_index = 0
         self.registry = CommandRegistry({})
-        self.helper_dict = {}
+        self.helper_dict = {"TXTY": [self]}
         self.available_profiles = s.available_profiles
         self.active_profile = self.available_profiles["bluebeard"]
         self.gaim_player: gaimPlay.gaimPlayer = None
@@ -101,38 +102,41 @@ class TEXIOTY(tk.LabelFrame):
         self.texity.bind('<Return>', lambda e: self.process_command())
 
         # Set up basic commands for Texioty to know automatically.
-        self.known_commands_dict = {
+        self.texioty_commands = {
             "help": [self.display_help_message, "Displays a message of hope and help.",
-                     {"IDUT": "IDUTC and starting kre8dict",
-                      "KNVO": "Kinvow and visual display",
+                     {"TXTY": "Texioty, the main attraction.",
+                      "CLDR": "Calendar for dates and stuff.",
+                      "IDUT": "IDUTC and the beginning.",
+                      "KNVO": "Kinvow with visual display.",
                       "ARTY": "Artyles from the aRtay.",
-                      "PLAY": "Gaim playing for the player."}, [], s.rgb_to_hex(s.INDIAN_RED), s.rgb_to_hex(s.BLACK)],
+                      "GAIM": "Gaim playing for the player.",
+                      "MUJC": "Mujic playing for a user."}, "TXTY", s.rgb_to_hex(s.INDIAN_RED), s.rgb_to_hex(s.BLACK)],
             "exit": [self.close_program, "Exits the program.",
-                     {}, [], s.rgb_to_hex(s.INDIAN_RED), s.rgb_to_hex(s.BLACK)],
+                     {}, "TXTY", s.rgb_to_hex(s.INDIAN_RED), s.rgb_to_hex(s.BLACK)],
             "commands": [self.display_available_commands, "Displays all available commands.",
-                         {}, [], s.rgb_to_hex(s.INDIAN_RED), s.rgb_to_hex(s.BLACK)],
+                         {}, "TXTY", s.rgb_to_hex(s.INDIAN_RED), s.rgb_to_hex(s.BLACK)],
             "login": [self.log_profile_in, "This logs the user into a profile: ",
-                      {'guest': "Basic account with a few permissions."}, [], s.rgb_to_hex(s.LIGHT_GREEN),
+                      {'guest': "Basic account with a few permissions."}, "TXTY", s.rgb_to_hex(s.LIGHT_GREEN),
                       s.rgb_to_hex(s.BLACK)],
             "logout": [self.log_profile_out, "This logs the user out of a profile.",
-                       {}, [], s.rgb_to_hex(s.LIGHT_GREEN), s.rgb_to_hex(s.BLACK)],
+                       {}, "TXTY", s.rgb_to_hex(s.LIGHT_GREEN), s.rgb_to_hex(s.BLACK)],
             "dear_sys,": [self.start_diary_mode, "Creates a new .diary/ entry.",
-                          {}, [], s.rgb_to_hex(s.LIGHT_GREEN), s.rgb_to_hex(s.BLACK)],
+                          {}, "TXTY", s.rgb_to_hex(s.LIGHT_GREEN), s.rgb_to_hex(s.BLACK)],
             "/until_next_time": [self.stop_diary_mode, "Ends and saves the .diary/ entry.",
-                                 {}, [], s.rgb_to_hex(s.LIGHT_GREEN), s.rgb_to_hex(s.BLACK)],
+                                 {}, "TXTY", s.rgb_to_hex(s.LIGHT_GREEN), s.rgb_to_hex(s.BLACK)],
             # "echo": [self.handle_errors, "Echo some errors.",
-            #          {}, [], s.rgb_to_hex(s.LIGHT_GREEN), s.rgb_to_hex(s.BLACK)],
+            #          {}, "TXTY, s.rgb_to_hex(s.LIGHT_GREEN), s.rgb_to_hex(s.BLACK)],
             "quit": [self.quit_gaim, "Quit any gaim you might be playing.",
-                     {}, [], s.rgb_to_hex(s.LIGHT_GREEN), s.rgb_to_hex(s.BLACK)],
+                     {}, "TXTY", s.rgb_to_hex(s.LIGHT_GREEN), s.rgb_to_hex(s.BLACK)],
             "tex8": [self.texoty.create_from_masterpiece, "Create a textual vision.",
-                     {}, [], s.rgb_to_hex(s.LIGHT_GREEN), s.rgb_to_hex(s.BLACK)],
+                     {}, "TXTY", s.rgb_to_hex(s.LIGHT_GREEN), s.rgb_to_hex(s.BLACK)],
             "welcome": [self.welcome_message, "Show welcome message.",
-                        {}, [], s.rgb_to_hex(s.LIGHT_GREEN), s.rgb_to_hex(s.BLACK)],
+                        {}, "TXTY", s.rgb_to_hex(s.LIGHT_GREEN), s.rgb_to_hex(s.BLACK)],
 
         }
 
         # Add the basic commands for Texioty.
-        self.add_command_dict(self.known_commands_dict)
+        self.add_command_dict(self.texioty_commands)
         # self.registry.commands["help"].handler([])
         self.welcome_message([])
 
@@ -147,7 +151,7 @@ class TEXIOTY(tk.LabelFrame):
                                       handler=command_dict[command][0],
                                       msg=command_dict[command][1],
                                       p_args=command_dict[command][2],
-                                      e_args=command_dict[command][3],
+                                      helper_type=command_dict[command][3],
                                       t_color=command_dict[command][4],
                                       b_color=command_dict[command][5])
             self.texoty.tag_config(f'{command}',
@@ -161,17 +165,17 @@ class TEXIOTY(tk.LabelFrame):
         """
         self.master.destroy()
 
-    def add_helper_widget(self, helper_type: str, helper_widget: tk.Widget):
+    def add_helper_widget(self, helper_type: str, helper: helper_widget.helpingWidget):
         """
         Add a helper widget and all of its commands to texioty while supplying access to texoty.
+        :param helper:
         :param helper_type: Type of helper (e.g. Database/API/Other)
-        :param helper_widget:
         :return:
         """
-        helper_widget.txo = self.texoty
-        if len(helper_widget.texioty_commands) > 0:
-            self.add_command_dict(helper_widget.texioty_commands)
-        self.helper_dict[helper_type] = [helper_widget]
+        helper.txo = self.texoty
+        if len(helper.texioty_commands) > 0:
+            self.add_command_dict(helper.texioty_commands)
+        self.helper_dict[helper_type] = [helper]
         print(f'{helper_type} added.')
 
     def display_helper_widgets(self, args):
@@ -182,10 +186,10 @@ class TEXIOTY(tk.LabelFrame):
         """
         print(self.helper_dict)
         for key, value in self.helper_dict.items():
-            if isinstance(value, list) and list(value[0].texioty_commands.keys()) not in value:
-                value.append(list(value[0].texioty_commands.keys()))
-
-            self.texoty.priont_list(items=value, parent_key=key)
+            self.texoty.priont_list(list(value[0].texioty_commands.keys()), parent_key=key)
+            # if isinstance(value, list) and list(value[0].texioty_commands.keys()) not in value:
+            #     value.append(list(value[0].texioty_commands.keys()))
+            # self.texoty.priont_list(items=value, parent_key=key)
             # self.texoty.priont_break_line()
             # self.texoty.priont_list(list(value[0].texioty_commands.keys()), parent_key=key)
 
@@ -195,38 +199,46 @@ class TEXIOTY(tk.LabelFrame):
         :param args:
         :return:
         """
+
         self.texoty.clear_add_header("Helpful Message")
-        self.texoty.priont_string("⦓⦙ Seems like you might need help, good luck!")
-        self.texoty.priont_string("⦓⦙ Here are a couple of easy commands to get you started: \n")
-        self.texoty.priont_command(self.registry.commands["dear_sys,"])
-        self.texoty.priont_string("⦓⦙ A '.diary/' entry is just a text file in that directory.")
-        self.texoty.priont_string("   It's all gibberish at the look of it, but reading the text file")
-        self.texoty.priont_string("   is very much more revealing. Easily accessed, don't write secrets. \n")
-        self.texoty.priont_command(self.registry.commands["/until_next_time"])
-        self.texoty.priont_string("⦓⦙ Finishes the entry and saves in the '.diary/' folder.")
-        self.texoty.priont_string("   Erases all of the gibberish and that's it.")
-
-        self.texoty.priont_string("⦓⦙ Here are the current helpers being used by Texioty.")
-        self.display_helper_widgets([])
-
-        if "IDUT" in args:
+        if "TXTY" in args:
+            self.display_help_txty()
+        elif "CLDR" in args:
+            self.display_help_cldr()
+        elif "IDUT" in args:
             self.display_help_idut()
-        if "KNVO" in args:
+        elif "KNVO" in args:
             self.display_help_knvo()
+        elif "ARTY" in args:
+            self.display_help_arty()
+        elif "GAIM" in args:
+            self.display_help_gaim()
+        elif "MUJIC" in args:
+            self.display_help_mujc()
+        else:
+            self.texoty.priont_string("⦓⦙ Seems like you might need some help, good luck!")
+            self.texoty.priont_string("⦓⦙ These are the current helpers and their commands available to Texioty: \n")
+            self.display_helper_widgets(args)
+            self.texoty.priont_string("\n⦓⦙ You can use the 4 letter ID to get more info about that helper.")
+            self.texoty.priont_string("⦓⦙ Try typing 'help TXTY' or 'help IDUT' or 'help KNVO'.")
+            self.texoty.priont_string("⦓⦙ ")
+            self.texoty.priont_string("⦓⦙ Try typing 'help TXTY' or 'help IDUT' or 'help KNVO'. \n")
 
-    def display_help_idut(self):
-        self.texoty.priont_string("THIS IS THE IDUT STUFF.")
-
-    def display_help_knvo(self):
-        self.texoty.priont_string("THIS IS THE KNVO STUFF.")
 
     def display_available_commands(self, args):
         """Prints out all the commands that are available."""
         self.texoty.clear_add_header("Available Commands")
-        command_index = 2
-        for command in self.registry.commands:
-            self.texoty.priont_command(self.registry.commands[command])
-            command_index += 1
+        # command_index = 0
+        print(self.registry.commands)
+        for helper in list(self.helper_dict.keys()):
+            for command in self.registry.commands:
+                if self.registry.commands[command].helper_type == helper:
+                    self.texoty.priont_command(self.registry.commands[command])
+                    # command_index += 1
+            self.texoty.priont_break_line(right_text=helper)
+
+        # self.texoty.colorize_command_names(list(self.registry.commands.keys())
+        #                                    , s.rgb_to_hex(s.LIGHT_GREEN), s.rgb_to_hex(s.DARK_GREEN))
 
     # def perform_echo(self, eko_msg=""):
     #     """Prints whatever is typed after 'echo'."""
@@ -282,7 +294,7 @@ class TEXIOTY(tk.LabelFrame):
         if self.in_play_gaim_mode and self.gaim_player.loaded_gaim == "Hangman":
             self.texity.command_string_var.set("guess ")
         elif self.in_play_gaim_mode and self.gaim_player.loaded_gaim == "Blackjack":
-            self.texity.command_string_var.set("blackjack ")
+            self.texity.command_string_var.set("blaja ")
         elif self.in_questionnaire_mode:
             pass
         else:
@@ -310,7 +322,7 @@ class TEXIOTY(tk.LabelFrame):
                 self.texoty.priont_string("Probably not enough arguments.")
                 self.texoty.priont_string(str(e))
 
-            if "play" in command:
+            if "start" in command:
                 self.in_play_gaim_mode = self.gaim_player.inGaim
         else:
             self.texoty.priont_string(f"⦓⦙ Uhh, I don't recognize '{command}'")
@@ -352,13 +364,14 @@ class TEXIOTY(tk.LabelFrame):
             self.texity.command_string_var.set(question + f" [{self.question_prompt_dict[question_key][2]}]  ›")
             self.texity.icursor(tk.END)
         else:
-            return self.end_question_prompt(self.question_prompt_dict)
+            self.end_question_prompt(self.question_prompt_dict)
 
     def end_question_prompt(self, question_dict: dict) -> dict:
         self.texoty.priont_string("Prompt ended, here are the results: ")
         self.texoty.priont_dict(question_dict)
         self.in_questionnaire_mode = False
         self.response_dict = question_dict
+        self.response_dict['font_digit'][3](int(self.response_dict['font_digit'][1]))
         return question_dict
 
     def log_profile_in(self, args):
@@ -483,15 +496,69 @@ class TEXIOTY(tk.LabelFrame):
 
     def welcome_message(self, welcoming_msgs: list):
         self.texoty.clear_add_header("Welcome to Texioty! ")
+        today_date = datetime.datetime.date(datetime.datetime.now())
+        today_day = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"][
+            datetime.datetime.weekday(today_date)]
         self.texoty.priont_string(
-            f"⦓⦙ Welcome to kanisaGen! The date is {datetime.datetime.date(datetime.datetime.now())} ")
+            f"⦓⦙ Welcome to kanisaGen! The date is {today_date} on a {today_day}.")
         for msg in welcoming_msgs:
             self.texoty.priont_string("⦓⦙ " + msg)
         self.texoty.priont_string("\nHere are a few commands you could try: ")
-        cmnds = ["help"]
-        for i in range(2):
-            cmnds.append(random.choice(list(self.registry.commands.keys())))
+        cmnds = ["help", "kre8dict", "dear_sys,"]
         self.texoty.priont_list(cmnds, parent_key="Commands:")
+
+    def display_help_txty(self):
+        # self.texoty.priont_list(list(self.helper_dict['TXTY'][0].texioty_commands.keys()), parent_key="TXTY")
+        self.texoty.priont_string("""help╕ ◄╡ This is the command name, what you will type in Texity.
+    ╞► Displays a message of hope and help. ◄╡ Description of command.
+    ├TXTY » Texioty, the ma...  ◄╡  These are the different
+    ├CLDR » Calendar for da...  ◄╡  arguments you can use after the
+    ├IDUT » IDUTC and the b...  ◄╡  command name for different effects.
+    ├KNVO » Kinvow with vis...  ◄╡  
+    ├ARTY » Artyles from th...  ◄╡  The argument is separated from its
+    ├GAIM » Gaim playing fo...  ◄╡  description by a '»', only type what
+    └MUJC » Mujic playing f...  ◄╡  is before the '»' excluding the '»'
+        """)
+        self.texoty.priont_string("⦓⦙ TXTY is a powerhouse of commanding and conquering. With the\n"
+                                  "   ability to process and execute commands, you can make all sorts\n"
+                                  "   of art and mostly just art. Art is a really big category though. \n\n")
+        self.texoty.priont_string("⦓⦙ All successfully entered commands will be stored into a history. \n"
+                                  "   Pressing the up and down arrow keys will cycle through previous commands. \n\n")
+    def display_help_cldr(self):
+        pass
+
+    def display_help_idut(self):
+        self.texoty.priont_string("⦓⦙ This is the starting point of a kre8dict. The kre8dict\n"
+                                  "   is the starting point of the masterpiece, coincidence? \n"
+                                  "   I THINK NOT!")
+
+    def display_help_knvo(self):
+        self.texoty.priont_string("⦓⦙ KNVO is the simplest of displays. Displaying images fit to \n"
+                                  "   it's canvas, it shows that kanisa might be thinking.\n"
+                                  "   I THINK NOT!")
+
+    def display_help_arty(self):
+        self.texoty.priont_string("""kin8╕ ◄╡ This is the command name, what you will type in Texity.
+    ╞► Create a masterpiece on Kinvow. ◄╡ Description of command.
+    ├glyth » Gather glyth opti...  ◄╡  
+    ├glyph » Gather glyph opti...  ◄╡  These are the different
+    ├wordie » Gather wordie op...  ◄╡  arguments you can use after the
+    ├spirite » Gather spirite ...  ◄╡  command name for different effects.
+    ├recipe » Gather recipe op...  ◄╡  
+    ├foto » Gather foto option...  ◄╡  The argument is separated from its
+    ├mujic » Gather mujic opti...  ◄╡  description by a '»', only type what
+    ├gaim » Gather gaim option...  ◄╡  is before the '»' excluding the '»'
+    └meem » Gather meem option...  ◄╡
+    """)
+        self.texoty.priont_string("⦓⦙ ARTY contains the means for creating a Masterpiece file. \n"
+                                  "   It has plenty of options for many different outcomes, try a sample.\n"
+                                  "   Click the 'Random' or 'All' button, then type 'kin8 glyth'.")
+
+    def display_help_gaim(self):
+        pass
+
+    def display_help_mujc(self):
+        pass
 
 
 def create_date_entry(entry_time: datetime, entry_list: list):

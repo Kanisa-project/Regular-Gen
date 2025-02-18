@@ -793,17 +793,18 @@ LOADING_BRACKETS = ["{}", "[]", "()", "<>", "‹›", "«»", "↻↺"]
 
 
 def random_loading_phrase() -> str:
+    loading_word = random.choice(LOADING_TERMS)
     mid_term = random.choice(MID_TERMS)
-    bracks = random.choice(LOADING_BRACKETS)
-    phrase = random.choice(LOADING_TERMS)
-    phrase += " " + mid_term + " "
+    loaded_word = random.choice(LOADED_TERMS)
+    phrase = loading_word + " " + mid_term + " "
     if mid_term in ["some", "all the", "the most", "many"]:
-        phrase += random.choice(LOADED_TERMS) + "'s"
+        phrase += loaded_word + "'s"
     else:
-        phrase += random.choice(LOADED_TERMS)
-    # phrase += " " + random.choice("•⌂×¤±")
-    # phrase += bracks[0] + random.choice(".,_") + random.choice("-=+") + random.choice("^`*") + bracks[1]
-    return phrase + ("." * random.randint(2, 5))
+        phrase += loaded_word
+    if loading_word == "Baking" and loaded_word in ["puppy", "kitten", "mouse"]:
+        return phrase + ("." * random.randint(2, 5)) + "some cookies" + ("." * random.randint(2, 5))
+    else:
+        return phrase + ("." * random.randint(2, 5))
     # return phrase
 
 

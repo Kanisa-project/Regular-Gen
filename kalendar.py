@@ -1,6 +1,8 @@
 import tkinter as tk
 import calendar
 import datetime
+
+import helper_widget
 import settings as s
 
 day_abbrv = ["S", "M", "T", "W", "Th", "F", "Sa"]
@@ -9,10 +11,10 @@ months = ["January", "February", "March", "April", "May", "June",
 years = ["2022", "2023", "2024", "2025", "2026", "2027"]
 
 
-class Kalendar(tk.LabelFrame):
+class Kalendar(helper_widget.helpingWidget):
     """ Keeps track of dates and events."""
     def __init__(self, width, height, master=None):
-        super(Kalendar, self).__init__(master, width=width, height=height, text="Calendar:  ")
+        super(Kalendar, self).__init__(master=master, width=width, height=height, text="Calendar:  ")
         self.dbh = None
         self.txo = None
         self.width = width
@@ -39,7 +41,10 @@ class Kalendar(tk.LabelFrame):
         self.month_cal = self.cal.monthdayscalendar(2024, 1)
         self.day_btn_list = []
         self.create_day_buttons(self.selected_month_var.get())
-        self.texioty_commands = {}
+        self.texioty_commands = {
+            "new_event": [self.create_event, "Create a new event in the calalander.",
+                          {}, "CLDR", s.rgb_to_hex(s.LIGHT_STEEL_BLUE), s.rgb_to_hex(s.DARK_SLATE_BLUE)]
+        }
 
     def destroy_day_buttons(self):
         for btn in self.day_btn_list:
@@ -83,3 +88,6 @@ class Kalendar(tk.LabelFrame):
         for item in event_list:
             eve_btn = tk.Button(self, text=item)
             eve_btn.grid(column=1, row=event_list.index(item)+9, columnspan=2)
+
+    def create_event(self, args):
+        pass

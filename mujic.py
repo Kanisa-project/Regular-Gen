@@ -6,8 +6,15 @@ from scipy import signal
 import numpy as np
 from scipy.io.wavfile import write
 
+# from pydub import AudioSegment
+# from pydub.playback import play
+
 samplerate = 44100
 freq = 420
+
+
+def overlay_audio(sound1, sound2):
+    pass
 
 
 def get_mixed_tones(freaq):

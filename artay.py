@@ -69,58 +69,60 @@ class ARTAY(ttk.LabelFrame):
         self.texioty_commands = {
             "glyth": [self.change_glyth, "Add glyth options to the kre8dict.",
                       {"add": "Add a glyth to the kre8dict.",
-                       "": ""}, [], s.rgb_to_hex(s.MUSTARD_YELLOW),
+                       "new": "Make a new option for glyth."}, "ARTY", s.rgb_to_hex(s.LIGHT_GOLDENROD_YELLOW),
                       s.rgb_to_hex(s.DARK_SEA_GREEN)],
             "glyph": [self.change_glyph, "Add glyph options to the kre8dict.",
                       {"add": "Add a glyph to the kre8dict.",
-                       "": ""}, [], s.rgb_to_hex(s.MUSTARD_YELLOW),
+                       "new": "Make a new option for glyph."}, "ARTY", s.rgb_to_hex(s.LIGHT_GOLDENROD_YELLOW),
                       s.rgb_to_hex(s.DARK_SEA_GREEN)],
             "wordie": [self.change_wordie, "Change wordie options and choices.",
                        {"add": "Add a wordie type to the kre8dict.",
-                        "font": "Select a new font for Kinvow to use."}, [], s.rgb_to_hex(s.MUSTARD_YELLOW),
+                        "font": "Select a new font for Kinvow to use."}, "ARTY", s.rgb_to_hex(s.LIGHT_GOLDENROD_YELLOW),
                        s.rgb_to_hex(s.DARK_SEA_GREEN)],
             "recipe": [self.change_recipe, "Change recipe options and choices.",
                        {"add": "Add a recipe to a category.",
-                        "new": "Make a new recipe for the book."}, [], s.rgb_to_hex(s.MUSTARD_YELLOW),
-                       s.rgb_to_hex(s.DARK_SEA_GREEN)],
+                        "new": "Make a new recipe for the book."}, "ARTY", s.rgb_to_hex(s.LIGHT_GOLDENROD_YELLOW),
+                       s.rgb_to_hex(s.DARK_SEA_GREEN)]
         }
 
     def change_glyth(self, args: list):
-        print(args, "GLYTH")
         self.txo.priont_string(f"Glything up a {args}")
         if "add" in args:
             # self.txo.priont_string(f"Adding {args[1]}....")
             self.IDUTC_frame.kre8dict["glyth"] = self.glythTab.command_glyth_options(command_arg=args[1])
+        elif "new" in args:
+            self.glythTab.checkbutton_dict["FUCK YEAH"] = []
 
     def change_glyph(self, args: list):
+        self.txo.priont_string(f"Glyphing on a {args}")
         if "add" in args:
             # self.txo.priont_string(f"Adding {args[1]}....")
             self.IDUTC_frame.kre8dict["glyph"] = self.glyphTab.command_glyph_options(command_arg=args[1])
 
     def change_wordie(self, args: list):
-        self.txo.priont_list(args)
+        self.txo.priont_string(f"Wordifying on the {args}")
         if "font" in args:
             self.txo.master.start_question_prompt(
-                {"font_digit": ["Which font to use?", "", str(random.randint(0, 10))]}, clear_txo=True)
+                {"font_digit": ["Which font to use?", "", str(random.randint(0, 10)), self.change_font]}, clear_txo=True)
             self.txo.priont_string(
                 f"Current font: {FONT_NAMES.index(self.wordieTab.font_name)} - {self.wordieTab.font_name}")
-            self.txo.priont_list(FONT_NAMES, parent_key="Fonts--", numbered=True)
-            if self.txo.master.response_dict['font_digit'][1]:
-                self.wordieTab.font_name = FONT_NAMES[int(self.txo.master.response_dict['font_digit'][1])]
+            self.txo.priont_list(FONT_NAMES, parent_key="Fonts", numbered=True)
+            # if self.txo.master.response_dict['font_digit'][1]:
+            #     self.wordieTab.font_name = FONT_NAMES[int(self.txo.master.response_dict['font_digit'][1])]
         elif "add" in args:
             self.txo.priont_string(f"Adding {args[1]}....")
             self.IDUTC_frame.kre8dict["wordie"] = self.wordieTab.command_wordie_options(command_arg=args[1])
 
     def change_recipe(self, args: list):
+        self.txo.priont_string(f"Whipping with the {args}")
         if 'new' in args:
             # self.txo.priont_string(f"Adding {args[1]}....")
             self.recipeTab.gather_random_options()
         elif 'OSRS' in args:
             self.recipeTab.add_osrs_tab()
 
-    # def add_osrs_recipes(self):
-    #     if self.IDUTC_frame.kre8dict["data_source"] == "OSRS":
-    #         self.recipeTab.add_osrs_tab()
+    def change_mujic(self, args: list):
+        pass
 
     def random_kre8shun(self):
         """Random data source means super random stuff, not a data source chosen at random."""
@@ -148,3 +150,7 @@ class ARTAY(ttk.LabelFrame):
 
     def add_recipe_to_tab(self, args):
         pass
+
+    def change_font(self, font_digit: int):
+        self.wordieTab.font_name = FONT_NAMES[font_digit]
+        self.txo.priont_string(f"Newly loaded font {font_digit} - {FONT_NAMES[font_digit]}")

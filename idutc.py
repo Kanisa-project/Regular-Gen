@@ -44,7 +44,7 @@ class IDUTC(tk.LabelFrame):
         self.load_button = create_button(self, text="Load Metadata", command=self.load_json, width=10, column=4, row=1)
         self.texioty_commands = {
             "random_artributes": [self.randomize_artributes, "Randomize the artributes in IDUTC.",
-                                  {}, [], s.rgb_to_hex(s.LIGHT_CORAL), s.rgb_to_hex(s.DARK_SLATE_BLUE)],
+                                  {}, "IDUT", s.rgb_to_hex(s.LIGHT_CORAL), s.rgb_to_hex(s.DARK_SLATE_GREY)],
         }
 
         self.artyle_artributes_dict = {

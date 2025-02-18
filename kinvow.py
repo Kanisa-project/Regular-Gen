@@ -43,20 +43,19 @@ class KINVOW(ttk.LabelFrame):
         # Start setup of Texioty.
         self.txo: texoty.TEXOTY = None
         self.texioty_commands = {
-            "kin8": [self.create_from_masterpiece, "Create a masterpiece on Kinvow.",
-                     {
-                         "glyth": "Gather glyth options and create something on Kinvow.",
-                         "glyph": "Gather glyph options and create something on Kinvow.",
-                         "wordie": "Gather wordie options and create something on Kinvow.",
-                         "spirite": "Gather spirite options and create something on Kinvow.",
-                         "recipe": "Gather recipe options and create something on Kinvow.",
-                         "foto": "Gather foto options and create something on Kinvow.",
-                         "mujic": "Gather mujic options and create something on Kinvow.",
-                         "gaim": "Gather gaim options and create something on Kinvow.",
-                         "meem": "Gather meem options and create something on Kinvow."
-                     }, [], s.rgb_to_hex(s.BLACK), s.rgb_to_hex(s.LIGHT_GOLDENROD_YELLOW)],
             "kre8dict": [self.priont_kre8dict, "Show the creationary dictionary.",
-                         {}, [], s.rgb_to_hex(s.BLACK), s.rgb_to_hex(s.LIGHT_GOLDENROD_YELLOW)]
+                         {}, "KNVO", s.rgb_to_hex(s.LIGHT_GOLDENROD_YELLOW), s.rgb_to_hex(s.DARK_KHAKI)],
+            "kin8": [self.create_from_masterpiece, "Create a masterpiece on Kinvow.",
+                     {"glyth": "Gather glyth options and create something on Kinvow.",
+                      "glyph": "Gather glyph options and create something on Kinvow.",
+                      "wordie": "Gather wordie options and create something on Kinvow.",
+                      "spirite": "Gather spirite options and create something on Kinvow.",
+                      "recipe": "Gather recipe options and create something on Kinvow.",
+                      "foto": "Gather foto options and create something on Kinvow.",
+                      "mujic": "Gather mujic options and create something on Kinvow.",
+                      "gaim": "Gather gaim options and create something on Kinvow.",
+                      "meem": "Gather meem options and create something on Kinvow."
+                      }, "KNVO", s.rgb_to_hex(s.LIGHT_GOLDENROD_YELLOW), s.rgb_to_hex(s.DARK_KHAKI)]
         }
 
     def priont_kre8dict(self, args):
@@ -115,7 +114,7 @@ class KINVOW(ttk.LabelFrame):
             for artyle in args:
                 print(artyle)
                 kre8dict[artyle] = gather_options_dict[artyle]()
-            self.create_artyles(nim, kre8dict, size_type, list(kre8dict.keys()))
+            self.create_artyles(nim, kre8dict, size_type, args)
             save_name = "_".join(args)
             save_path = f"{kre8dict['use_id']}/{save_name}.png"
             for c in save_path:
@@ -145,6 +144,10 @@ class KINVOW(ttk.LabelFrame):
         :return:
         """
         for artyle in args:
+            if artyle in ["glyth", "glyph", "wordie", "spirite", "foto", "recipe",
+                          "mujic", "gaim", "meem"]:
+                # self.txo.priont_string(f"⦓⦙ Starting a {artyle}...")
+                pass
             if artyle.lower() == "glyth":
                 self.create_glyth(nim, kre8dict, abt)
             if artyle.lower() == "glyph":
@@ -163,36 +166,6 @@ class KINVOW(ttk.LabelFrame):
                 self.create_gaim(nim, kre8dict, abt)
             if artyle.lower() == "meem":
                 self.create_meem(nim, kre8dict, abt)
-
-    # def create_glyth(self, args, abt="masterpiece"):
-    #     kre8dict = self.idutc.kre8dict
-    #     self.txo.priont_string("Creating a glyth")
-    #
-    #     gather_options_dict = {'glyth': self.artay.glythTab.gather_glyth_options}
-    #
-    #     # Cycle through each kommand argument to collect which options from which artyles.
-    #     for mstr_pce in args:
-    #         self.idutc.kre8dict[mstr_pce] = gather_options_dict[mstr_pce]()
-    #
-    #     # Set the size of a new image to put the final masterpiece.
-    #     size = (int(self.canvas_w) + 1, int(self.canvas_h) + 1)
-    #     img = Image.new("RGBA", size, s.DRS_PURPLE)
-    #
-    #     self.artay.glythTab.add_glyth(img, self.idutc.kre8dict, abt)
-    #
-    #     # As long as there is at least one artyle, add the options of each artyle on the new image.
-    #     if len(self.idutc.kre8dict) >= 1:
-    #         # Start creating the save path
-    #         save_name = "_".join(args)
-    #         save_path = f"{self.idutc.kre8dict['use_id']}/{save_name}.png"
-    #         for c in save_path:
-    #             if c in "?!&":
-    #                 save_path = save_path.replace(c, "")
-    #         # Save the created image and then place it inside Kinvow and add the file path to the kre8dict.
-    #         img.save(save_path)
-    #         self.kinvow_img = PhotoImage(file=save_path)
-    #         self.use_canvas.create_image(self.canvas_w // 2, self.canvas_h // 2, image=self.kinvow_img)
-    #         self.idutc.kre8dict["file_path"] = save_path
 
     def create_glyth(self, img: Image, kre8dict: dict, abt="masterpiece"):
         self.artay.glythTab.add_glyth(img, kre8dict, abt)

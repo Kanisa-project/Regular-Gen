@@ -9,7 +9,7 @@ class Command:
     handler: Any
     help_message: str
     possible_args: dict
-    executed_args: tuple
+    helper_type: str
     text_color: str
     bg_color: str
 

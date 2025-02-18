@@ -1,6 +1,7 @@
 import random
 import tkinter as tk
 
+import helper_widget
 import idutc
 import settings as s
 import texoty
@@ -8,9 +9,9 @@ import wtabHangman as hm
 import casino as cas
 
 
-class gaimPlayer(tk.LabelFrame):
-    def __init__(self, width, height, master=None, idutc_frame=None):
-        super(gaimPlayer, self).__init__(master, width=width, height=height, text="PlayGaim: ")
+class gaimPlayer(helper_widget.helpingWidget):
+    def __init__(self, width, height, master=None, idutc_frame=None, text="Play Gaim: "):
+        super(gaimPlayer, self).__init__(master=master, width=width, height=height, text=text)
         self.txo: texoty.TEXOTY = None
         self.idutc: idutc.IDUTC = idutc_frame
         self.inGaim = False
@@ -35,21 +36,21 @@ class gaimPlayer(tk.LabelFrame):
         self.is_playing = False
 
         self.texioty_commands = {
-            "play": [self.start_gaim, "Play a gaim from the Masterpiece.",
-                     {"hangman": "Guess the phrase one letter at time.",
-                      "blackjack": "Play some blackjack behind the casino."}, [], s.rgb_to_hex(s.LIGHT_STEEL_BLUE),
-                     s.rgb_to_hex(s.DARK_GREEN_COPPER)],
+            "start": [self.start_gaim, "Start a gaim from the Masterpiece.",
+                      {"hangman": "Guess the phrase one letter at time.",
+                       "blackjack": "Play some blackjack behind the casino."}, "GAIM", s.rgb_to_hex(s.LIGHT_STEEL_BLUE),
+                      s.rgb_to_hex(s.DARK_GREEN_COPPER)],
             # "enter": [self.enter_area, 'Enter an area for "multiplayer".',
             #           {"casino": "Gamble against someone.",
             #            "thunderdome": "Welcome to the thunderdome, %profile_name%."}, [],
             #           s.rgb_to_hex(s.LIGHT_STEEL_BLUE),
             #           s.rgb_to_hex(s.DARK_GREEN_COPPER)],
             "guess": [self.guess_play, "Guess a letter for Hangman.",
-                      {}, [], s.rgb_to_hex(s.LIGHT_STEEL_BLUE),
+                      {'a-z': "Guess a single letter to solve."}, "GAIM", s.rgb_to_hex(s.LIGHT_STEEL_BLUE),
                       s.rgb_to_hex(s.DARK_GREEN_COPPER)],
-            "blackjack": [self.black_jack_play, "Make a blackjack play.",
+            "blaja": [self.black_jack_play, "Make a blackjack move.",
                           {"hit": "Take another card in blackjack.",
-                           "stay": "Stay with your cards in blackjack."}, [], s.rgb_to_hex(s.LIGHT_STEEL_BLUE),
+                           "stay": "Stay with your cards in blackjack."}, "GAIM", s.rgb_to_hex(s.LIGHT_STEEL_BLUE),
                           s.rgb_to_hex(s.DARK_GREEN_COPPER)]
         }
 
@@ -62,7 +63,7 @@ class gaimPlayer(tk.LabelFrame):
                     self.inGaim = True
                     self.start_hangman(self.idutc.kre8dict["wordie"]['Hangman'])
             except KeyError as e:
-                raise KeyError("Ain't got the key, dawg")
+                raise KeyError(f"Ain't got the {e} key, dawg")
         elif "blackjack" in args:
             self.loaded_gaim = "Blackjack"
             self.inGaim = True

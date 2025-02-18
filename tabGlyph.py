@@ -123,4 +123,10 @@ class Glyphin(artstyle.Artyle):
             self.checkbutton_dict[option][0].set(random.randint(0, 1))
 
     def command_glyph_options(self, command_arg) -> list:
-        return self.gather_random_options()
+        chosen_glyph_options = []
+        if isinstance(command_arg, str):
+            for i in range(int(command_arg)):
+                print(i)
+                option = random.choice(self.checkbutton_choice_list)
+                chosen_glyph_options.append(option)
+        return chosen_glyph_options
