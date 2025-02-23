@@ -34,8 +34,8 @@ class TEXOTY(Text):
         self.master: texioty.TEXIOTY = master
         self.active_profile = self.master.active_profile
         super(TEXOTY, self).__init__(master=master, bg=self.active_profile.color_theme[2], height=self.texoty_h,
-                                     width=self.texoty_w, spacing2=0)
-                                     # width=self.texoty_w, spacing2=0, wrap=tkinter.WORD)
+                                     # width=self.texoty_w, spacing2=0)
+                                     width=self.texoty_w, spacing2=0, wrap=tkinter.WORD)
         self.artay_method_dict = {
             "glyth": create_glyth_line,
             "glyph": create_glyph_line,
@@ -52,8 +52,9 @@ class TEXOTY(Text):
         # pyglet.font.add_file(f'{os.getcwd()}/assets/Fonts/AnonymousPro-2O73w.ttf')
         # pyglet.font.add_file(f'{os.getcwd()}/assets/Fonts/MintsodaLimeGreen13X16Regular-KVvzA.ttf')
         # pyglet.font.add_file(f'{os.getcwd()}/assets/Fonts/Monofur-PK7og.ttf')
+        # pyglet.font.add_file(f'{os.getcwd()}/assets/Fonts/JetBrainsMono-Regular.ttf')
         #
-        # self.configure(font=("MintsodaLimeGreen13X16Regular-KVvzA", 10))
+        # self.configure(font=("JetBrainsMono-Regular", 10))
 
     def priont_hyperlink(self, tex: str, link: str, line_index=END):
         self.insert(line_index, tex, self.hyperlink.add(partial(webbrowser.open, link)))
@@ -271,94 +272,6 @@ class TEXOTY(Text):
                 start = end
                 pos = self.search(reading, start, stopindex=END, exact=True)
 
-    def colorize_names(self, cmnd_names: list, text_color: str, bg_color: str, help_type: str):
-        for cmnd_name in cmnd_names:
-            tag_name = f'{help_type}_{cmnd_name}_name'
-            self.tag_configure(tag_name, foreground=bg_color, background=text_color,
-                               underline=True)
-            countVar = tkinter.StringVar()
-            pos = self.search(f"{cmnd_name}", "0.0", stopindex=END, count=countVar)
-            while pos:
-                length = len(cmnd_name)
-                row, col = pos.split('.')
-                end = int(col) + length
-                end = row + '.' + str(end)
-                self.tag_add(tag_name, pos, end)
-                start = end
-                pos = self.search(cmnd_name, start, stopindex=END, exact=True)
-
-    def colorize_arguments(self, typable_args: list, text_color: str, bg_color: str, help_type: str):
-        for typable in typable_args:
-            tag_name = f'{help_type}_{typable}_argument'
-            self.tag_configure(tag_name, foreground=bg_color, background=text_color,
-                               underline=True)
-            countVar = tkinter.StringVar()
-            pos = self.search(f"{typable}", "0.0", stopindex=END, count=countVar)
-            while pos:
-                length = len(typable)
-                row, col = pos.split('.')
-                end = int(col) + length
-                end = row + '.' + str(end)
-                self.tag_add(tag_name, pos, end)
-                start = end
-                pos = self.search(typable, start, stopindex=END, exact=True)
-
-    def colorize_command_name(self, cmnd_name: str, bg_color, text_color):
-        start = '1.0'
-        for cmnd in cmnd_names:
-            tag_name = f'{cmnd}_colorized'
-            self.tag_configure(tag_name, foreground=bg_color, background=text_color,
-                               underline=True)
-            countVar = tkinter.StringVar()
-            pos = self.search(f"{cmnd}", start, stopindex=END, count=countVar)
-            while pos:
-                length = len(cmnd)
-                row, col = pos.split('.')
-                end = int(col) + length
-                end = row + '.' + str(end)
-                self.tag_add(tag_name, pos, end)
-                start = end
-                pos = self.search(cmnd, start, stopindex=END)
-
-    # def colorize_command_names(self, cmnd_names: list, bg_color, text_color):
-    #     start = '1.0'
-    #     for cmnd in cmnd_names:
-    #         tag_name = f'{cmnd}_colorized'
-    #         self.tag_configure(tag_name, foreground=bg_color, background=text_color,
-    #                            underline=True)
-    #         countVar = tkinter.StringVar()
-    #         pos = self.search(f"{cmnd}", "0.0", stopindex=END, count=countVar)
-    #         while pos:
-    #             length = len(cmnd)
-    #             row, col = pos.split('.')
-    #             end = int(col) + length
-    #             end = row + '.' + str(end)
-    #             self.tag_add(tag_name, pos, end)
-    #             start = end
-    #             pos = self.search(cmnd, start, stopindex=END)
-
-    def colorize_command_helps(self, help_msg: str, text_color='', bg_color=''):
-        tag_name = f'{help_msg}'
-        self.tag_configure(tag_name, foreground=text_color, background=bg_color)
-        # start_pos = f'1.0'
-        start_pos = f'0.0'
-        end_pos = f'1.{len(help_msg)}'
-        self.tag_add(tag_name, start_pos, end_pos)
-        self.insert(END, help_msg, tag_name)
-        self.insert(END, '\n')
-        self.yview(END)
-
-    def colorized_command_args(self, arg_name: str, text_color='', bg_color=''):
-        tag_name = f'{bg_color}_{text_color}'
-        self.tag_configure(tag_name, foreground=text_color, background=bg_color)
-        # start_pos = f'1.0'
-        start_pos = f'0.0'
-        end_pos = f'1.{len(arg_name)}'
-        self.tag_add(tag_name, start_pos, end_pos)
-        self.insert(END, arg_name, tag_name)
-        self.insert(END, '\n')
-        self.yview(END)
-
     def priont_break_line(self, left_text="", right_text=""):
         """
         Adds a break line in Texoty with style.
@@ -510,7 +423,6 @@ class TEXOTY(Text):
             else:
                 start_x += 1
                 self.set_char_on_line(0, 0, f"{' ' * i}└\n")
-
 
 
 def create_glyth_line(mstrpc_w, mstrpc_a) -> str:

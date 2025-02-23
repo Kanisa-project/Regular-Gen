@@ -47,8 +47,16 @@ def rgb_to_hex(color):
     return "#{:02x}{:02x}{:02x}".format(color[0], color[1], color[2])
 
 
-def clamp(n, minn, maxn):
-    return max(min(maxn, n), minn)
+def clamp(n, minn, maxn, wrap_around=False):
+    if wrap_around:
+        if n > maxn:
+            return minn
+        elif n < minn:
+            return maxn
+        else:
+            return n
+    else:
+        return max(min(maxn, n), minn)
 
 
 def get_monospace_font():
@@ -92,6 +100,7 @@ EGGSHELL_WHITE = (240, 234, 214)
 X_RAY_GRAY = (90, 111, 106)
 
 # BLUES
+COBALT = (0, 71, 171)
 ALICE_BLUE = (240, 248, 255)
 AQUA = (0, 255, 255)
 LOOPRING_BLUE = (46, 126, 254)

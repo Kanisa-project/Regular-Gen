@@ -176,7 +176,7 @@ class TEXIOTY(tk.LabelFrame):
         if len(helper.texioty_commands) > 0:
             self.add_command_dict(helper.texioty_commands)
         self.helper_dict[helper_type] = [helper]
-        print(f'{helper_type} added.')
+        # print(f'{helper_type} added.')
 
     def display_helper_widgets(self, args):
         """
@@ -200,7 +200,7 @@ class TEXIOTY(tk.LabelFrame):
         :return:
         """
 
-        self.texoty.clear_add_header("Helpful Message")
+        self.texoty.clear_add_header("Helping")
         if "TXTY" in args:
             self.display_help_txty()
         elif "CLDR" in args:
@@ -213,21 +213,20 @@ class TEXIOTY(tk.LabelFrame):
             self.display_help_arty()
         elif "GAIM" in args:
             self.display_help_gaim()
-        elif "MUJIC" in args:
+        elif "MUJC" in args:
             self.display_help_mujc()
         else:
             self.texoty.priont_string("⦓⦙ Seems like you might need some help, good luck!")
             self.texoty.priont_string("⦓⦙ These are the current helpers and their commands available to Texioty: \n")
             self.display_helper_widgets(args)
             self.texoty.priont_string("\n⦓⦙ You can use the 4 letter ID to get more info about that helper.")
-            self.texoty.priont_string("⦓⦙ Try typing 'help TXTY' or 'help IDUT' or 'help KNVO'.")
-            self.texoty.priont_string("⦓⦙ ")
+            # self.texoty.priont_string("⦓⦙ ")
+            self.texoty.priont_string("")
             self.texoty.priont_string("⦓⦙ Try typing 'help TXTY' or 'help IDUT' or 'help KNVO'. \n")
-
 
     def display_available_commands(self, args):
         """Prints out all the commands that are available."""
-        self.texoty.clear_add_header("Available Commands")
+        self.texoty.clear_add_header("Commands")
         # command_index = 0
         print(self.registry.commands)
         for helper in list(self.helper_dict.keys()):
@@ -319,7 +318,7 @@ class TEXIOTY(tk.LabelFrame):
             except KeyError as e:
                 self.texoty.priont_string(f"Missing the {e} key or something.")
             except IndexError as e:
-                self.texoty.priont_string("Probably not enough arguments.")
+                self.texoty.priont_string("Missing at least one index.")
                 self.texoty.priont_string(str(e))
 
             if "start" in command:
@@ -495,7 +494,7 @@ class TEXIOTY(tk.LabelFrame):
         self.start_question_prompt(new_recipe_question_dict)
 
     def welcome_message(self, welcoming_msgs: list):
-        self.texoty.clear_add_header("Welcome to Texioty! ")
+        self.texoty.clear_add_header("Welcome!")
         today_date = datetime.datetime.date(datetime.datetime.now())
         today_day = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"][
             datetime.datetime.weekday(today_date)]
@@ -503,9 +502,11 @@ class TEXIOTY(tk.LabelFrame):
             f"⦓⦙ Welcome to kanisaGen! The date is {today_date} on a {today_day}.")
         for msg in welcoming_msgs:
             self.texoty.priont_string("⦓⦙ " + msg)
-        self.texoty.priont_string("\nHere are a few commands you could try: ")
-        cmnds = ["help", "kre8dict", "dear_sys,"]
-        self.texoty.priont_list(cmnds, parent_key="Commands:")
+        self.texoty.priont_string("\n")
+
+        cmnds = [random.choice(["help", "commands"]),
+                 random.choice(["kre8dict"]), "dear_sys,"]
+        self.texoty.priont_list(cmnds, parent_key="Here are a few commands you could try:")
 
     def display_help_txty(self):
         # self.texoty.priont_list(list(self.helper_dict['TXTY'][0].texioty_commands.keys()), parent_key="TXTY")
@@ -522,10 +523,17 @@ class TEXIOTY(tk.LabelFrame):
         self.texoty.priont_string("⦓⦙ TXTY is a powerhouse of commanding and conquering. With the\n"
                                   "   ability to process and execute commands, you can make all sorts\n"
                                   "   of art and mostly just art. Art is a really big category though. \n\n")
+
         self.texoty.priont_string("⦓⦙ All successfully entered commands will be stored into a history. \n"
                                   "   Pressing the up and down arrow keys will cycle through previous commands. \n\n")
+
     def display_help_cldr(self):
-        pass
+        self.texoty.priont_string(
+            '''
+            CLDR is able to keep track of any events while also able to set timers and triggers,
+            for different needs.
+            '''
+        )
 
     def display_help_idut(self):
         self.texoty.priont_string("⦓⦙ This is the starting point of a kre8dict. The kre8dict\n"
@@ -555,10 +563,16 @@ class TEXIOTY(tk.LabelFrame):
                                   "   Click the 'Random' or 'All' button, then type 'kin8 glyth'.")
 
     def display_help_gaim(self):
-        pass
+        self.texoty.priont_string("⦓⦙ GAIM keeps track of different gaim playing necessities.\n"
+                                  "   This is where you can see points and different important information.\n"
+                                  "   ")
+
 
     def display_help_mujc(self):
-        pass
+        self.texoty.priont_string("⦓⦙ MUJC is able to pull info from the masterpiece file to make sounds. \n"
+                                  "   Not much is developed on it yet.\n"
+                                  "   ")
+
 
 
 def create_date_entry(entry_time: datetime, entry_list: list):

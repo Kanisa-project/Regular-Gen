@@ -84,7 +84,7 @@ class gaimPlayer(helper_widget.helpingWidget):
         hm.gaim_phrase = phrase
         hm.max_guesses = max_misses
         self.hangman_hidden_dict = phrase_to_hidden_dict(phrase)
-        self.txo.clear_add_header("Playing Hangman")
+        self.txo.clear_add_header("Hangman")
         self.txo.priont_string(hm.HANGMAN_TEXTMAN_LIST[0])
         self.txo.priont_string(dict_to_str(self.hangman_hidden_dict))
 
@@ -95,7 +95,7 @@ class gaimPlayer(helper_widget.helpingWidget):
 
     def guess_play(self, args):
         if self.inGaim:
-            # self.txo.clear_add_header("Hangman")
+            self.txo.clear_add_header("Hangman")
             if len(args[0]) == 1:
                 self.hangman_hidden_dict = hm.check_hangman_letter(args[0], self.hangman_hidden_dict)
             self.txo.priont_string(hm.HANGMAN_TEXTMAN_LIST[s.clamp(len(hm.missed_letters), 0, 6)])
@@ -111,6 +111,7 @@ class gaimPlayer(helper_widget.helpingWidget):
         elif "◙" not in list(self.hangman_hidden_dict.values()):
             self.inGaim = False
             self.txo.priont_string("Congratulations!!!!")
+
 
     def black_jack_play(self, args):
         if "hit" in args:
@@ -148,7 +149,7 @@ class gaimPlayer(helper_widget.helpingWidget):
                 self.txo.priont_string("Player wins!")
 
     def display_dealer_hand(self):
-        self.txo.clear_add_header("Playing Blackjack")
+        self.txo.clear_add_header("Blackjack")
         if self.player_stay:
             new_card = cas.draw_a_card()
             self.dealer_hand.append(cas.apply_card_template(new_card[0]))
@@ -184,7 +185,7 @@ class gaimPlayer(helper_widget.helpingWidget):
 def dict_to_str(hidden_word_dict: dict) -> str:
     hidden_word_str = ""
     for c in list(hidden_word_dict.keys()):
-        print(c, hidden_word_dict[c])
+        # print(c, hidden_word_dict[c])
         hidden_word_str += hidden_word_dict[c]
     return hidden_word_str
 

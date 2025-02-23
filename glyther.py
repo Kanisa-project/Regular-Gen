@@ -563,7 +563,8 @@ def ash(img: Image, artribute_dict: dict) -> Image:
     w, h = img.size
     for i in range(18):
         for point in s.polypointlist(6, i, i * 10, i * 20, i * 5):
-            draw.circle(point, random.choice(width_list) + 1, fill=random.choice(cl), outline=random.choice(cl))
+            draw.ellipse((point, (point[0] + i * 3, point[1] + i * 3)), width=random.choice(width_list),
+                         fill=random.choice(cl), outline=random.choice(cl))
     return img
 
 

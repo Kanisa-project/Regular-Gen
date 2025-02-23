@@ -1,4 +1,6 @@
 from tkinter import *
+
+import texoty
 from settings import *
 from tkinter import ttk
 
@@ -24,7 +26,7 @@ def decipher_artributes(kre8dict: dict) -> dict:
         for i in range(len(kre8dict["use_id"])-2):
             selected_colors.append(((i + 1) * shadelvl, (i + 1) * shadelvl, (i + 1) * shadelvl))
         selected_colors.append((255, 255, 255))
-    print("COLORS: ", selected_colors)
+    print("HELPERCOLORS: ", selected_colors)
     artribute_dict['colors'] = selected_colors
 
     if kre8dict["artributes"][4] == "Chicken":
@@ -57,6 +59,7 @@ class helpingWidget(ttk.LabelFrame):
         super(helpingWidget, self).__init__(master=master, width=width, height=height, text=text)
         # self.TEXIOTY = texioty
         self.IDUTC_frame: idutc.IDUTC = idutc
+        self.txo: texoty.TEXOTY = None
         self.tab_name = "Basic"
         self.grid_propagate(False)
 
@@ -77,10 +80,13 @@ class helpingWidget(ttk.LabelFrame):
     def update_slider_label(self) -> str:
         return str(self.widget_display_array)
 
-    def setup_slider_bars(self, slider_list: list):
+    def setup_slider_bars(self, slider_list: list, start_x_cell=0, start_y_cell=0, slide_len=88):
         """
         Set up a dictionary of sliders for a given list of parameters. Used in conjunction with slider_limit_dict.
 
+        :param slide_len:
+        :param start_y_cell:
+        :param start_x_cell:
         :param slider_list: A list of parameter names.
         """
         self.widget_display_array.append(slider_list)
@@ -89,19 +95,21 @@ class helpingWidget(ttk.LabelFrame):
             str_var = StringVar(value=parameter + " : ")
             int_var = IntVar(value=(max_val + min_val) // 2)
             label = Label(self, textvariable=str_var)
-            scale = Scale(self, from_=min_val, to=max_val, variable=int_var, width=5, length=88,
+            scale = Scale(self, from_=min_val, to=max_val, variable=int_var, width=5, length=slide_len,
                           orient="horizontal", borderwidth=0, sliderlength=6, showvalue=True,
                           command=lambda: self.update_slider_label())
             self.slider_dict[parameter] = [int_var, str_var, scale, label]
 
             row = i % 8
             col = i // 10
-            scale.grid(column=len(self.widget_display_array) + col, row=row, sticky="se")
-            label.grid(column=len(self.widget_display_array), row=row, sticky="nw")
+            scale.grid(column=start_x_cell + col, row=row + start_y_cell, sticky="se", columnspan=4)
+            label.grid(column=start_x_cell + col, row=row + start_y_cell, sticky="nw")
 
-    def setup_dropdown_menus(self, word_list=None, word_str=None, dropdown_name=""):
+    def setup_dropdown_menus(self, word_list=None, word_str=None, dropdown_name="", start_x_cell=0, start_y_cell=0):
         """
         Create some dropdown menus based off a list of words or a single word.
+        :param start_y_cell:
+        :param start_x_cell:
         :param word_list: List of words to include in the dropdown menu.
         :param word_str: A string to get random words for the dropdown menu.
         :param dropdown_name: Name this dropdown menu.
@@ -123,10 +131,10 @@ class helpingWidget(ttk.LabelFrame):
             self.dropdown_menu_dict[dropdown_name] = [word_str_var,
                                                       OptionMenu(self, word_str_var, *word_list)]
         # Add each dropdown menu to the artyle frame.
-        for i, dropdown in enumerate(list(self.dropdown_menu_dict.keys())):
-            row = i % 10
-            col = i // 10
-            self.dropdown_menu_dict[dropdown][1].grid(column=len(self.widget_display_array) + col, row=row)
+        # for i, dropdown in enumerate(list(self.dropdown_menu_dict.keys())):
+        #     row = i % 10
+        #     col = i // 10
+        self.dropdown_menu_dict[dropdown_name][1].grid(column=start_x_cell, row=start_y_cell)
 
     def setup_radiobutton_choices(self, options_list: list, start_x_cell=0, start_y_cell=0):
         """
@@ -164,9 +172,9 @@ class helpingWidget(ttk.LabelFrame):
             entry = Entry(self, textvariable=str_var, width=width)
             self.textbox_dict[word] = [str_var, entry]
             row = (i % 5)
-            col = (i // 5 + 1)
-            lbl.grid(column=col + start_x_cell - 1, row=row + start_y_cell, sticky='e')
-            entry.grid(column=col + start_x_cell, row=row + start_y_cell, columnspan=2)
+            col = (i // 5)
+            lbl.grid(column=col + start_x_cell, row=row + start_y_cell, sticky='e')
+            entry.grid(column=col + start_x_cell + 1, row=row + start_y_cell, columnspan=3)
 
     def setup_button_choices(self, button_list: list, start_x_cell=0, start_y_cell=0):
         """

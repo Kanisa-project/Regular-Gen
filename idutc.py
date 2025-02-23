@@ -2,11 +2,15 @@
 import json
 import os.path
 import random
-import tkinter as tk
+# import tkinter as tk
 from dataclasses import dataclass
 from tkinter import *
 from tkinter.filedialog import askopenfilename
+
+import artributal_canvas
+import helper_widget
 import settings as s
+import mtgsdk as mtg
 
 
 @dataclass
@@ -17,31 +21,41 @@ class kre8dict:
     masterpiece: dict
 
 
-class IDUTC(tk.LabelFrame):
+class IDUTC(helper_widget.helpingWidget):
     def __init__(self, width, height, master=None):
         """
         This is the frame for inputting the ID and UTC.
 
         :param master: Toolbox frame that contains each Tul.
         """
-        super().__init__(master, width=width, height=height)
+        super().__init__(master=master, width=width, height=height)
         self.configure(text="IDUTC:  ")
         self.grid_propagate(False)
-        self.entry_ID_string_var = StringVar()
-        self.entry_UTC_string_var = StringVar()
-        self.id_entry = Entry(self, textvariable=self.entry_ID_string_var, bg='light yellow')
-        # ~~ IT'S NOT PINK,
-        self.utc_entry = Entry(self, textvariable=self.entry_UTC_string_var, bg='pink')
-        # ~~ IT'S LIGHT-ISH RED
-        self.id_entry.grid(column=2, row=0, columnspan=2)
-        self.utc_entry.grid(column=2, row=1, columnspan=2)
+        self.setup_text_boxes({"use_id": "r4nd0m",
+                               "use_utc": "2134506798"}, width=16)
+        self.slider_choice_list = ["Transparency", "Coloration", "Animation Speed", "Size", "Motion Range", "Accuracy"]
+        self.slider_limit_dict = {"Transparency": [0, 100],
+                                  "Coloration": [0, 100],
+                                  "Animation Speed": [0, 100],
+                                  "Size": [0, 100],
+                                  "Motion Range": [0, 100],
+                                  "Accuracy": [0, 100]}
+        self.setup_slider_bars(self.slider_choice_list, start_x_cell=2, start_y_cell=3, slide_len=175)
+
+        self.entry_ID_string_var = self.textbox_dict['use_id'][0]
+        self.entry_UTC_string_var = self.textbox_dict['use_utc'][0]
+        self.id_entry = self.textbox_dict['use_id'][1]
+        self.utc_entry = self.textbox_dict['use_utc'][1]
+        self.id_entry.config(bg='light yellow')
+        self.utc_entry.config(bg='pink')
 
         # INITIATE THE BUTTONS TO CONTROL USE_ID AND USE_UTC
-        self.new_button = create_button(self, text="New ID/UTC", command=self.generate_new_idutc, width=10, column=1,
-                                        row=0)
-        self.set_button = create_button(self, text="Set ID/UTC", command=self.set_use_idutc, width=10, column=1, row=1)
-        self.save_button = create_button(self, text="Save Metadata", command=self.save_json, width=10, column=4, row=0)
-        self.load_button = create_button(self, text="Load Metadata", command=self.load_json, width=10, column=4, row=1)
+        self.setup_button_choices(["New ID/UTC", "Set ID/UTC"], start_x_cell=4)
+        self.setup_button_choices(["Save kre8dict", "Load kre8dict"], start_x_cell=5)
+        self.button_dict["New ID/UTC"][1].config(command=self.generate_new_idutc)
+        self.button_dict["Set ID/UTC"][1].config(command=self.set_use_idutc)
+        self.button_dict["Save kre8dict"][1].config(command=self.save_json)
+        self.button_dict["Load kre8dict"][1].config(command=self.load_json)
         self.texioty_commands = {
             "random_artributes": [self.randomize_artributes, "Randomize the artributes in IDUTC.",
                                   {}, "IDUT", s.rgb_to_hex(s.LIGHT_CORAL), s.rgb_to_hex(s.DARK_SLATE_GREY)],
@@ -57,28 +71,33 @@ class IDUTC(tk.LabelFrame):
             "Accuracy": ["Pen", "Crayon"]
         }
         self.artributeMenus = {}
-        for key, value in self.artyle_artributes_dict.items():
-            attribute_str_var = StringVar()
-            attribute_str_var.set(random.choice(value))
-            if key == "Data_Source":
-                # ~~ set data_source to what you want
-                attribute_str_var.set("Random")
-            elif key == "Size":
-                # ~~ set size to what you want
-                attribute_str_var.set("Dog")
-            self.artributeMenus[key] = [attribute_str_var,
-                                        OptionMenu(self, attribute_str_var, *value)]
-            self.artributeMenus[key][1].grid(column=0, row=2 + list(self.artyle_artributes_dict.keys()).index(key))
+        # for key, value in self.artyle_artributes_dict.items():
+        #     attribute_str_var = StringVar()
+        #     attribute_str_var.set(random.choice(value))
+        #     if key == "Data_Source":
+        #         # ~~ set data_source to what you want
+        #         attribute_str_var.set("Random")
+        #     elif key == "Size":
+        #         # ~~ set size to what you want
+        #         attribute_str_var.set("Dog")
+        #     self.artributeMenus[key] = [attribute_str_var,
+        #                                 OptionMenu(self, attribute_str_var, *value)]
+        #     self.artributeMenus[key][1].grid(column=0, row=2 + list(self.artyle_artributes_dict.keys()).index(key))
 
         self.generate_new_idutc()
         self.entry_ID_string_var.set("bluebeard")
-        self.set_use_idutc()
-        self.kre8dict = self.setup_kre8dict(self.entry_ID_string_var.get(),
-                                            self.entry_UTC_string_var.get())
+        # self.set_use_idutc()
+        self.kre8dict = self.setup_kre8dict(self.textbox_dict['use_id'][0].get(),
+                                            self.textbox_dict['use_utc'][0].get())
+        # self.kre8dict = self.setup_kre8dict(self.entry_ID_string_var.get(),
+        #                                     self.entry_UTC_string_var.get())
+        self.artributal = artributal_canvas.artributalCanvas(master=self, width=240, height=400)
+        self.artributeMenus = self.artributal.artributeMenus
 
     def gather_attributes(self) -> list:
         """Gather and return a list of attribute keywords."""
         attribs_list = []
+        print("GATHERING", self.artributeMenus)
         for key, value in self.artributeMenus.items():
             attribs_list.append(value[0].get())
         return attribs_list
@@ -86,7 +105,7 @@ class IDUTC(tk.LabelFrame):
     def gather_random_attributes(self) -> list:
         """Gather and return a list of attribute keywords."""
         attribs_list = []
-        print("ARTRIB", self.artyle_artributes_dict)
+        # print("ARTRIB", self.artyle_artributes_dict)
         for key, value in self.artyle_artributes_dict.items():
             attribs_list.append(random.choice(value))
         return attribs_list
@@ -124,7 +143,7 @@ class IDUTC(tk.LabelFrame):
 
     def save_json_pen(self, pen_dict: dict):
         """
-        Saves a kansaPen file
+        Saves a kanisaPen file
         :return:
         """
         dumpDict = pen_dict
@@ -199,10 +218,10 @@ def add_data_source_dict(use_data: dict):
         use_data["OSRS Player"] = "OSRSSTUFF"
         use_data["Player Skills"] = ["Attack", "Defence", "Prayer"]
     elif use_data["data_source"] == "MTG":
-        card_name = use_data["use_id"]
-        named_cards = Card.where(name="Boros").all()
+        # card_name = use_data["use_id"]
+        named_cards = mtg.Card.where(name="Boros").all()
         if len(named_cards) == 0:
-            named_cards = Card.where(name="King").all()
+            named_cards = mtg.Card.where(name="King").all()
         chosen_card = random.choice(named_cards)
         flavor_list = []
         lz = '0'
@@ -262,6 +281,7 @@ def new_number_list(utc_used: str) -> list:
     """
     number_list = []
     for i in range(10):
+        print(i)
         xs = list(utc_used)[i]
         number_list.append(int(xs))
     number_list.sort()

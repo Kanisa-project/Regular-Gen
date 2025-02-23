@@ -20,7 +20,7 @@ class Glyther(artstyle.Artyle):
         super(Glyther, self).__init__(master=master, width=width, height=height, idutc=idutc)
         self.tkimg = None
         self.tab_name = "Glyth"
-        self.checkbutton_choice_list = ["Dirt", "Smoke", "Ripples", "Lightning", "Pebbles",
+        self.checkbutton_choice_list = ["Dirt", "Smoke", "Ripples", "Lightning", "Pebbles", "Confetti",
                                         "Waves", "Fog", "Ash", "Frost", "Mist", "Hail", "Embers", "Dust", "Shadow",
                                         "Glare", "Puddles", "Crystals", "Mud", "Dew", "Steam", "Flame"]
         self.radiobutton_choice_list = ["None", "Justin", "Susan", "Bethany", "Jacob"]
@@ -69,8 +69,8 @@ class Glyther(artstyle.Artyle):
                 glyther.lightning(img, artributes)
             if glyth_option == "Pebbles":
                 glyther.pebbles(img, artributes)
-            # if glyth_option == "Confetti":
-            #     glyther.confetti(img, artributes)
+            if glyth_option == "Confetti":
+                glyther.confetti(img, artributes)
             if glyth_option == "Ripples":
                 glyther.ripples(img, artributes)
             if glyth_option == "Waves":

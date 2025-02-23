@@ -119,7 +119,7 @@ def create_song_data(kre8dict: dict) -> np.ndarray:
     """
     Function to concatenate all the waves (notes)
     """
-    print(kre8dict)
+    # print(kre8dict)
     music_notes = kre8dict['use_id']
     tone_freq_dict = generate_tone_notes(kre8dict)
     song = []

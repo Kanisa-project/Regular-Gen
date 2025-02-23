@@ -49,7 +49,7 @@ class Application(tk.Frame):
 
         self.mujicplay_frame = mujicPlay.mujicPlayer(width=screen_w*.333, height=screen_h*.4, idutc_frame=self.idutc_frame)
         self.mujicplay_frame.txo = self.texioty_frame.texoty
-        self.texioty_frame.gaim_player = self.mujicplay_frame
+        self.texioty_frame.mujic_player = self.mujicplay_frame
 
         self.texioty_frame.add_helper_widget("CLDR", self.calendar_frame)
         self.texioty_frame.add_helper_widget("IDUT", self.idutc_frame)

@@ -80,46 +80,66 @@ class ARTAY(ttk.LabelFrame):
                         "font": "Select a new font for Kinvow to use."}, "ARTY", s.rgb_to_hex(s.LIGHT_GOLDENROD_YELLOW),
                        s.rgb_to_hex(s.DARK_SEA_GREEN)],
             "recipe": [self.change_recipe, "Change recipe options and choices.",
-                       {"add": "Add a recipe to a category.",
+                       {"add": "Add a recipe to the kre8dict.",
                         "new": "Make a new recipe for the book."}, "ARTY", s.rgb_to_hex(s.LIGHT_GOLDENROD_YELLOW),
-                       s.rgb_to_hex(s.DARK_SEA_GREEN)]
+                       s.rgb_to_hex(s.DARK_SEA_GREEN)],
+            "spirite": [self.change_spirite, "Change spirite options and choices.",
+                        {"add": "Add a spirite to the kre8dict.",
+                         "new": "Make a new recipe for the book."}, "ARTY", s.rgb_to_hex(s.LIGHT_GOLDENROD_YELLOW),
+                        s.rgb_to_hex(s.DARK_SEA_GREEN)]
         }
 
     def change_glyth(self, args: list):
         self.txo.priont_string(f"Glything up a {args}")
         if "add" in args:
-            # self.txo.priont_string(f"Adding {args[1]}....")
-            self.IDUTC_frame.kre8dict["glyth"] = self.glythTab.command_glyth_options(command_arg=args[1])
+            self.IDUTC_frame.kre8dict["glyth"] = self.glythTab.command_glyth_options(
+                command_arg=str(random.randint(1, 3)))
+            if len(args) == 2:
+                self.IDUTC_frame.kre8dict["glyth"] = self.glythTab.command_glyth_options(command_arg=args[1])
+
         elif "new" in args:
             self.glythTab.checkbutton_dict["FUCK YEAH"] = []
 
     def change_glyph(self, args: list):
         self.txo.priont_string(f"Glyphing on a {args}")
         if "add" in args:
-            # self.txo.priont_string(f"Adding {args[1]}....")
-            self.IDUTC_frame.kre8dict["glyph"] = self.glyphTab.command_glyph_options(command_arg=args[1])
+            self.IDUTC_frame.kre8dict["glyph"] = self.glyphTab.command_glyph_options(
+                command_arg=str(random.randint(1, 3)))
+            if len(args) == 2:
+                self.IDUTC_frame.kre8dict["glyph"] = self.glyphTab.command_glyph_options(command_arg=args[1])
 
     def change_wordie(self, args: list):
         self.txo.priont_string(f"Wordifying on the {args}")
         if "font" in args:
             self.txo.master.start_question_prompt(
-                {"font_digit": ["Which font to use?", "", str(random.randint(0, 10)), self.change_font]}, clear_txo=True)
+                {"font_digit": ["Which font to use?", "", str(random.randint(0, 10)), self.change_font]},
+                clear_txo=True)
             self.txo.priont_string(
                 f"Current font: {FONT_NAMES.index(self.wordieTab.font_name)} - {self.wordieTab.font_name}")
             self.txo.priont_list(FONT_NAMES, parent_key="Fonts", numbered=True)
-            # if self.txo.master.response_dict['font_digit'][1]:
-            #     self.wordieTab.font_name = FONT_NAMES[int(self.txo.master.response_dict['font_digit'][1])]
         elif "add" in args:
-            self.txo.priont_string(f"Adding {args[1]}....")
-            self.IDUTC_frame.kre8dict["wordie"] = self.wordieTab.command_wordie_options(command_arg=args[1])
+            self.IDUTC_frame.kre8dict["wordie"] = self.wordieTab.command_wordie_options(
+                command_arg=str(random.randint(1, 3)))
+            if len(args) == 2:
+                self.IDUTC_frame.kre8dict["wordie"] = self.wordieTab.command_wordie_options(command_arg=args[1])
 
     def change_recipe(self, args: list):
         self.txo.priont_string(f"Whipping with the {args}")
-        if 'new' in args:
-            # self.txo.priont_string(f"Adding {args[1]}....")
-            self.recipeTab.gather_random_options()
-        elif 'OSRS' in args:
-            self.recipeTab.add_osrs_tab()
+        if 'add' in args:
+            self.IDUTC_frame.kre8dict["recipe"] = self.recipeTab.command_recipe(
+                random.choice(["casseroles", "other", "desserts", "soups", "seasonings"]))
+            if len(args) == 2:
+                self.IDUTC_frame.kre8dict['recipe'] = self.recipeTab.command_recipe(args[1])
+        elif 'new' in args and len(args) >= 2:
+            if "OSRS" in args:
+                self.recipeTab.add_osrs_tab()
+
+    def change_spirite(self, args):
+        self.txo.priont_string(f"Spiriting within {args}")
+        if 'add' in args:
+            self.IDUTC_frame.kre8dict['spirite'] = self.spiriteTab.command_spirite(random.choice(["Asteroid", "Alien", "Ship", "Medallion"]))
+            if len(args) == 2:
+                self.IDUTC_frame.kre8dict['spirite'] = self.spiriteTab.command_spirite(args[1])
 
     def change_mujic(self, args: list):
         pass

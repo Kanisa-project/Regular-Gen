@@ -61,7 +61,7 @@ class AlaNFT(artstyle.Artyle):
     def add_osrs_tab(self):
         self.osrsTab = rtabOSRS.OSRS(master=self.recipeBook)
         self.recipeBook.add(self.osrsTab, text="OSRS")
-        print("added")
+        # print("added")
 
     def gather_recipe_options(self) -> dict:
         chosen_recipe_options = self.chosen_recipe_dict
@@ -87,3 +87,18 @@ class AlaNFT(artstyle.Artyle):
         recipe.add_directions(img, kre8dict)
         recipe.add_labels(img, kre8dict)
         return img
+
+    def command_recipe(self, command_arg) -> dict:
+        category = command_arg.title()
+        recipe_dict = {
+            "Casseroles": rtabCasseroles.RECIPES_DICT,
+            "Sauces": rtabSauces.RECIPES_DICT,
+            "Soups": rtabSoups.RECIPES_DICT,
+            "Desserts": rtabDesserts.RECIPES_DICT,
+            "Sandwiches": rtabSandwiches.RECIPES_DICT,
+            "Seasonings": rtabSeasonings.RECIPES_DICT,
+            "Other": rtabOther.RECIPES_DICT
+        }
+        ran_recipe = random.choice(list(recipe_dict[category].keys()))
+        chosen_recipe_options = recipe_dict[category][ran_recipe]
+        return chosen_recipe_options

@@ -44,7 +44,7 @@ class Spirite(artstyle.Artyle):
             self.layer_number_wheel_dict[f'layer_{new_layer_list.index(layer_name)}'] = [lbl_str, layer_nbr_var]
 
     def randomize_layer_number(self, layered):
-        self.layer_number_wheel_dict[f'layer_{random.randint(0,3)}'][1].set(random.randint(0, 9))
+        self.layer_number_wheel_dict[f'layer_{random.randint(0, 3)}'][1].set(random.randint(0, 9))
         pass
 
     def update_layer_number(self, new_layer_num):
@@ -76,7 +76,7 @@ class Spirite(artstyle.Artyle):
         for i, dropdown in enumerate(list(self.dropdown_menu_dict.keys())):
             row = i % 10
             col = i // 10
-            self.dropdown_menu_dict[dropdown][1].grid(column=start_x_cell+col, row=start_y_cell+row)
+            self.dropdown_menu_dict[dropdown][1].grid(column=start_x_cell + col, row=start_y_cell + row)
 
     def update_spirite_str(self, morestuff):
         print("MORE", morestuff)
@@ -109,18 +109,20 @@ class Spirite(artstyle.Artyle):
         }
         return chosen_spirite_options
 
-    # def generate_populate_spirite_choices(self):
-    #     self.destroy_word_optionmenus()
-    #     self.setup_dropdown_menus()
-    #
-    # def destroy_word_optionmenus(self):
-    #     """Destroy each of the optionmenus that contain wordlists"""
-    #     for layer_name in self.layer_name_dict:
-    #         self.chosen_spirite_layer_dict[layer_name][1].destroy()
-
-    # def setup_wordlist_optionmenus(self, word_str: str):
-    #     """Create optionmenus for each wordlist."""
-    #     super().setup_dropdown_menus(word_str)
+    def command_spirite(self, command_arg) -> dict:
+        spirite_layers = list(LAYER_DICT[command_arg.title()].keys())
+        chosen_spirite_options = {
+            command_arg.title(): LAYER_DICT[command_arg.title()],
+            "layer_one_list": [spirite_layers[0],
+                               random.randint(0, 9)],
+            "layer_two_list": [spirite_layers[1],
+                               random.randint(0, 9)],
+            "layer_three_list": [spirite_layers[2],
+                                 random.randint(0, 9)],
+            "layer_four_list": [spirite_layers[3],
+                                random.randint(0, 9)]
+        }
+        return chosen_spirite_options
 
     def setup_layer_optionmenus(self):
         super().setup_dropdown_menus(word_list=list(self.layer_name_dict.keys()))

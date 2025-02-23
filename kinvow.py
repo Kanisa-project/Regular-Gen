@@ -84,6 +84,7 @@ class KINVOW(ttk.LabelFrame):
         """
         # Grab the correct and updated kre8dict and gather the options.
         kre8dict = self.idutc.kre8dict
+        # self.txo.priont_dict(kre8dict)
         gather_options_dict = {'glyth': self.artay.glythTab.gather_glyth_options,
                                'glyph': self.artay.glyphTab.gather_glyph_options,
                                'wordie': self.artay.wordieTab.gather_wordie_options,
@@ -100,6 +101,7 @@ class KINVOW(ttk.LabelFrame):
 
         # Cycle through each kommand argument to collect which options from which artyles.
         size_type = "tile"
+        print(kre8dict['artributes'], "ARTIES")
         if len(args) == 0:
             nim = self.starter_image(kre8dict['artributes'][4])
             self.create_artyles(nim, kre8dict, size_type, list(kre8dict.keys()))

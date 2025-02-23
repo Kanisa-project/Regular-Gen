@@ -170,36 +170,36 @@ class Artyle(ttk.Frame):
         selected_colors = []
         artribute_dict = {}
 
-        if kre8dict["artributes"][1] == "Door":
+        if "Door" in kre8dict["artributes"]:
             artribute_dict["transparency"] = 0.85
-        elif kre8dict["artributes"][1] == "Window":
+        elif "Window" in kre8dict["artributes"]:
             artribute_dict["transparency"] = 0.35
 
-        if kre8dict["artributes"][2] == "Rainbow":
+        if "Rainbow" in kre8dict["artributes"]:
             for ltr in kre8dict["use_id"]:
                 if ltr.lower() in ALPHANUMERIC_COLORS:
                     selected_colors.append(ALPHANUMERIC_COLORS[ltr.lower()])
                 else:
                     selected_colors.append(PUNCTUATION_COLORS[ltr.lower()])
-        elif kre8dict["artributes"][2] == "Cloud":
+        elif "Cloud" in kre8dict["artributes"]:
             shadelvl = 255 // len(kre8dict["use_id"])
             selected_colors.append((0, 0, 0))
             for i in range(len(kre8dict["use_id"])-2):
                 selected_colors.append(((i + 1) * shadelvl, (i + 1) * shadelvl, (i + 1) * shadelvl))
             selected_colors.append((255, 255, 255))
-        print("COLORS: ", selected_colors)
+        # print("ARTYLECOLORS: ", kre8dict)
         artribute_dict['colors'] = selected_colors
 
-        if kre8dict["artributes"][4] == "Chicken":
+        if "Chicken" in kre8dict["artributes"]:
             artribute_dict['size_scale'] = 0.2
-        elif kre8dict["artributes"][4] == "Dog":
+        elif "Dog" in kre8dict["artributes"]:
             artribute_dict['size_scale'] = 0.4
-        elif kre8dict["artributes"][4] == "Camel":
+        elif "Camel" in kre8dict["artributes"]:
             artribute_dict['size_scale'] = 0.8
 
-        if kre8dict["artributes"][6] == "Pen":
+        if "Pen" in kre8dict["artributes"]:
             artribute_dict["accuracy"] = kre8dict["number_list"][:3]
-        elif kre8dict["artributes"][6] == "Crayon":
+        elif "Crayon" in kre8dict["artributes"]:
             artribute_dict["accuracy"] = kre8dict["number_list"][3:]
 
         return artribute_dict
