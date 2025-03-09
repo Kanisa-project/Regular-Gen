@@ -2,7 +2,6 @@ import math
 import random
 import tkinter as tk
 import settings as s
-import artributeCanvas
 
 import idutc
 
@@ -15,10 +14,10 @@ class artributalCanvas(tk.Canvas):
         self.bind("<Button-1>", self.set_artribute)
         self.bind("<MouseWheel>", self.scroll_through_artribute)
         self.grid_propagate(False)
-        self.place(x=340, y=0)
+        self.place(x=380, y=0)
         self.outer_artri_points = s.polypointlist(6, 30, 120, 110, 90)
-        self.inner_artri_points = s.polypointlist(6, 30, 120, 110, 30)
-        self.menu_polypoints = s.polypointlist(6, 30, 120, 110, 75)
+        self.inner_artri_points = s.polypointlist(len(self.idutc_frame.id_entry.get()), 90, 120, 110, 30)
+        # self.menu_polypoints = s.polypointlist(6, 30, 120, 110, 75)
         self.create_polygon(self.outer_artri_points, fill="",
                             outline=s.rgb_to_hex(s.COBALT), width=2)
         self.center_point = (120, 110)
@@ -34,41 +33,48 @@ class artributalCanvas(tk.Canvas):
             "Accuracy": ["Pen", "Crayon"]
         }
 
-        self.artributeMenus = self.artyle_artributes_dict
+        # self.artributeMenus = self.artyle_artributes_dict
         self.update_center_point()
-        self.initiate_artribute_menus()
+        # self.initiate_artribute_menus()
         self.selected_artribute = "Size"
         self.selected_index = 3
 
-    def initiate_artribute_menus(self):
-        print(self.artyle_artributes_dict)
-        for key, value in self.artyle_artributes_dict.items():
-            attribute_str_var = tk.StringVar()
-            attribute_str_var.set(random.choice(value))
-            if key == "Data_Source":
-                # ~~ set data_source to what you want
-                attribute_str_var.set("Random")
-            elif key == "Size":
-                # ~~ set size to what you want
-                attribute_str_var.set("Dog")
-            self.artributeMenus[key] = [attribute_str_var,
-                                        tk.OptionMenu(self, attribute_str_var, *value)]
-            polypoint_index = list(self.artyle_artributes_dict.keys()).index(key)
-            # print("WINFO", self.artributeMenus[key][1].winfo_width())
-            self.artributeMenus[key][1].place(x=self.outer_artri_points[polypoint_index][0],
-                                              y=self.outer_artri_points[polypoint_index][1])
-            self.update()
-            self.artributeMenus[key][1].place_configure(
-                x=self.menu_polypoints[polypoint_index][0] - (self.artributeMenus[key][1].winfo_width() // 2),
-                y=self.menu_polypoints[polypoint_index][1] - 18 + 200)
-        print(self.artributeMenus, "DONE")
+    # def initiate_artribute_menus(self):
+    #     print(self.artyle_artributes_dict)
+    #     for key, value in self.artyle_artributes_dict.items():
+    #         attribute_str_var = tk.StringVar()
+    #         attribute_str_var.set(random.choice(value))
+    #         if key == "Data_Source":
+    #             # ~~ set data_source to what you want
+    #             attribute_str_var.set("Random")
+    #         elif key == "Size":
+    #             # ~~ set size to what you want
+    #             attribute_str_var.set("Dog")
+    #         self.artributeMenus[key] = [attribute_str_var,
+    #                                     tk.OptionMenu(self, attribute_str_var, *value)]
+    #         polypoint_index = list(self.artyle_artributes_dict.keys()).index(key)
+    #         # print("WINFO", self.artributeMenus[key][1].winfo_width())
+    #         self.artributeMenus[key][1].place(x=self.outer_artri_points[polypoint_index][0],
+    #                                           y=self.outer_artri_points[polypoint_index][1])
+    #         self.update()
+    #         self.artributeMenus[key][1].place_configure(
+    #             x=self.menu_polypoints[polypoint_index][0] - (self.artributeMenus[key][1].winfo_width() // 2),
+    #             y=self.menu_polypoints[polypoint_index][1] - 18 + 200)
+    #     print(self.artributeMenus, "DONE")
 
     def set_artribute(self, event):
         self.create_oval(event.x - 3, event.y - 3, event.x + 3, event.y + 3, fill="black", width=3)
         click_point = (event.x, event.y)
-        distance = math.sqrt((120-click_point[0]) ** 2 + (110 - click_point[1]) ** 2)
-        self.inner_artri_points = s.polypointlist(6, 30, 120, 110, int(distance+10))
+        distance = s.clamp(math.sqrt((120-click_point[0]) ** 2 + (110 - click_point[1]) ** 2), 0, 80)
+        id_len = len(self.idutc_frame.id_entry.get())
+        self.inner_artri_points = s.polypointlist(id_len, 90, 120, 110, int(distance+10))
         self.update_center_point()
+
+    def gather_artribute_length(self, artri_title: str) -> int:
+        if artri_title in list(self.idutc_frame.slider_dict.keys()):
+            return self.idutc_frame.slider_dict[artri_title][0].get()
+        else:
+            return 0
 
     def update_center_point(self):
         self.delete('all')
@@ -80,7 +86,12 @@ class artributalCanvas(tk.Canvas):
             artribute_title = list(self.artyle_artributes_dict.keys())[i]
             artributal_emoji = artribute_emoji(self.artyle_artributes_dict[artribute_title][0])
             self.create_text(point, text=artributal_emoji, fill='black', font=("Times New Roman", 20))
-            self.create_line(self.inner_artri_points[i], point, fill=s.rgb_to_hex(s.CRIMSON), width=2)
+            artri_line_tup = plan_angled_line(point[0], point[1], -i*60-30,
+                                              self.gather_artribute_length(artribute_title), 3, 'black')
+            self.create_line(artri_line_tup[0][0], artri_line_tup[0][1],
+                             artri_line_tup[0][2], artri_line_tup[0][3], fill=s.rgb_to_hex(s.CRIMSON), width=2)
+            # self.create_line(self.inner_artri_points[i], point, fill=s.rgb_to_hex(s.CRIMSON), width=2)
+
             # self.idutc_frame.kre8dict['artributes'] = self.artyle_artributes_dict[artribute_title][0]
 
     def scroll_through_artribute(self, event):
@@ -95,7 +106,7 @@ class artributalCanvas(tk.Canvas):
                          outline=s.rgb_to_hex(s.DARK_GREEN), width=2, tags="select_circle")
 
 
-def artribute_emoji(keeword: str) -> str:
+def artribute_emoji(keeword) -> str:
     emoji_text = ""
     if not isinstance(keeword, str):
         keeword = keeword.get()

@@ -112,7 +112,6 @@ class gaimPlayer(helper_widget.helpingWidget):
             self.inGaim = False
             self.txo.priont_string("Congratulations!!!!")
 
-
     def black_jack_play(self, args):
         if "hit" in args:
             new_card = cas.draw_a_card()

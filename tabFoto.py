@@ -135,6 +135,10 @@ class Fotoes(artstyle.Artyle):
     def randomize_sliders(self):
         for slider in self.slider_choice_list:
             rn = random.randint(6, 94)
+            if "Hue" in slider:
+                rn = random.randint(4, 356)
+            elif slider in ["Red", "Green", "Blue"]:
+                rn = random.randint(5, 250)
             self.slider_dict[slider][0].set(rn)
 
     def randomize_filters(self):

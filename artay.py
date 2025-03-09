@@ -77,7 +77,7 @@ class ARTAY(ttk.LabelFrame):
                       s.rgb_to_hex(s.DARK_SEA_GREEN)],
             "wordie": [self.change_wordie, "Change wordie options and choices.",
                        {"add": "Add a wordie type to the kre8dict.",
-                        "font": "Select a new font for Kinvow to use."}, "ARTY", s.rgb_to_hex(s.LIGHT_GOLDENROD_YELLOW),
+                        "font": "Select which font for Kinvow to use."}, "ARTY", s.rgb_to_hex(s.LIGHT_GOLDENROD_YELLOW),
                        s.rgb_to_hex(s.DARK_SEA_GREEN)],
             "recipe": [self.change_recipe, "Change recipe options and choices.",
                        {"add": "Add a recipe to the kre8dict.",
@@ -85,7 +85,7 @@ class ARTAY(ttk.LabelFrame):
                        s.rgb_to_hex(s.DARK_SEA_GREEN)],
             "spirite": [self.change_spirite, "Change spirite options and choices.",
                         {"add": "Add a spirite to the kre8dict.",
-                         "new": "Make a new recipe for the book."}, "ARTY", s.rgb_to_hex(s.LIGHT_GOLDENROD_YELLOW),
+                         "new": "Import a new set of spirite layers."}, "ARTY", s.rgb_to_hex(s.LIGHT_GOLDENROD_YELLOW),
                         s.rgb_to_hex(s.DARK_SEA_GREEN)]
         }
 

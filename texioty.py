@@ -6,15 +6,18 @@ import tkinter as tk
 from dataclasses import dataclass
 from os.path import exists
 from typing import Dict, Any
+import subprocess
 
 import gaimPlay
 import helper_widget
+# import ppppp
 import settings as s
 import texoty
 import texity
 import logging
 import sys
 
+import msg_client
 
 @dataclass
 class CommandRegistry:
@@ -124,8 +127,8 @@ class TEXIOTY(tk.LabelFrame):
                           {}, "TXTY", s.rgb_to_hex(s.LIGHT_GREEN), s.rgb_to_hex(s.BLACK)],
             "/until_next_time": [self.stop_diary_mode, "Ends and saves the .diary/ entry.",
                                  {}, "TXTY", s.rgb_to_hex(s.LIGHT_GREEN), s.rgb_to_hex(s.BLACK)],
-            # "echo": [self.handle_errors, "Echo some errors.",
-            #          {}, "TXTY, s.rgb_to_hex(s.LIGHT_GREEN), s.rgb_to_hex(s.BLACK)],
+            "echo": [self.echooo, "Echo some errors.",
+                     {}, "TXTY", s.rgb_to_hex(s.LIGHT_GREEN), s.rgb_to_hex(s.BLACK)],
             "quit": [self.quit_gaim, "Quit any gaim you might be playing.",
                      {}, "TXTY", s.rgb_to_hex(s.LIGHT_GREEN), s.rgb_to_hex(s.BLACK)],
             "tex8": [self.texoty.create_from_masterpiece, "Create a textual vision.",
@@ -505,8 +508,13 @@ class TEXIOTY(tk.LabelFrame):
         self.texoty.priont_string("\n")
 
         cmnds = [random.choice(["help", "commands"]),
-                 random.choice(["kre8dict"]), "dear_sys,"]
+                 random.choice(["kre8dict", "dear_sys,"]),
+                 random.choice(["exit"])]
         self.texoty.priont_list(cmnds, parent_key="Here are a few commands you could try:")
+        sequence = ["glyph add 2", "glyth add 4", "kin8"]
+        self.texoty.priont_list(sequence, parent_key="Or try this sequence of commands:", numbered=True)
+        self.texoty.priont_string("⦓⦙ Type 'glyph add 2' and press enter, then 'glyth add 4' and press enter.")
+        self.texoty.priont_string("⦓⦙ Finally type 'kin8' and press enter, the result should show on the right.")
 
     def display_help_txty(self):
         # self.texoty.priont_list(list(self.helper_dict['TXTY'][0].texioty_commands.keys()), parent_key="TXTY")
@@ -567,12 +575,14 @@ class TEXIOTY(tk.LabelFrame):
                                   "   This is where you can see points and different important information.\n"
                                   "   ")
 
-
     def display_help_mujc(self):
         self.texoty.priont_string("⦓⦙ MUJC is able to pull info from the masterpiece file to make sounds. \n"
                                   "   Not much is developed on it yet.\n"
                                   "   ")
 
+    def echooo(self, args):
+        client = msg_client.MsgClient(txty=self, host='35.149.156.127', port=42069)
+        # pass
 
 
 def create_date_entry(entry_time: datetime, entry_list: list):

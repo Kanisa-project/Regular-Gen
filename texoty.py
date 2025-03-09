@@ -9,6 +9,7 @@ from tkinter import *
 from tkHyperLinkManager import HyperlinkManager
 import webbrowser
 from functools import partial
+# import tkinter.scrolledtext as scrolledText
 
 import settings as s
 import texioty
@@ -42,6 +43,12 @@ class TEXOTY(Text):
             "wordie": create_wordie_line,
             # "foto": self.create_foto_line
         }
+        self.scroll_bar = Scrollbar(master=self.master, width=10, command=self.yview)
+        self['yscrollcommand'] = self.scroll_bar.set
+        self.scroll_bar.propagate(False)
+        self.scroll_bar.grid(column=1, sticky='nsew')
+        self.grid_rowconfigure(0, weight=1)
+        self.grid_columnconfigure(0, weight=1)
         # self.new_something_dict = {
         #     "miner": create_glyth_line,
         #     "owner": create_glyph_line,
@@ -128,11 +135,11 @@ class TEXOTY(Text):
                 self.priont_string(f"{'╔'}{'═' * (self.texoty_w - 2)}{'╗'}")
             elif th + 1 == self.texoty_h:
                 self.priont_string(f"{'╚'}{'═' * (self.texoty_w - 2)}{'╝'}")
-            elif mstrpc_h >= th >= self.texoty_h - mstrpc_h:
+            elif 10 <= th <= mstrpc_h:
                 mstrpc_a += 1
-                mstrpc_str = self.artay_method_dict['glyth'](mstrpc_w, mstrpc_a)
+                mstrpc_str = self.artay_method_dict[args[0]](mstrpc_w, mstrpc_a)
                 self.priont_string(
-                    f"{'║'}{' ' * (((self.texoty_w - mstrpc_w) // 2) - 1)}{mstrpc_str}{' ' * (((self.texoty_w - mstrpc_w) // 2) - 2)}{'║'}")
+                    f"{'║'}{' ' * ((self.texoty_w - mstrpc_w) // 2)}{mstrpc_str}{' ' * (((self.texoty_w - mstrpc_w) // 2) - 2)}{'║'}")
             else:
                 self.priont_string(f"{'║'}{' ' * (self.texoty_w - 2)}{'║'}")
 
@@ -299,40 +306,40 @@ class TEXOTY(Text):
             self.insert(line_index, "\n" + striong)
         self.yview(END)
 
-    def priont_echo(self, striong: str, text_color='', bg_color=''):
-        """
-        Display a striong on texoty in the color of font_color.
+    # def priont_echo(self, striong: str, text_color='', bg_color=''):
+    #     """
+    #     Display a striong on texoty in the color of font_color.
+    #
+    #     @param striong:
+    #     @param bg_color:
+    #     @param text_color:
+    #     """
+    #     tag_name = f'{bg_color}_{text_color}'
+    #     self.tag_configure(tag_name, foreground=text_color, background=bg_color)
+    #     start_pos = f'1.0'
+    #     end_pos = f'1.{len(striong)}'
+    #     self.tag_add(tag_name, start_pos, end_pos)
+    #     self.insert(END, striong, tag_name)
+    #     self.insert(END, '\n')
+    #     self.yview(END)
 
-        @param striong:
-        @param bg_color:
-        @param text_color:
-        """
-        tag_name = f'{bg_color}_{text_color}'
-        self.tag_configure(tag_name, foreground=text_color, background=bg_color)
-        start_pos = f'1.0'
-        end_pos = f'1.{len(striong)}'
-        self.tag_add(tag_name, start_pos, end_pos)
-        self.insert(END, striong, tag_name)
-        self.insert(END, '\n')
-        self.yview(END)
-
-    def priont_command_colorized(self, striong: str, text_color='', bg_color=''):
-        """
-        Display a command with text_color and bg_color highlighting.
-
-        @param striong: Text of command to display.
-        @param bg_color: Color for the background.
-        @param text_color: Color for the text.
-        """
-        tag_name = f'{bg_color}_{text_color}'
-        self.tag_configure(tag_name, foreground=text_color, background=bg_color)
-        # start_pos = f'1.0'
-        start_pos = f'0.0'
-        end_pos = f'0.{len(striong)-1}'
-        self.tag_add(tag_name, start_pos, end_pos)
-        self.insert(END, striong, tag_name)
-        self.insert(END, '\n')
-        self.yview(END)
+    # def priont_command_colorized(self, striong: str, text_color='', bg_color=''):
+    #     """
+    #     Display a command with text_color and bg_color highlighting.
+    #
+    #     @param striong: Text of command to display.
+    #     @param bg_color: Color for the background.
+    #     @param text_color: Color for the text.
+    #     """
+    #     tag_name = f'{bg_color}_{text_color}'
+    #     self.tag_configure(tag_name, foreground=text_color, background=bg_color)
+    #     # start_pos = f'1.0'
+    #     start_pos = f'0.0'
+    #     end_pos = f'0.{len(striong)-1}'
+    #     self.tag_add(tag_name, start_pos, end_pos)
+    #     self.insert(END, striong, tag_name)
+    #     self.insert(END, '\n')
+    #     self.yview(END)
 
     def priont_float(self, key_of_float: str, flioat: float):
         """
@@ -344,13 +351,13 @@ class TEXOTY(Text):
         leading_spaces = " " * (len(key_of_float) + 1)
         self.priont_string(f'{leading_spaces}└{flioat}')
 
-    def priont_number_list(self, number_list: list):
-        """
-        Display the number list from kre8dict.
-        :param number_list: The list of numbers in numerical order.
-        :return:
-        """
-        self.priont_string(str(number_list))
+    # def priont_number_list(self, number_list: list):
+    #     """
+    #     Display the number list from kre8dict.
+    #     :param number_list: The list of numbers in numerical order.
+    #     :return:
+    #     """
+    #     self.priont_string(str(number_list))
 
     def priont_list(self, items: list, list_key=None, parent_key=None, numbered=False):
         """
@@ -380,7 +387,7 @@ class TEXOTY(Text):
                 if isinstance(item, str) and item.startswith('http'):
                     self.priont_hyperlink("Click Me", item)
                 else:
-                    self.priont_string(f'{leading_spaces[len(str(items.index(item))):]}{prefix}{item}')
+                    self.priont_string(f'{leading_spaces[len(str(items.index(item)))+1:]}{prefix}{item}')
         else:
             for item in items:
                 prefix = "└" if items.index(item) == len(items) - 1 else "├"

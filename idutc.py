@@ -71,33 +71,33 @@ class IDUTC(helper_widget.helpingWidget):
             "Accuracy": ["Pen", "Crayon"]
         }
         self.artributeMenus = {}
-        # for key, value in self.artyle_artributes_dict.items():
-        #     attribute_str_var = StringVar()
-        #     attribute_str_var.set(random.choice(value))
-        #     if key == "Data_Source":
-        #         # ~~ set data_source to what you want
-        #         attribute_str_var.set("Random")
-        #     elif key == "Size":
-        #         # ~~ set size to what you want
-        #         attribute_str_var.set("Dog")
-        #     self.artributeMenus[key] = [attribute_str_var,
-        #                                 OptionMenu(self, attribute_str_var, *value)]
-        #     self.artributeMenus[key][1].grid(column=0, row=2 + list(self.artyle_artributes_dict.keys()).index(key))
+        for key, value in self.artyle_artributes_dict.items():
+            attribute_str_var = StringVar()
+            attribute_str_var.set(random.choice(value))
+            if key == "Data_Source":
+                # ~~ set data_source to what you want
+                attribute_str_var.set("Random")
+            elif key == "Size":
+                # ~~ set size to what you want
+                attribute_str_var.set("Dog")
+            self.artributeMenus[key] = [attribute_str_var,
+                                        OptionMenu(self, attribute_str_var, *value)]
+            self.artributeMenus[key][1].grid(column=0, row=2 + list(self.artyle_artributes_dict.keys()).index(key))
 
         self.generate_new_idutc()
         self.entry_ID_string_var.set("bluebeard")
         # self.set_use_idutc()
-        self.kre8dict = self.setup_kre8dict(self.textbox_dict['use_id'][0].get(),
-                                            self.textbox_dict['use_utc'][0].get())
-        # self.kre8dict = self.setup_kre8dict(self.entry_ID_string_var.get(),
-        #                                     self.entry_UTC_string_var.get())
-        self.artributal = artributal_canvas.artributalCanvas(master=self, width=240, height=400)
-        self.artributeMenus = self.artributal.artributeMenus
+        # self.kre8dict = self.setup_kre8dict(self.textbox_dict['use_id'][0].get(),
+        #                                     self.textbox_dict['use_utc'][0].get())
+        self.kre8dict = self.setup_kre8dict(self.entry_ID_string_var.get(),
+                                            self.entry_UTC_string_var.get())
+        self.artributal = artributal_canvas.artributalCanvas(master=self, width=240, height=240)
+        # self.artributeMenus = self.artributal.artributeMenus
 
     def gather_attributes(self) -> list:
         """Gather and return a list of attribute keywords."""
         attribs_list = []
-        print("GATHERING", self.artributeMenus)
+        # print("GATHERING", self.artributeMenus)
         for key, value in self.artributeMenus.items():
             attribs_list.append(value[0].get())
         return attribs_list
@@ -281,7 +281,7 @@ def new_number_list(utc_used: str) -> list:
     """
     number_list = []
     for i in range(10):
-        print(i)
+        # print(i)
         xs = list(utc_used)[i]
         number_list.append(int(xs))
     number_list.sort()

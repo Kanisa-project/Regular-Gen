@@ -50,6 +50,7 @@ class Application(tk.Frame):
         self.mujicplay_frame = mujicPlay.mujicPlayer(width=screen_w*.333, height=screen_h*.4, idutc_frame=self.idutc_frame)
         self.mujicplay_frame.txo = self.texioty_frame.texoty
         self.texioty_frame.mujic_player = self.mujicplay_frame
+        print("Created the main frame helper widgets..")
 
         self.texioty_frame.add_helper_widget("CLDR", self.calendar_frame)
         self.texioty_frame.add_helper_widget("IDUT", self.idutc_frame)
@@ -57,6 +58,7 @@ class Application(tk.Frame):
         self.texioty_frame.add_helper_widget("ARTY", self.artay_frame)
         self.texioty_frame.add_helper_widget("GAIM", self.gaimplay_frame)
         self.texioty_frame.add_helper_widget("MUJC", self.mujicplay_frame)
+        print("Added the main frame helpers..")
 
         self.widget_dict = {
             "Texioty": self.texioty_frame,
@@ -180,7 +182,8 @@ class SpotLighter(tk.LabelFrame):
 
 if __name__ == '__main__':
     root = tk.Tk()
-    root.title('kanisaGen - v0.16.29')
+    root.title('kanisaGen - v0.16.72')
+    print("Title loaded...")
 
     # ~~ ALLOW FOR FULLSCREEN HERE
     # root.attributes("-fullscreen", True)
@@ -189,7 +192,11 @@ if __name__ == '__main__':
     root.wm_state('zoomed')
 
     root.configure(background='#0f6faa')
+    print("Background configured...")
     screen_width = root.winfo_screenwidth()
     screen_height = root.winfo_screenheight()
+    print("Setting screen dimensions....")
     app = Application(screen_width, screen_height, master=root)
+    print("app becoming Application....")
     app.mainloop()
+    print("Mainloop starting.....")
