@@ -20,7 +20,7 @@ class TEXITY(tk.Entry):
         Text input for Texioty, it can accept commands and different types of entries.
         """
         # Set up the command list/cycling and different entry modes.
-        self.full_command_list = []
+        self.used_command_list = []
         self.kom_index = 0
         self.command_string_var = tk.StringVar()
         self.isTestingKeys = False
@@ -59,11 +59,11 @@ class TEXITY(tk.Entry):
         """Changes the input box to the previous command in the list."""
         if self.command_string_var.get() == '':
             self.kom_index = 0
-        if self.kom_index <= len(self.full_command_list) - 1:
+        if self.kom_index <= len(self.used_command_list) - 1:
             self.kom_index += 1
             # Unsure why final_kom is needed, Texity command cycling works pretty well though.
-            final_kom = clamp(len(self.full_command_list) - self.kom_index, 0, len(self.full_command_list) - 1)
-            self.command_string_var.set(self.full_command_list[final_kom])
+            final_kom = clamp(len(self.used_command_list) - self.kom_index, 0, len(self.used_command_list) - 1)
+            self.command_string_var.set(self.used_command_list[final_kom])
         self.icursor(tk.END)
 
     def command_list_next(self):
@@ -71,8 +71,8 @@ class TEXITY(tk.Entry):
         if self.kom_index >= 1:
             self.kom_index -= 1
             # Unsure why final_kom is needed, Texity command cycling works pretty well though.
-            final_kom = clamp(len(self.full_command_list) - self.kom_index, 0, len(self.full_command_list) - 1)
-            self.command_string_var.set(self.full_command_list[final_kom])
+            final_kom = clamp(len(self.used_command_list) - self.kom_index, 0, len(self.used_command_list) - 1)
+            self.command_string_var.set(self.used_command_list[final_kom])
         if self.kom_index == 0:
             self.command_string_var.set('')
         self.icursor(tk.END)

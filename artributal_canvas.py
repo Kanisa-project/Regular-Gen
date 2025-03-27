@@ -15,19 +15,19 @@ class artributalCanvas(tk.Canvas):
         self.bind("<MouseWheel>", self.scroll_through_artribute)
         self.grid_propagate(False)
         self.place(x=380, y=0)
-        self.outer_artri_points = s.polypointlist(6, 30, 120, 110, 90)
-        self.inner_artri_points = s.polypointlist(len(self.idutc_frame.id_entry.get()), 90, 120, 110, 30)
+        self.outer_artri_points = s.polypointlist(6, 30, 120, 120, 90)
+        self.inner_artri_points = s.polypointlist(len(self.idutc_frame.id_entry.get()), 90, 120, 120, 30)
         # self.menu_polypoints = s.polypointlist(6, 30, 120, 110, 75)
         self.create_polygon(self.outer_artri_points, fill="",
                             outline=s.rgb_to_hex(s.COBALT), width=2)
-        self.center_point = (120, 110)
-        self.artribute_titles = ["Transparency", "Animation Speed", "Coloration",
+        self.center_point = (width//2, width//2)
+        self.artribute_titles = ["Transparency", "Coloration", "Animation Speed",
                                  "Size", "Motion Range", "Accuracy"]
         self.artyle_artributes_dict = {
             "Data_Source": ["Random", "Human", "Reddit", "OSRS", "Twitter", "Discord"],
             "Transparency": ["Door", "Window"],
-            "Animation Speed": ["Ice", "Fire"],
             "Coloration": ["Rainbow", "Cloud"],
+            "Animation Speed": ["Ice", "Fire"],
             "Size": ["Chicken", "Dog", "Camel"],
             "Motion Range": ["Sock", "Rock"],
             "Accuracy": ["Pen", "Crayon"]
@@ -65,9 +65,9 @@ class artributalCanvas(tk.Canvas):
     def set_artribute(self, event):
         self.create_oval(event.x - 3, event.y - 3, event.x + 3, event.y + 3, fill="black", width=3)
         click_point = (event.x, event.y)
-        distance = s.clamp(math.sqrt((120-click_point[0]) ** 2 + (110 - click_point[1]) ** 2), 0, 80)
+        distance = s.clamp(math.sqrt((120-click_point[0]) ** 2 + (120 - click_point[1]) ** 2), 0, 80)
         id_len = len(self.idutc_frame.id_entry.get())
-        self.inner_artri_points = s.polypointlist(id_len, 90, 120, 110, int(distance+10))
+        self.inner_artri_points = s.polypointlist(id_len, 90, 120, 120, int(distance+10))
         self.update_center_point()
 
     def gather_artribute_length(self, artri_title: str) -> int:
@@ -84,9 +84,14 @@ class artributalCanvas(tk.Canvas):
                             outline=s.rgb_to_hex(s.COBALT), width=2)
         for i, point in enumerate(self.outer_artri_points):
             artribute_title = list(self.artyle_artributes_dict.keys())[i]
-            artributal_emoji = artribute_emoji(self.artyle_artributes_dict[artribute_title][0])
+            artributal_emoji = artribute_emoji(self.idutc_frame.kre8dict['artributes'][i])
             self.create_text(point, text=artributal_emoji, fill='black', font=("Times New Roman", 20))
-            artri_line_tup = plan_angled_line(point[0], point[1], -i*60-30,
+            dx = 120 - point[0]
+            dy = 120 - point[1]
+            angle_to_center = math.degrees(math.atan2(dy, dx))
+            if angle_to_center < 0:
+                angle_to_center += 360
+            artri_line_tup = plan_angled_line(point[0], point[1], angle_to_center,
                                               self.gather_artribute_length(artribute_title), 3, 'black')
             self.create_line(artri_line_tup[0][0], artri_line_tup[0][1],
                              artri_line_tup[0][2], artri_line_tup[0][3], fill=s.rgb_to_hex(s.CRIMSON), width=2)

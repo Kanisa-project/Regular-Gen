@@ -1,3 +1,4 @@
+import helper_widget
 import random
 from tkinter import *
 from tkinter import ttk
@@ -8,9 +9,10 @@ import idutc
 import artay
 import settings as s
 import texoty
+import glyther as glyth
 
 
-class KINVOW(ttk.LabelFrame):
+class KINVOW(helper_widget.helpingWidget):
     def __init__(self, width, height, master=None, idutc_frame=None, artay_frame=None):
         """
         Frame to show different options of different styles of art.
@@ -45,6 +47,9 @@ class KINVOW(ttk.LabelFrame):
         self.texioty_commands = {
             "kre8dict": [self.priont_kre8dict, "Show the creationary dictionary.",
                          {}, "KNVO", s.rgb_to_hex(s.LIGHT_GOLDENROD_YELLOW), s.rgb_to_hex(s.DARK_KHAKI)],
+            # "graph": [self.create_graph, "Show the creationary dictionary.",
+            #           {'filename': 'The name of the file you want a graph of.'}, "KNVO",
+            #           s.rgb_to_hex(s.LIGHT_GOLDENROD_YELLOW), s.rgb_to_hex(s.DARK_KHAKI)],
             "kin8": [self.create_from_masterpiece, "Create a masterpiece on Kinvow.",
                      {"glyth": "Gather glyth options and create something on Kinvow.",
                       "glyph": "Gather glyph options and create something on Kinvow.",
@@ -118,7 +123,7 @@ class KINVOW(ttk.LabelFrame):
                 kre8dict[artyle] = gather_options_dict[artyle]()
             self.create_artyles(nim, kre8dict, size_type, args)
             save_name = "_".join(args)
-            save_path = f"{kre8dict['use_id']}/{save_name}.png"
+            save_path = f"{self.txo.master.active_profile.username}/{kre8dict['use_id']}_{save_name}.png"
             for c in save_path:
                 if c in "?!&":
                     save_path = save_path.replace(c, "")

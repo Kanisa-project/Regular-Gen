@@ -434,7 +434,6 @@ ALPHANUMERIC_COORDS = {
     "z": [(0, 2), (8, 3), (0, 2)]
 }
 
-
 ALPHANUMERIC_NOTE_PATTERNS = {
     " ": ["..+.", "-+-=", "=..="],
     ":": ["..-+", "+--=", "__//"],
@@ -781,12 +780,16 @@ class TexiotyProfile:
 available_profiles = {
     "guest": TexiotyProfile("Guest", "p455",
                             (rgb_to_hex(DARK_BROWN),
-                             rgb_to_hex(SAGE_GREEN),
-                             rgb_to_hex(LIGHT_GOLDENROD_YELLOW))),
+                             rgb_to_hex(LIGHT_GOLDENROD),
+                             rgb_to_hex(EGGSHELL_WHITE))),
     "bluebeard": TexiotyProfile("Bluebeard", "p455",
                                 (rgb_to_hex(DARK_SLATE_BLUE),
                                  rgb_to_hex(LIGHT_SLATE_BLUE),
-                                 rgb_to_hex(GHOST_WHITE)))
+                                 rgb_to_hex(GHOST_WHITE))),
+    "r4nd0m": TexiotyProfile("R4ND0M", "p455",
+                             (rgb_to_hex(DARK_TAN),
+                              rgb_to_hex(LIGHT_CORAL),
+                              rgb_to_hex(WHITE_SMOKE)))
 }
 
 LOADING_TERMS = ["Downloading", "Updating", "Executing", "Finding", "Searching for", "Deleting",
@@ -817,21 +820,21 @@ def random_loading_phrase() -> str:
     # return phrase
 
 
-# @dataclass
-# class DisplayComponent:
-#     """
-#     Display some text as a label widget or edit some text as an entry widget.
-#     """
-#     default_value: str
-#     var: tk.StringVar = None
-#     label_widget: tk.Widget = None
-#     new_entry_widget: tk.Widget = None
-#     edit_entry_widget: tk.Widget = None
-#
-#     def set_var(self, new_var: str):
-#         """
-#         Set the StringVar of this display component.
-#         :param new_var: String of info.
-#         :return:
-#         """
-#         self.var.set(new_var)
+@dataclass
+class DisplayComponent:
+    """
+    Display some text as a label widget or edit some text as an entry widget.
+    """
+    default_value: str
+    var: tk.StringVar = None
+    label_widget: tk.Widget = None
+    new_entry_widget: tk.Widget = None
+    edit_entry_widget: tk.Widget = None
+
+    def set_var(self, new_var: str):
+        """
+        Set the StringVar of this display component.
+        :param new_var: String of info.
+        :return:
+        """
+        self.var.set(new_var)

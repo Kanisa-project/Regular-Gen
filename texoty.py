@@ -67,6 +67,11 @@ class TEXOTY(Text):
         self.insert(line_index, tex, self.hyperlink.add(partial(webbrowser.open, link)))
         self.yview(END)
 
+    def fresh_start_no_profile(self):
+        self.priont_string("UHOH, no profile yet.")
+        self.priont_string("In the top-middle of your screen should be a light yellow box with 'r4nd0m'.")
+        self.priont_string("Change this to the name of an object within your sight.")
+
     def set_header(self, msg="Welcome to Texioty"):
         """
         Set a heading with a message and interesting looking lines
@@ -92,7 +97,7 @@ class TEXOTY(Text):
         self.set_text_on_line(0,
                               f"{welcome_line}{header_line[len(welcome_line):]}{header_line[len(self.active_profile.username):]}{self.active_profile.username}")
         self.set_text_on_line(2, f"╙{header_bot[2:]}╛")
-        self.configure(bg=self.active_profile.color_theme[2])
+        self.configure(bg=self.active_profile.color_theme[2], fg=self.active_profile.color_theme[0])
 
     def set_header_theme(self, primary_color: str, secondary_color: str, len_msg: int, font_color: str = "black"):
         """
@@ -210,28 +215,6 @@ class TEXOTY(Text):
                 else:
                     self.priont_dict(dioct[key], parent_key=key, indent=indent + 1)
 
-    # def priont_command(self, command: texity.Command):
-    #     """
-    #     Display a command on Texoty in a stylized and slightly complicated fashion.
-    #     :param command:
-    #     :return:
-    #     """
-    #     # self.priont_break_line()
-    #     self.priont_string(f'{command.name}╕', command.bg_color, command.text_color)
-    #     # self.priont_command_colorized(f'{command.name}╕', command.text_color, command.bg_color)
-    #     if not command.possible_args:
-    #         help_message_text = f'{" " * len(command.name)}╘► {command.help_message}'
-    #         self.colorized_command_help(help_message_text, command.text_color, command.bg_color)
-    #     else:
-    #         help_message_text = f'{" " * len(command.name)}╞► {command.help_message}'
-    #         self.colorized_command_help(help_message_text, command.text_color, command.bg_color)
-    #         for p_arg_i, p_arg_k in enumerate(command.possible_args):
-    #             prefix = " " * len(command.name)
-    #             prefix += "├" if p_arg_i != len(command.possible_args) - 1 else "└"
-    #             self.colorized_command_args(prefix + p_arg_k + f" » {command.possible_args[p_arg_k]}",
-    #                                         text_color=command.bg_color, bg_color=command.text_color)
-    #     self.yview(END)
-    #
     def priont_command(self, command: texity.Command) -> (list, list, list):
         """
         Display a command on Texoty in a stylized and slightly complicated fashion.
@@ -306,41 +289,6 @@ class TEXOTY(Text):
             self.insert(line_index, "\n" + striong)
         self.yview(END)
 
-    # def priont_echo(self, striong: str, text_color='', bg_color=''):
-    #     """
-    #     Display a striong on texoty in the color of font_color.
-    #
-    #     @param striong:
-    #     @param bg_color:
-    #     @param text_color:
-    #     """
-    #     tag_name = f'{bg_color}_{text_color}'
-    #     self.tag_configure(tag_name, foreground=text_color, background=bg_color)
-    #     start_pos = f'1.0'
-    #     end_pos = f'1.{len(striong)}'
-    #     self.tag_add(tag_name, start_pos, end_pos)
-    #     self.insert(END, striong, tag_name)
-    #     self.insert(END, '\n')
-    #     self.yview(END)
-
-    # def priont_command_colorized(self, striong: str, text_color='', bg_color=''):
-    #     """
-    #     Display a command with text_color and bg_color highlighting.
-    #
-    #     @param striong: Text of command to display.
-    #     @param bg_color: Color for the background.
-    #     @param text_color: Color for the text.
-    #     """
-    #     tag_name = f'{bg_color}_{text_color}'
-    #     self.tag_configure(tag_name, foreground=text_color, background=bg_color)
-    #     # start_pos = f'1.0'
-    #     start_pos = f'0.0'
-    #     end_pos = f'0.{len(striong)-1}'
-    #     self.tag_add(tag_name, start_pos, end_pos)
-    #     self.insert(END, striong, tag_name)
-    #     self.insert(END, '\n')
-    #     self.yview(END)
-
     def priont_float(self, key_of_float: str, flioat: float):
         """
         Display a float.
@@ -350,14 +298,6 @@ class TEXOTY(Text):
         """
         leading_spaces = " " * (len(key_of_float) + 1)
         self.priont_string(f'{leading_spaces}└{flioat}')
-
-    # def priont_number_list(self, number_list: list):
-    #     """
-    #     Display the number list from kre8dict.
-    #     :param number_list: The list of numbers in numerical order.
-    #     :return:
-    #     """
-    #     self.priont_string(str(number_list))
 
     def priont_list(self, items: list, list_key=None, parent_key=None, numbered=False):
         """

@@ -84,15 +84,22 @@ class IDUTC(helper_widget.helpingWidget):
                                         OptionMenu(self, attribute_str_var, *value)]
             self.artributeMenus[key][1].grid(column=0, row=2 + list(self.artyle_artributes_dict.keys()).index(key))
 
-        self.generate_new_idutc()
-        self.entry_ID_string_var.set("bluebeard")
+        # self.generate_new_idutc()
+        self.entry_ID_string_var.set("r4nd0m")
+        self.entry_UTC_string_var.set("0000000000")
         # self.set_use_idutc()
         # self.kre8dict = self.setup_kre8dict(self.textbox_dict['use_id'][0].get(),
         #                                     self.textbox_dict['use_utc'][0].get())
         self.kre8dict = self.setup_kre8dict(self.entry_ID_string_var.get(),
                                             self.entry_UTC_string_var.get())
-        self.artributal = artributal_canvas.artributalCanvas(master=self, width=240, height=240)
+        self.artributal = artributal_canvas.artributalCanvas(master=self, width=width * 0.375, height=width * 0.375)
         # self.artributeMenus = self.artributal.artributeMenus
+        if not self.search_and_load_origin():
+            # self.txo.fresh_start_no_profile()
+            print("NNNNNOPPPE", width)
+
+    def create_blank_profile(self):
+        pass
 
     def gather_attributes(self) -> list:
         """Gather and return a list of attribute keywords."""
@@ -136,10 +143,18 @@ class IDUTC(helper_widget.helpingWidget):
         use_id = self.kre8dict["use_id"]
         use_utc = self.kre8dict["use_utc"]
         dumpDict = self.kre8dict
-        if not os.path.exists(use_id):
+        print(use_utc, type(use_utc))
+        save_dir = self.txo.master.active_profile.username
+        if not os.path.exists(use_id) and use_utc == "0000000000":
             os.makedirs(use_id)
-        with open(f'{use_id}/{use_utc}.json', 'w') as f:
-            json.dump(dumpDict, f, indent=4)
+            save_dir = use_id
+        try:
+            with open(f'{save_dir}/{use_id}_{use_utc}.json', 'w') as f:
+                json.dump(dumpDict, f, indent=4)
+        except FileNotFoundError as e:
+            self.txo.priont_string(str(e))
+        finally:
+            pass
 
     def save_json_pen(self, pen_dict: dict):
         """
@@ -162,8 +177,8 @@ class IDUTC(helper_widget.helpingWidget):
         self.entry_ID_string_var.set(loaded_data['use_id'])
         self.entry_UTC_string_var.set(loaded_data['use_utc'])
         self.kre8dict = loaded_data
-        for artyle, chosen_options in self.kre8dict.items():
-            print(artyle, chosen_options)
+        # for artyle, chosen_options in self.kre8dict.items():
+        #     print(artyle, chosen_options)
 
     def load_pen(self):
         """Loads an kanisaPen from a json file."""
@@ -199,6 +214,24 @@ class IDUTC(helper_widget.helpingWidget):
         for key, value in self.artyle_artributes_dict.items():
             self.artributeMenus[key][0].set(random.choice(value))
 
+    def search_and_load_origin(self):
+        for item in os.listdir(os.getcwd()):
+            if os.path.isdir(item):
+                if os.path.exists(f'{item}/0000000000.json'):
+                    print("Founded origin in ", item)
+                    with open(f'{os.getcwd()}/{item}/0000000000.json', 'r') as file:
+                        print("Opened:", f'{os.getcwd()}/{item}/0000000000.json')
+                        try:
+                            loaded_data = json.load(file)
+                            print("Loaded:", loaded_data)
+                        finally:
+                            pass
+                    self.textbox_dict['use_id'][0].set(loaded_data['use_id'])
+                    self.textbox_dict['use_utc'][0].set(loaded_data['use_utc'])
+                    self.kre8dict = loaded_data
+                else:
+                    return False
+
 
 def construct_file_path(base_path, attributes, filename):
     return f"{base_path}/{attributes[3]}/{filename}.png"
@@ -211,9 +244,9 @@ def add_data_source_dict(use_data: dict):
     :return:
     """
     if use_data["data_source"] == "Reddit":
-        submission = reddit.submission(use_data["use_ID"])
+        # submission = reddit.submission(use_data["use_ID"])
         use_data["link"] = f'https://www.reddit.com/{use_data["use_ID"]}'
-        use_data["submission"] = submission
+        # use_data["submission"] = submission
     elif use_data["data_source"] == "OSRS":
         use_data["OSRS Player"] = "OSRSSTUFF"
         use_data["Player Skills"] = ["Attack", "Defence", "Prayer"]
