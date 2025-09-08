@@ -1,21 +1,17 @@
-import artay
+# import graphter
 # import helperIMX
 # import helperPIN
-import idutc
 # import helperLRC
 import tkinter as tk
 
-import mujicPlay
-import settings as s
-import texioty
-import kinvow
+from src.widgets import kinvow, gaim_player, idutc, artay, kalendar
+from src.widgets.texioty import texioty
+from src.settings import theme
 import subprocess
 import threading
-import kalendar
-import gaimPlay
 
 large_widgets = ["Texioty", "Kinvow"]
-small_widgets = ["Calendar", "IDUTC", "aRtay", "Gaim Player", "Mujic Player"]
+small_widgets = ["Calendar", "IDUTC", "aRtay", "Gaim Player", "Mujic Player", "Graphter"]
 
 
 def start_simple_client():
@@ -30,26 +26,30 @@ class Application(tk.Frame):
         :param master:
         """
         super().__init__(master)
-        self.texioty_frame = texioty.TEXIOTY(width=screen_w//3, height=screen_h*.93)
+        self.texioty_frame = texioty.TEXIOTY(width=screen_w // 3, height=screen_h * .93)
 
-        self.idutc_frame = idutc.IDUTC(width=screen_w*.333, height=screen_h*.4)
+        self.idutc_frame = idutc.IDUTC(width=screen_w * .333, height=screen_h * .4)
 
-        self.artay_frame = artay.ARTAY(width=screen_w*.333, height=screen_h*.4, idutc_frame=self.idutc_frame)
+        self.artay_frame = artay.ARTAY(width=screen_w * .333, height=screen_h * .4, idutc_frame=self.idutc_frame)
 
-        self.kinvow_frame = kinvow.KINVOW(width=screen_w//3, height=screen_h*.93,
+        self.kinvow_frame = kinvow.KINVOW(width=screen_w // 3, height=screen_h * .9875,
                                           idutc_frame=self.idutc_frame, artay_frame=self.artay_frame)
         self.kinvow_frame.txo = self.texioty_frame.texoty
 
-        self.calendar_frame = kalendar.Kalendar(width=screen_w*.333, height=screen_h*.4)
+        self.calendar_frame = kalendar.Kalendar(width=screen_w * .333, height=screen_h * .4)
         self.calendar_frame.txo = self.texioty_frame.texoty
 
-        self.gaimplay_frame = gaimPlay.gaimPlayer(width=screen_w*.333, height=screen_h*.4, idutc_frame=self.idutc_frame)
+        self.gaimplay_frame = gaim_player.GaimPlayer(width=screen_w * .333, height=screen_h * .4, idutc_frame=self.idutc_frame)
         self.gaimplay_frame.txo = self.texioty_frame.texoty
         self.texioty_frame.gaim_player = self.gaimplay_frame
 
-        self.mujicplay_frame = mujicPlay.mujicPlayer(width=screen_w*.333, height=screen_h*.4, idutc_frame=self.idutc_frame)
-        self.mujicplay_frame.txo = self.texioty_frame.texoty
-        self.texioty_frame.mujic_player = self.mujicplay_frame
+        # self.mujicplay_frame = mujicPlay.mujicPlayer(width=screen_w*.333, height=screen_h*.4, idutc_frame=self.idutc_frame)
+        # self.mujicplay_frame.txo = self.texioty_frame.texoty
+        # self.texioty_frame.mujic_player = self.mujicplay_frame
+
+        # self.graphter_frame = graphter.Graphter(width=screen_w*.333, height=screen_h*.4)
+        # self.graphter_frame.txo = self.texioty_frame.texoty
+        # self.texioty_frame.mujic_player = self.graphter_frame
         print("Created the main frame helper widgets..")
 
         self.texioty_frame.add_helper_widget("CLDR", self.calendar_frame)
@@ -57,7 +57,8 @@ class Application(tk.Frame):
         self.texioty_frame.add_helper_widget("KNVO", self.kinvow_frame)
         self.texioty_frame.add_helper_widget("ARTY", self.artay_frame)
         self.texioty_frame.add_helper_widget("GAIM", self.gaimplay_frame)
-        self.texioty_frame.add_helper_widget("MUJC", self.mujicplay_frame)
+        # self.texioty_frame.add_helper_widget("MUJC", self.mujicplay_frame)
+        # self.texioty_frame.add_helper_widget("GRPH", self.graphter_frame)
         print("Added the main frame helpers..")
 
         self.widget_dict = {
@@ -67,7 +68,8 @@ class Application(tk.Frame):
             "Kinvow": self.kinvow_frame,
             "aRtay": self.artay_frame,
             "Gaim Player": self.gaimplay_frame,
-            "Mujic Player": self.mujicplay_frame
+            # "Mujic Player": self.mujicplay_frame,
+            # "Graphter": self.graphter_frame
         }
         self.center_frame = SpotLighter(widget_dict=self.widget_dict, width=screen_w//3, height=screen_h//4)
         self.center_frame.grid(column=1, row=1, columnspan=1, rowspan=1, padx=1, pady=1, sticky='nesw')
@@ -79,6 +81,8 @@ class Application(tk.Frame):
         self.center_frame.change_southern_light(self.artay_frame)
         self.center_frame.change_northern_light(self.idutc_frame)
 
+        self.texioty_frame.log_profile_in([self.idutc_frame.textbox_dict["use_id"][0].get(), "p455"])
+
 
 class SpotLighter(tk.LabelFrame):
     """
@@ -87,19 +91,19 @@ class SpotLighter(tk.LabelFrame):
     def __init__(self, widget_dict: dict, width, height, master=None):
         super().__init__(master, width=width, height=height)
         self.active_light_dict = {}
-        self.northern_default = tk.LabelFrame(width=width, height=height*1.325, background=s.rgb_to_hex(s.SAGE_GREEN))
+        self.northern_default = tk.LabelFrame(width=width, height=height*1.325, background=theme.rgb_to_hex(theme.SAGE_GREEN))
         self.northern_light = self.northern_default
         self.northern_light.grid(column=1, row=0, columnspan=1, rowspan=1, padx=1, pady=3, sticky='n')
 
-        self.eastern_default = tk.LabelFrame(width=width, height=height*3.72, background=s.rgb_to_hex(s.DODGER_BLUE))
+        self.eastern_default = tk.LabelFrame(width=width, height=height*3.72, background=theme.rgb_to_hex(theme.DODGER_BLUE))
         self.eastern_light = self.eastern_default
         self.eastern_light.grid(column=2, row=0, columnspan=1, rowspan=3, padx=1, pady=3, sticky='e')
 
-        self.southern_default = tk.LabelFrame(width=width, height=height*1.325, background=s.rgb_to_hex(s.CRIMSON))
+        self.southern_default = tk.LabelFrame(width=width, height=height*1.325, background=theme.rgb_to_hex(theme.CRIMSON))
         self.southern_light = self.southern_default
         self.southern_light.grid(column=1, row=2, columnspan=1, rowspan=1, padx=1, pady=3, sticky='s')
 
-        self.western_default = tk.LabelFrame(width=width, height=height*3.72, background=s.rgb_to_hex(s.SANDY_BROWN))
+        self.western_default = tk.LabelFrame(width=width, height=height*3.72, background=theme.rgb_to_hex(theme.SANDY_BROWN))
         self.western_light = self.western_default
         self.western_light.grid(column=0, row=0, columnspan=1, rowspan=3, padx=1, pady=3, sticky='w')
         self.widget_dict = widget_dict
@@ -182,14 +186,14 @@ class SpotLighter(tk.LabelFrame):
 
 if __name__ == '__main__':
     root = tk.Tk()
-    root.title('kanisaGen - v0.16.72')
+    root.title('kanisaGen - v0.21.12')
     print("Title loaded...")
 
     # ~~ ALLOW FOR FULLSCREEN HERE
-    # root.attributes("-fullscreen", True)
+    root.wm_attributes("-fullscreen", 'True')
 
     # ~~ ALLOW FOR MAX WINDOW HERE
-    root.wm_state('zoomed')
+    # root.wm_state('zoomed')
 
     root.configure(background='#0f6faa')
     print("Background configured...")
@@ -199,4 +203,4 @@ if __name__ == '__main__':
     app = Application(screen_width, screen_height, master=root)
     print("app becoming Application....")
     app.mainloop()
-    print("Mainloop starting.....")
+    print("Mainloop ending.....")
