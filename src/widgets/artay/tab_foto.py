@@ -1,0 +1,163 @@
+import glob
+import os
+import random
+from PIL import Image, ImageFilter
+from tkinter import filedialog
+from ...features.artay import fotoes
+from . import artstyle
+
+
+class Fotoes(artstyle.Artyle):
+    def __init__(self, width, height, master=None, idutc=None):
+        """
+            A collection of options to create a new and exciting Foto.
+        """
+        super(Fotoes, self).__init__(master=master, idutc=idutc, width=width, height=height)
+        self.use_data_dict = None
+        self.tab_name = "Foto"
+        self.setup_button_choices(["Change Directory", "Change Foto 1", "Change Foto 2", "Shuffle Sliders", "Shuffle Filters"])
+        self.button_dict["Change Directory"][1].configure(command=self.update_foto_directory)
+        self.button_dict["Change Foto 1"][1].configure(command=self.choose_foto)
+        self.button_dict["Change Foto 1"][1].bind("<Button-3>", self.random_foto)
+        self.button_dict["Change Foto 2"][1].configure(command=self.choose_foto2)
+        self.button_dict["Change Foto 2"][1].bind("<Button-3>", self.random_foto2)
+        self.button_dict["Shuffle Sliders"][1].configure(command=self.randomize_sliders)
+        self.button_dict["Shuffle Sliders"][1].bind('<Button-3>', self.reset_sliders)
+        self.button_dict["Shuffle Filters"][1].configure(command=self.randomize_filters)
+        self.button_dict["Shuffle Filters"][1].bind('<Button-3>', self.reset_filters)
+        self.checkbutton_choice_list = ["HSB filter", "RGB filter", "Blur", "Contour", "Detail",
+                                        "Edge Enhance", "Emboss", "Find Edges", "Smooth", "Shuffled"]
+        self.slider_choice_list = ["Hue", "Saturation", "Brightness",
+                                   "Red", "Green", "Blue", "Blend"]
+        self.slider_limit_dict = {
+            "Hue": [0, 360],
+            "Saturation": [0, 100],
+            "Brightness": [0, 100],
+            "Blend": [0, 100],
+            "Red": [0, 255],
+            "Green": [0, 255],
+            "Blue": [0, 255]
+        }
+        self.setup_slider_bars(self.slider_choice_list)
+        self.setup_checkbutton_choices(self.checkbutton_choice_list)
+        self.setup_text_boxes({"Shuffled": "4x4"}, start_x_cell=4)
+
+    def gather_random_options(self) -> dict:
+        pass
+
+    def gather_foto_options(self) -> dict:
+        """Gather and return the options Foto will use to make."""
+        sd = self.slider_dict
+        chosen_foto_options = {"IMG": self.button_dict["Change Foto 1"][0].get(),
+                               "IMG2": self.button_dict["Change Foto 2"][0].get(),
+                               "AB": sd["Blend"][0].get(),
+                               "HSB": [sd["Hue"][0].get(), sd["Saturation"][0].get(), sd["Brightness"][0].get()],
+                               "RGB": [sd["Red"][0].get(), sd["Green"][0].get(), sd["Blue"][0].get()],
+                               "Filters": []}
+        for option in self.checkbutton_choice_list:
+            if self.checkbutton_dict[option][0].get() == 1:
+                chosen_foto_options["Filters"].append(option)
+                if option == "Shuffled":
+                    chosen_foto_options["Shuffle Size"] = self.textbox_dict["0"][0].get()
+        return chosen_foto_options
+
+    def setup_slider_bars(self, slider_name_list: list):
+        super().setup_slider_bars(slider_name_list)
+
+    def choose_foto(self):
+        """Add a single fotoes"""
+        x = openfilename_str()
+        x = x[len(os.getcwd()):]
+        self.button_dict["Change Foto 1"][0].set(x)
+
+    def random_foto(self, args=''):
+        print(os.getcwd() + self.button_dict["Change Directory"][0].get() + "/*.png")
+        rando_img_name = random.choice(glob.glob(os.getcwd() + self.button_dict["Change Directory"][0].get() + "/*.png"))
+        self.button_dict["Change Foto 1"][0].set(rando_img_name[len(os.getcwd()):])
+
+    def choose_foto2(self):
+        """Add a second fotoes"""
+        x = openfilename_str()
+        x = x[len(os.getcwd()):]
+        self.button_dict["Change Foto 2"][0].set(x)
+
+    def random_foto2(self, args=''):
+        print(os.getcwd() + self.button_dict["Change Directory"][0].get() + "/*.png")
+        rando_img_name = random.choice(glob.glob(os.getcwd() + self.button_dict["Change Directory"][0].get() + "/*.png"))
+        self.button_dict["Change Foto 2"][0].set(rando_img_name[len(os.getcwd()):])
+
+    def update_foto_directory(self):
+        self.use_data_dict = self.IDUTC_frame.kre8dict
+        x = openfiledir_str()
+        x = x[len(os.getcwd()):]
+        self.button_dict["Change Directory"][0].set(x)
+
+    def add_foto(self, img: Image.Image, kre8dict: dict, abt="masterpiece") -> Image.Image:
+        """
+        Add fotoes to the img masterpiece.
+
+        :param img: Masterpiece Image
+        :param kre8dict: Dictionary of kre8shun.
+        :return:
+        """
+        # print(os.getcwd())
+        imaj1 = Image.open(os.getcwd() + kre8dict["fotoes"]["IMG"])
+        imaj2 = Image.open(os.getcwd() + kre8dict["fotoes"]["IMG2"])
+        bimg = fotoes.blend_foto(imaj1, imaj2, kre8dict["fotoes"]["AB"] / 100)
+        rimg = fotoes.resize_foto(bimg, img.size)
+        for chosen in kre8dict["fotoes"]["Filters"]:
+            if chosen == "HSB filter":
+                rimg = fotoes.hsb_filter_foto(rimg, kre8dict)
+            if chosen == "RGB filter":
+                rimg = fotoes.rgb_filter_foto(rimg, kre8dict)
+            if chosen == "Blur":
+                rimg = rimg.filter(ImageFilter.BLUR)
+            if chosen == "Contour":
+                rimg = rimg.filter(ImageFilter.CONTOUR)
+            if chosen == "Detail":
+                rimg = rimg.filter(ImageFilter.DETAIL)
+            if chosen == "Edge Enhance":
+                rimg = rimg.filter(ImageFilter.EDGE_ENHANCE)
+            if chosen == "Emboss":
+                rimg = rimg.filter(ImageFilter.EMBOSS)
+            if chosen == "Find Edges":
+                rimg = rimg.filter(ImageFilter.FIND_EDGES)
+            if chosen == "Smooth":
+                rimg = rimg.filter(ImageFilter.SMOOTH)
+            if chosen == "Shuffled":
+                rimg = fotoes.shuffle_foto(rimg, kre8dict)
+        img.paste(rimg, (0, 0))
+        return img
+
+    def randomize_sliders(self):
+        for slider in self.slider_choice_list:
+            rn = random.randint(6, 94)
+            if "Hue" in slider:
+                rn = random.randint(4, 356)
+            elif slider in ["Red", "Green", "Blue"]:
+                rn = random.randint(5, 250)
+            self.slider_dict[slider][0].set(rn)
+
+    def randomize_filters(self):
+        for option in self.checkbutton_choice_list:
+            self.checkbutton_dict[option][0].set(random.randint(0, 1))
+        self.checkbutton_dict["Shuffled"][0].set(0)
+
+    def reset_sliders(self, args=''):
+        for slider in self.slider_choice_list:
+            reset_num = self.slider_dict[slider][2].cget("to") // 2
+            self.slider_dict[slider][0].set(reset_num)
+
+    def reset_filters(self, args=''):
+        for option in self.checkbutton_choice_list:
+            self.checkbutton_dict[option][0].set(0)
+
+
+def openfilename_str() -> str:
+    filename = filedialog.askopenfilename(title='Open..')
+    return filename
+
+def openfiledir_str() -> str:
+    filename = filedialog.askdirectory(title='Open..', initialdir='/home/trevor/Documents/PycharmProjects/Regular-Gen')
+    return filename
+

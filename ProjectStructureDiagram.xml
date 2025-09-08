@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mxfile host="app.diagrams.net">
+  <diagram name="Project Map">
+    <mxGraphModel dx="1200" dy="800" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" fold="1">
+      <root>
+        <mxCell id="0"/>
+        <mxCell id="1" parent="0"/>
+
+        <!-- Root grouping -->
+        <mxCell id="rootGroup" value="Project" style="swimlane;rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#999999;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="20" y="20" width="1160" height="740" as="geometry"/>
+        </mxCell>
+
+        <!-- Top-level files -->
+        <mxCell id="main_py" value="main.py" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc" vertex="1" parent="rootGroup">
+          <mxGeometry x="40" y="60" width="140" height="40" as="geometry"/>
+        </mxCell>
+        <mxCell id="casino_py" value="casino.py" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc" vertex="1" parent="rootGroup">
+          <mxGeometry x="40" y="110" width="140" height="40" as="geometry"/>
+        </mxCell>
+        <mxCell id="scripts_dir" value="scripts/" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#b3b3b3" vertex="1" parent="rootGroup">
+          <mxGeometry x="40" y="160" width="140" height="40" as="geometry"/>
+        </mxCell>
+        <mxCell id="tests_dir" value="tests/" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#b3b3b3" vertex="1" parent="rootGroup">
+          <mxGeometry x="40" y="210" width="140" height="40" as="geometry"/>
+        </mxCell>
+
+        <!-- src/ group -->
+        <mxCell id="src_group" value="src/" style="swimlane;rounded=1;whiteSpace=wrap;html=1;fillColor=#e1f5fe;strokeColor=#90caf9" vertex="1" parent="rootGroup">
+          <mxGeometry x="220" y="40" width="940" height="700" as="geometry"/>
+        </mxCell>
+
+        <!-- src/settings -->
+        <mxCell id="settings_group" value="src/settings/" style="swimlane;rounded=1;whiteSpace=wrap;html=1;fillColor=#f3e5f5;strokeColor=#ba68c8" vertex="1" parent="src_group">
+          <mxGeometry x="20" y="40" width="220" height="140" as="geometry"/>
+        </mxCell>
+        <mxCell id="settings_theme" value="theme.py" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1bee7" vertex="1" parent="settings_group">
+          <mxGeometry x="10" y="30" width="90" height="30" as="geometry"/>
+        </mxCell>
+        <mxCell id="settings_app_settings" value="app_settings.py" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1bee7" vertex="1" parent="settings_group">
+          <mxGeometry x="110" y="30" width="100" height="30" as="geometry"/>
+        </mxCell>
+
+        <!-- src/utils -->
+        <mxCell id="utils_group" value="src/utils/" style="swimlane;rounded=1;whiteSpace=wrap;html=1;fillColor=#fff8e1;strokeColor=#ffcc80" vertex="1" parent="src_group">
+          <mxGeometry x="20" y="200" width="220" height="120" as="geometry"/>
+        </mxCell>
+        <mxCell id="utils_helpers" value="helpers.py" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe0b2" vertex="1" parent="utils_group">
+          <mxGeometry x="10" y="30" width="90" height="30" as="geometry"/>
+        </mxCell>
+
+        <!-- src/widgets -->
+        <mxCell id="widgets_group" value="src/widgets/" style="swimlane;rounded=1;whiteSpace=wrap;html=1;fillColor=#e8f5e9;strokeColor=#81c784" vertex="1" parent="src_group">
+          <mxGeometry x="260" y="40" width="320" height="620" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="widgets_main_app" value="main_app.py" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#c8e6c9" vertex="1" parent="widgets_group">
+          <mxGeometry x="10" y="30" width="120" height="30" as="geometry"/>
+        </mxCell>
+        <mxCell id="widgets_helper_widget" value="helper_widget.py" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#c8e6c9" vertex="1" parent="widgets_group">
+          <mxGeometry x="10" y="70" width="120" height="30" as="geometry"/>
+        </mxCell>
+        <mxCell id="widgets_kinvow" value="kinvow.py" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#c8e6c9" vertex="1" parent="widgets_group">
+          <mxGeometry x="10" y="110" width="120" height="30" as="geometry"/>
+        </mxCell>
+        <mxCell id="widgets_gaim_player" value="gaim_player.py" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#c8e6c9" vertex="1" parent="widgets_group">
+          <mxGeometry x="10" y="150" width="120" height="30" as="geometry"/>
+        </mxCell>
+        <mxCell id="widgets_mujic_player" value="mujic_player.py" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#c8e6c9" vertex="1" parent="widgets_group">
+          <mxGeometry x="10" y="190" width="120" height="30" as="geometry"/>
+        </mxCell>
+        <mxCell id="widgets_graphter" value="graphter.py" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#c8e6c9" vertex="1" parent="widgets_group">
+          <mxGeometry x="10" y="230" width="120" height="30" as="geometry"/>
+        </mxCell>
+        <mxCell id="widgets_kalendar" value="kalendar.py" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#c8e6c9" vertex="1" parent="widgets_group">
+          <mxGeometry x="10" y="270" width="120" height="30" as="geometry"/>
+        </mxCell>
+
+        <!-- src/widgets/texioty -->
+        <mxCell id="texioty_group" value="texioty/" style="swimlane;rounded=1;whiteSpace=wrap;html=1;fillColor=#dcedc8;strokeColor=#aed581" vertex="1" parent="widgets_group">
+          <mxGeometry x="150" y="30" width="150" height="120" as="geometry"/>
+        </mxCell>
+        <mxCell id="texioty_texoty" value="texoty.py" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dcedc8" vertex="1" parent="texioty_group">
+          <mxGeometry x="10" y="30" width="120" height="30" as="geometry"/>
+        </mxCell>
+
+        <!-- src/widgets/idutc -->
+        <mxCell id="idutc_group" value="idutc/" style="swimlane;rounded=1;whiteSpace=wrap;html=1;fillColor=#dcedc8;strokeColor=#aed581" vertex="1" parent="widgets_group">
+          <mxGeometry x="150" y="170" width="150" height="180" as="geometry"/>
+        </mxCell>
+        <mxCell id="idutc_idutc" value="idutc.py" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dcedc8" vertex="1" parent="idutc_group">
+          <mxGeometry x="10" y="30" width="120" height="30" as="geometry"/>
+        </mxCell>
+        <mxCell id="idutc_artributal_canvas" value="artributal_canvas.py" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dcedc8" vertex="1" parent="idutc_group">
+          <mxGeometry x="10" y="70" width="120" height="30" as="geometry"/>
+        </mxCell>
+
+        <!-- src/features -->
+        <mxCell id="features_group" value="src/features/" style="swimlane;rounded=1;whiteSpace=wrap;html=1;fillColor=#fff3e0;strokeColor=#ffb74d" vertex="1" parent="src_group">
+          <mxGeometry x="600" y="40" width="320" height="620" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="features_gaim" value="gaim/" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe0b2" vertex="1" parent="features_group">
+          <mxGeometry x="10" y="30" width="120" height="30" as="geometry"/>
+        </mxCell>
+        <mxCell id="features_meem" value="meem/" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe0b2" vertex="1" parent="features_group">
+          <mxGeometry x="10" y="70" width="120" height="30" as="geometry"/>
+        </mxCell>
+        <mxCell id="features_glyph" value="glyph/" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe0b2" vertex="1" parent="features_group">
+          <mxGeometry x="10" y="110" width="120" height="30" as="geometry"/>
+        </mxCell>
+        <mxCell id="features_glyth" value="glyth/" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe0b2" vertex="1" parent="features_group">
+          <mxGeometry x="10" y="150" width="120" height="30" as="geometry"/>
+        </mxCell>
+        <mxCell id="features_mujic" value="mujic/" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe0b2" vertex="1" parent="features_group">
+          <mxGeometry x="10" y="190" width="120" height="30" as="geometry"/>
+        </mxCell>
+        <mxCell id="features_fotoes" value="fotoes/" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe0b2" vertex="1" parent="features_group">
+          <mxGeometry x="10" y="230" width="120" height="30" as="geometry"/>
+        </mxCell>
+        <mxCell id="features_recipe" value="recipe/" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe0b2" vertex="1" parent="features_group">
+          <mxGeometry x="10" y="270" width="120" height="30" as="geometry"/>
+        </mxCell>
+        <mxCell id="features_wordie" value="wordie/" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe0b2" vertex="1" parent="features_group">
+          <mxGeometry x="10" y="310" width="120" height="30" as="geometry"/>
+        </mxCell>
+        <mxCell id="features_spirite" value="spirite/" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe0b2" vertex="1" parent="features_group">
+          <mxGeometry x="10" y="350" width="120" height="30" as="geometry"/>
+        </mxCell>
+
+        <!-- src/features/recipe inner files (representative) -->
+        <mxCell id="recipe_files_group" value="recipe files" style="swimlane;rounded=1;whiteSpace=wrap;html=1;fillColor=#fff8e1;strokeColor=#ffcc80" vertex="1" parent="features_group">
+          <mxGeometry x="150" y="260" width="150" height="170" as="geometry"/>
+        </mxCell>
+        <mxCell id="recipe_recipe_py" value="recipe.py" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff8e1" vertex="1" parent="recipe_files_group">
+          <mxGeometry x="10" y="30" width="120" height="24" as="geometry"/>
+        </mxCell>
+        <mxCell id="recipe_tabs" value="rtab*.py (tabs)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff8e1" vertex="1" parent="recipe_files_group">
+          <mxGeometry x="10" y="60" width="120" height="24" as="geometry"/>
+        </mxCell>
+
+        <!-- Dependencies (edges) -->
+
+        <!-- main.py -> widgets.* -->
+        <mxCell id="e_main_kinvow" edge="1" parent="rootGroup" source="main_py" target="widgets_kinvow" style="endArrow=block;strokeColor=#1565c0">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="e_main_gaim_player" edge="1" parent="rootGroup" source="main_py" target="widgets_gaim_player" style="endArrow=block;strokeColor=#1565c0">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="e_main_idutc" edge="1" parent="rootGroup" source="main_py" target="idutc_idutc" style="endArrow=block;strokeColor=#1565c0">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="e_main_kalendar" edge="1" parent="rootGroup" source="main_py" target="widgets_kalendar" style="endArrow=block;strokeColor=#1565c0">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <!-- widgets.helper_widget -> texioty.texoty -->
+        <mxCell id="e_helper_texoty" edge="1" parent="rootGroup" source="widgets_helper_widget" target="texioty_texoty" style="endArrow=block;dashed=1;strokeColor=#2e7d32">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <!-- gaim_player depends on idutc and wordie feature -->
+        <mxCell id="e_gaim_idutc" edge="1" parent="rootGroup" source="widgets_gaim_player" target="idutc_idutc" style="endArrow=block;strokeColor=#2e7d32">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="e_gaim_features_wordie" edge="1" parent="rootGroup" source="widgets_gaim_player" target="features_wordie" style="endArrow=block;dashed=1;strokeColor=#2e7d32">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="e_gaim_casino" edge="1" parent="rootGroup" source="widgets_gaim_player" target="casino_py" style="endArrow=block;strokeColor=#2e7d32">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <!-- idutc.idutc -> settings and utils -->
+        <mxCell id="e_idutc_theme" edge="1" parent="rootGroup" source="idutc_idutc" target="settings_theme" style="endArrow=block;strokeColor=#6a1b9a">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="e_idutc_app_settings" edge="1" parent="rootGroup" source="idutc_idutc" target="settings_app_settings" style="endArrow=block;strokeColor=#6a1b9a">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="e_idutc_helpers" edge="1" parent="rootGroup" source="idutc_idutc" target="utils_helpers" style="endArrow=block;strokeColor=#ef6c00;dashed=1">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <!-- features.recipe (group) depends on widgets/ and possibly settings -->
+        <mxCell id="e_recipe_widgets" edge="1" parent="rootGroup" source="features_recipe" target="widgets_group" style="endArrow=block;strokeColor=#ef6c00;dashed=1">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
