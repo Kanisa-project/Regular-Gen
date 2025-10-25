@@ -4,9 +4,9 @@ import datetime
 from dataclasses import dataclass
 from typing import Dict
 
-from . import helper_widget
+from . import basik_widget
 from ..domain import models
-from ..settings import theme
+from ..settings import themery as t
 from ..utils import helpers
 
 # import lisox
@@ -52,7 +52,7 @@ class CalendarEventIndex:
         print(new_dated_event)
 
 
-class Kalendar(helper_widget.HelpingWidget):
+class Kalendar(basik_widget.BasikWidget):
     """ Keeps track of dates and events."""
 
     def __init__(self, width, height, master=None):
@@ -85,7 +85,7 @@ class Kalendar(helper_widget.HelpingWidget):
         self.month_cal = self.cal.monthdayscalendar(int(self.selected_year_var.get()), 1)
         self.day_btn_list = []
         self.create_day_buttons([])
-        self.texioty_commands = {}
+        self.helper_commands = {}
 
     def destroy_day_buttons(self):
         for btn in self.day_btn_list:
@@ -209,10 +209,10 @@ class DayButton(tk.Button):
     def set_background_color(self):
         """Set the background color of the button based on different possible states."""
         if self.isSelected:
-            self.config(bg=theme.rgb_to_hex(theme.LIGHT_SEA_GREEN))
+            self.config(bg=t.rgb_to_hex(t.LIGHT_SEA_GREEN))
         elif self.isDateToday:
-            self.config(bg=theme.rgb_to_hex(theme.LIGHT_SLATE_BLUE))
+            self.config(bg=t.rgb_to_hex(t.LIGHT_SLATE_BLUE))
         elif self.isDisabled:
-            self.config(bg=theme.rgb_to_hex(theme.LIGHT_GREY))
+            self.config(bg=t.rgb_to_hex(t.LIGHT_GREY))
         else:
-            self.config(bg=theme.rgb_to_hex(theme.BEIGE))
+            self.config(bg=t.rgb_to_hex(t.BEIGE))

@@ -34,7 +34,7 @@
         <mxCell id="settings_group" value="src/settings/" style="swimlane;rounded=1;whiteSpace=wrap;html=1;fillColor=#f3e5f5;strokeColor=#ba68c8" vertex="1" parent="src_group">
           <mxGeometry x="20" y="40" width="220" height="140" as="geometry"/>
         </mxCell>
-        <mxCell id="settings_theme" value="theme.py" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1bee7" vertex="1" parent="settings_group">
+        <mxCell id="settings_theme" value="t.py" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1bee7" vertex="1" parent="settings_group">
           <mxGeometry x="10" y="30" width="90" height="30" as="geometry"/>
         </mxCell>
         <mxCell id="settings_app_settings" value="app_settings.py" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1bee7" vertex="1" parent="settings_group">
@@ -57,7 +57,7 @@
         <mxCell id="widgets_main_app" value="main_app.py" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#c8e6c9" vertex="1" parent="widgets_group">
           <mxGeometry x="10" y="30" width="120" height="30" as="geometry"/>
         </mxCell>
-        <mxCell id="widgets_helper_widget" value="helper_widget.py" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#c8e6c9" vertex="1" parent="widgets_group">
+        <mxCell id="widgets_helper_widget" value="basik_widget.py" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#c8e6c9" vertex="1" parent="widgets_group">
           <mxGeometry x="10" y="70" width="120" height="30" as="geometry"/>
         </mxCell>
         <mxCell id="widgets_kinvow" value="kinvow.py" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#c8e6c9" vertex="1" parent="widgets_group">

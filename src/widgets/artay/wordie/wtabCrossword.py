@@ -4,9 +4,9 @@ from mtgsdk import Card
 
 
 class Crossword(wordieTab.Wordietab):
-    def __init__(self, master=None):
-        super().__init__(master=master)
+    def __init__(self, width, height, master=None):
         # self.sizes = [20 - 25, 40 - 50, 60 - 75] small, medium, and large crossword hint counts.
+        super().__init__(width, height, master)
         self.useful_sets = ["RAV", "ZEN", "WWK", "SHM", "MOR", "ALA", "LRW"]
         self.setup_button_choices(["Fetch", "Izzet", "Azorious", "Golgari", "Boros", "Dimir",
                                    "Rakdos", "Selesnya", "Gruul", "Orzhov", "Simic"])

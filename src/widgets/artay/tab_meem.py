@@ -15,8 +15,8 @@ QUANTITY = ["a", "some", "about"]
 
 
 class Meem(artstyle.Artyle):
-    def __init__(self, width, height, master=None, idutc=None):
-        super(Meem, self).__init__(master=master, idutc=idutc, width=width, height=height)
+    def __init__(self, width, height, master=None):
+        super(Meem, self).__init__(master=master, width=width, height=height)
         self.setup_button_choices(["MixUp"])
         self.setup_radiobutton_choices(["da_fuq", "forever_alone", "LLOOOLL", "me_gusta", "mother_of_god",
                                         "oh_kay", "srsly", "troll_face"], start_x_cell=1)

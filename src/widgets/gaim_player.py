@@ -1,13 +1,13 @@
-from . import helper_widget
+from . import basik_widget
 from src.widgets.texioty import texoty
 from .artay.wordie import wtabHangman as hm
 import casino as cas
 from src.widgets import idutc
-from ..settings import theme
+from ..settings import themery as t
 from ..utils import helpers
 
 
-class GaimPlayer(helper_widget.HelpingWidget):
+class GaimPlayer(basik_widget.BasikWidget):
     def __init__(self, width, height, master=None, idutc_frame=None, text="Play Gaim: "):
         super(GaimPlayer, self).__init__(master=master, width=width, height=height, text=text)
         self.txo: texoty.TEXOTY = None
@@ -33,23 +33,23 @@ class GaimPlayer(helper_widget.HelpingWidget):
         # }
         self.is_playing = False
 
-        self.texioty_commands = {
+        self.helper_commands = {
             "start": [self.start_gaim, "Start a gaim from the Masterpiece.",
                       {"hangman": "Guess the phrase one letter at time.",
-                       "blackjack": "Play some blackjack behind the casino."}, "GAIM", theme.rgb_to_hex(theme.LIGHT_STEEL_BLUE),
-                      theme.rgb_to_hex(theme.DARK_GREEN_COPPER)],
+                       "blackjack": "Play some blackjack behind the casino."}, "GAIM", t.rgb_to_hex(t.LIGHT_STEEL_BLUE),
+                      t.rgb_to_hex(t.DARK_GREEN_COPPER)],
             # "enter": [self.enter_area, 'Enter an area for "multiplayer".',
             #           {"casino": "Gamble against someone.",
             #            "thunderdome": "Welcome to the thunderdome, %profile_name%."}, [],
-            #           theme.rgb_to_hex(theme.LIGHT_STEEL_BLUE),
-            #           theme.rgb_to_hex(theme.DARK_GREEN_COPPER)],
+            #           t.rgb_to_hex(t.LIGHT_STEEL_BLUE),
+            #           t.rgb_to_hex(t.DARK_GREEN_COPPER)],
             "guess": [self.guess_play, "Guess a letter for Hangman.",
-                      {'a-z': "Guess a single letter to solve."}, "GAIM", theme.rgb_to_hex(theme.LIGHT_STEEL_BLUE),
-                      theme.rgb_to_hex(theme.DARK_GREEN_COPPER)],
+                      {'a-z': "Guess a single letter to solve."}, "GAIM", t.rgb_to_hex(t.LIGHT_STEEL_BLUE),
+                      t.rgb_to_hex(t.DARK_GREEN_COPPER)],
             "blaja": [self.black_jack_play, "Make a blackjack move.",
                           {"hit": "Take another card in blackjack.",
-                           "stay": "Stay with your cards in blackjack."}, "GAIM", theme.rgb_to_hex(theme.LIGHT_STEEL_BLUE),
-                          theme.rgb_to_hex(theme.DARK_GREEN_COPPER)]
+                           "stay": "Stay with your cards in blackjack."}, "GAIM", t.rgb_to_hex(t.LIGHT_STEEL_BLUE),
+                          t.rgb_to_hex(t.DARK_GREEN_COPPER)]
         }
 
     def start_gaim(self, args):

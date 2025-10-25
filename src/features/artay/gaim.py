@@ -3,7 +3,7 @@ import random
 import shutil
 
 from PIL import Image
-from src.settings.theme import BLUE
+from src.settings.themery import BLUE
 
 SPACEDITS_OBJECT_DICT = {
     "Player": ["Ship"],

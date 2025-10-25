@@ -5,28 +5,24 @@ from PIL import Image
 
 from . import artstyle
 from ...features.artay import glyphinator
-from ...settings import theme
+from ...settings import themery as t
 
 
 class Glyphin(artstyle.Artyle):
-    def __init__(self, width, height, master=None, idutc=None):
+    def __init__(self, width, height, master=None):
         """
         A tab with options for loading images and placing them on the Kinvow in a grid style of pattern.
 
         :param master: aRtay frame, housing all the artay.
         """
-        super(Glyphin, self).__init__(master=master, idutc=idutc, width=width, height=height)
+        super(Glyphin, self).__init__(master=master, width=width, height=height)
         self.tab_name = "Glyph"
-        # self.radiobutton_choice_list = ["masterpiece", "Avatar", "Banner", "Tile"]
         self.checkbutton_choice_list = ["Square", "Round", "SlantUp", "SlantDown", "SlantLeft", "SlantRight", "Ring",
                                         "Vertical", "Horizontal", "Up", "Down", "Left", "Right", "Snow", "Scales",
                                         "Plaid", "Emoji", "Spiral", "Whut"]
         self.selection_button_list = ["All", "None", "Random"]
-        # self.tone_int_var = IntVar()
-        # self.disp_img = None
-        # self.setup_radiobutton_choices(self.radiobutton_choice_list)
         self.setup_button_choices(self.selection_button_list)
-        self.setup_checkbutton_choices(self.checkbutton_choice_list)
+        self.setup_checkbutton_choices(self.checkbutton_choice_list, start_x_cell=2)
         self.button_dict["All"][1].configure(command=self.select_all)
         self.button_dict["None"][1].configure(command=self.select_none)
         self.button_dict["Random"][1].configure(command=self.select_random)
@@ -48,7 +44,7 @@ class Glyphin(artstyle.Artyle):
                 chosen_glyph_options.append(option)
         return chosen_glyph_options
 
-    def add_glyph(self, img: Image, kre8dict: dict, abt="masterpiece") -> Image:
+    def add_glyph(self, img: Image.Image, kre8dict: dict, abt="masterpiece") -> Image.Image:
         """
         Bring in an image, add some kre8dict things to it about whatever it is. Get new image back.
         :param img:
@@ -56,15 +52,13 @@ class Glyphin(artstyle.Artyle):
         :param abt:
         :return:
         """
+        
         w, h = img.size
-        # bity = Image.new("RGBA", (64, 64), DRS_PURPLE)
         artributes = self.set_artributes(kre8dict)
         for x in range(0, w, 64):
             for y in range(0, h, 64):
-                # if len(kre8dict) == 0:
-                #     kre8dict.append("Emoji")
                 bit_type = random.choice(kre8dict["glyph"])
-                bity = Image.new("RGBA", (64, 64), theme.DRS_PURPLE)
+                bity = Image.new("RGBA", (64, 64), t.DRS_PURPLE)
                 if bit_type == "Vertical":
                     bity = glyphinator.vertical_bity(bity, artributes)
                 if bit_type == "Horizontal":

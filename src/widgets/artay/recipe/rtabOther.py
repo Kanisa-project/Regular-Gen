@@ -33,8 +33,9 @@ RECIPES_DICT = {
 
 
 class Other(recipeTab.Recitab):
-    def __init__(self, master=None):
-        super().__init__(master=master)
+    def __init__(self, width, height, master=None):
+
+        super().__init__(width, height, master)
         recipe_name_list = list(RECIPES_DICT.keys())
         self.setup_button_choices(recipe_name_list)
         self.button_dict["None Bread"][1].configure(command=lambda: self.set_used_recipe(RECIPES_DICT["None Bread"]))

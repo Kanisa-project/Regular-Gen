@@ -2,8 +2,8 @@ import random
 from PIL import Image, ImageDraw
 import math
 
-from src.settings import app_settings, theme
-from src.settings.theme import ORANGE
+from src.settings import app_settings, themery
+from src.settings.themery import ORANGE
 from src.utils import helpers
 
 
@@ -204,8 +204,8 @@ def grid(img: Image, artribute_dict: dict) -> Image:
     grid_size = 16
     for x in range(0, w + grid_size, grid_size):
         for y in range(0, h + grid_size, grid_size):
-            draw.line((x, 0, x, h), fill=theme.WHITE_SMOKE)
-            draw.line((0, y, w, y), fill=theme.WHITE_SMOKE)
+            draw.line((x, 0, x, h), fill=themery.WHITE_SMOKE)
+            draw.line((0, y, w, y), fill=themery.WHITE_SMOKE)
     return img
 
 
@@ -281,7 +281,7 @@ def dirt(img: Image, artribute_dict: dict) -> Image:
     str_axiom = list(f"dirt".join("genurary"))
     random.shuffle(str_axiom)
     l_string = lsystem_string_maker(''.join(str_axiom), app_settings.MORSE_CODE_AXIOMS, 3)
-    l_morse_line_list = lsystem_morse_coder(l_string, start_color=theme.RANDOM_COLOR2)
+    l_morse_line_list = lsystem_morse_coder(l_string, start_color=themery.RANDOM_COLOR2)
 
     for line in l_morse_line_list:
         line_points = (line[0][0], line[0][1], line[0][2], line[0][3])
@@ -589,7 +589,7 @@ def shadow(img: Image, artribute_dict: dict) -> Image:
     str_axiom = list(f"shadow".join("genurary"))
     random.shuffle(str_axiom)
     l_string = lsystem_string_maker(''.join(str_axiom), app_settings.MORSE_CODE_AXIOMS, 3)
-    l_morse_line_list = lsystem_morse_coder(l_string, start_color=theme.RANDOM_COLOR2)
+    l_morse_line_list = lsystem_morse_coder(l_string, start_color=themery.RANDOM_COLOR2)
 
     for line in l_morse_line_list:
         line_points = (line[0][0], line[0][1], line[0][2], line[0][3])
@@ -607,7 +607,7 @@ def steam(img: Image, artribute_dict: dict) -> Image:
     str_axiom = list(f"steam".join("genurary"))
     random.shuffle(str_axiom)
     l_string = lsystem_string_maker(''.join(str_axiom), app_settings.MORSE_CODE_AXIOMS, 3)
-    l_morse_line_list = lsystem_morse_coder(l_string, start_color=theme.RANDOM_COLOR2)
+    l_morse_line_list = lsystem_morse_coder(l_string, start_color=themery.RANDOM_COLOR2)
     for line in l_morse_line_list:
         line_points = (line[0][0], line[0][1], line[0][2], line[0][3])
         draw.line(line_points, fill=random.choice(cl), width=random.choice(width_list))

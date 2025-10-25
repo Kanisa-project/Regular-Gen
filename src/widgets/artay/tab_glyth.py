@@ -7,14 +7,14 @@ from ...features.artay import glyther
 
 
 class Glyther(artstyle.Artyle):
-    def __init__(self, width, height, master=None, idutc=None):
+    def __init__(self, width, height, master=None):
         """
         A tab that has options to draw basic shapes, lines and dots on the Kinvow.
 
         :param master: aRtay frame, housing all the other artay.
         :param idutc: aRtay frame, housing all the other artay.
         """
-        super(Glyther, self).__init__(master=master, width=width, height=height, idutc=idutc)
+        super(Glyther, self).__init__(master=master, width=width, height=height)
         self.tkimg = None
         self.tab_name = "Glyth"
         self.checkbutton_choice_list = ["Dirt", "Smoke", "Ripples", "Lightning", "Pebbles", "Confetti",
@@ -27,11 +27,7 @@ class Glyther(artstyle.Artyle):
         self.button_dict["None"][1].configure(command=self.select_none)
         self.button_dict["Random"][1].configure(command=self.select_random)
         self.setup_radiobutton_choices(self.radiobutton_choice_list, start_y_cell=3)
-        self.setup_checkbutton_choices(self.checkbutton_choice_list)
-
-    # def load_glyth_options(self, options_to_load: list):
-    #     for option in options_to_load:
-    #         self.checkbutton_dict[option][0].set(1)
+        self.setup_checkbutton_choices(self.checkbutton_choice_list, start_x_cell=2)
 
     def gather_glyth_options(self) -> list:
         """Gather and return the options Glyther will use to draw."""
@@ -50,7 +46,7 @@ class Glyther(artstyle.Artyle):
                 chosen_glyth_options.append(option)
         return chosen_glyth_options
 
-    def add_glyth(self, img: Image, kre8dict: dict, abt="masterpiece") -> Image:
+    def add_glyth(self, img: Image.Image, kre8dict: dict, abt="masterpiece") -> Image.Image:
         """
         Add each chosen glyth option to the img using the kre8dict.
         """

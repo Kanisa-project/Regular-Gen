@@ -5,12 +5,12 @@ from PIL import Image, ImageDraw, ImageTk
 from src.settings import app_settings
 
 def load_spirite_layer(spirite_name: str, spirite_layer: str, layer_num: int) -> PhotoImage:
-    file_path = f'{os.getcwd()}/filesInput/spirites/{spirite_name}/{spirite_layer.lower()}{layer_num}.png'
+    file_path = f'{os.getcwd()[:-3]}/filesInput/spirites/{spirite_name}/{spirite_layer.lower()}{layer_num}.png'
     # print(f"Trying to load {file_path}")
 
     if not os.path.exists(file_path):
         # print(f"File not found: {file_path}")
-        spirite_dir = f"{os.getcwd()}/filesInput/spirites/{spirite_name}"
+        spirite_dir = f"{os.getcwd()[:-3]}/filesInput/spirites/{spirite_name}"
         if os.path.exists(spirite_dir):
             # print(f"Available files in directory:")
             for file in os.listdir(spirite_dir):

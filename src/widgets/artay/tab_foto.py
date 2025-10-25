@@ -8,23 +8,13 @@ from . import artstyle
 
 
 class Fotoes(artstyle.Artyle):
-    def __init__(self, width, height, master=None, idutc=None):
+    def __init__(self, width, height, master=None):
         """
             A collection of options to create a new and exciting Foto.
         """
-        super(Fotoes, self).__init__(master=master, idutc=idutc, width=width, height=height)
+        super(Fotoes, self).__init__(master=master, width=width, height=height)
         self.use_data_dict = None
         self.tab_name = "Foto"
-        self.setup_button_choices(["Change Directory", "Change Foto 1", "Change Foto 2", "Shuffle Sliders", "Shuffle Filters"])
-        self.button_dict["Change Directory"][1].configure(command=self.update_foto_directory)
-        self.button_dict["Change Foto 1"][1].configure(command=self.choose_foto)
-        self.button_dict["Change Foto 1"][1].bind("<Button-3>", self.random_foto)
-        self.button_dict["Change Foto 2"][1].configure(command=self.choose_foto2)
-        self.button_dict["Change Foto 2"][1].bind("<Button-3>", self.random_foto2)
-        self.button_dict["Shuffle Sliders"][1].configure(command=self.randomize_sliders)
-        self.button_dict["Shuffle Sliders"][1].bind('<Button-3>', self.reset_sliders)
-        self.button_dict["Shuffle Filters"][1].configure(command=self.randomize_filters)
-        self.button_dict["Shuffle Filters"][1].bind('<Button-3>', self.reset_filters)
         self.checkbutton_choice_list = ["HSB filter", "RGB filter", "Blur", "Contour", "Detail",
                                         "Edge Enhance", "Emboss", "Find Edges", "Smooth", "Shuffled"]
         self.slider_choice_list = ["Hue", "Saturation", "Brightness",
@@ -38,9 +28,19 @@ class Fotoes(artstyle.Artyle):
             "Green": [0, 255],
             "Blue": [0, 255]
         }
-        self.setup_slider_bars(self.slider_choice_list)
-        self.setup_checkbutton_choices(self.checkbutton_choice_list)
+        self.setup_button_choices(["Change Directory", "Change Foto 1", "Change Foto 2", "Shuffle Sliders", "Shuffle Filters"])
+        self.setup_slider_bars(self.slider_choice_list, start_x_cell=1)
+        self.setup_checkbutton_choices(self.checkbutton_choice_list, start_x_cell=3)
         self.setup_text_boxes({"Shuffled": "4x4"}, start_x_cell=4)
+        self.button_dict["Change Directory"][1].configure(command=self.update_foto_directory)
+        self.button_dict["Change Foto 1"][1].configure(command=self.choose_foto)
+        self.button_dict["Change Foto 1"][1].bind("<Button-3>", self.random_foto)
+        self.button_dict["Change Foto 2"][1].configure(command=self.choose_foto2)
+        self.button_dict["Change Foto 2"][1].bind("<Button-3>", self.random_foto2)
+        self.button_dict["Shuffle Sliders"][1].configure(command=self.randomize_sliders)
+        self.button_dict["Shuffle Sliders"][1].bind('<Button-3>', self.reset_sliders)
+        self.button_dict["Shuffle Filters"][1].configure(command=self.randomize_filters)
+        self.button_dict["Shuffle Filters"][1].bind('<Button-3>', self.reset_filters)
 
     def gather_random_options(self) -> dict:
         pass
@@ -61,8 +61,8 @@ class Fotoes(artstyle.Artyle):
                     chosen_foto_options["Shuffle Size"] = self.textbox_dict["0"][0].get()
         return chosen_foto_options
 
-    def setup_slider_bars(self, slider_name_list: list):
-        super().setup_slider_bars(slider_name_list)
+    # def setup_slider_bars(self, slider_name_list: list):
+    #     super().setup_slider_bars(slider_name_list)
 
     def choose_foto(self):
         """Add a single fotoes"""
@@ -71,8 +71,8 @@ class Fotoes(artstyle.Artyle):
         self.button_dict["Change Foto 1"][0].set(x)
 
     def random_foto(self, args=''):
-        print(os.getcwd() + self.button_dict["Change Directory"][0].get() + "/*.png")
-        rando_img_name = random.choice(glob.glob(os.getcwd() + self.button_dict["Change Directory"][0].get() + "/*.png"))
+        print(os.getcwd()[:-4] + self.button_dict["Change Directory"][0].get() + "/*.png")
+        rando_img_name = random.choice(glob.glob(os.getcwd()[:-4] + self.button_dict["Change Directory"][0].get() + "/*.png"))
         self.button_dict["Change Foto 1"][0].set(rando_img_name[len(os.getcwd()):])
 
     def choose_foto2(self):
@@ -82,14 +82,13 @@ class Fotoes(artstyle.Artyle):
         self.button_dict["Change Foto 2"][0].set(x)
 
     def random_foto2(self, args=''):
-        print(os.getcwd() + self.button_dict["Change Directory"][0].get() + "/*.png")
-        rando_img_name = random.choice(glob.glob(os.getcwd() + self.button_dict["Change Directory"][0].get() + "/*.png"))
+        print(os.getcwd()[:-4] + self.button_dict["Change Directory"][0].get() + "/*.png")
+        rando_img_name = random.choice(glob.glob(os.getcwd()[:-4] + self.button_dict["Change Directory"][0].get() + "/*.png"))
         self.button_dict["Change Foto 2"][0].set(rando_img_name[len(os.getcwd()):])
 
     def update_foto_directory(self):
-        self.use_data_dict = self.IDUTC_frame.kre8dict
         x = openfiledir_str()
-        x = x[len(os.getcwd()):]
+        x = x[len(os.getcwd())-4:]
         self.button_dict["Change Directory"][0].set(x)
 
     def add_foto(self, img: Image.Image, kre8dict: dict, abt="masterpiece") -> Image.Image:

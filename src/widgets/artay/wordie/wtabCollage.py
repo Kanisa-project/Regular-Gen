@@ -2,7 +2,7 @@ import math
 import random
 
 from . import wordieTab
-from src.settings import theme
+from src.settings import themery as t
 from src.utils import helpers
 from typing import Tuple
 
@@ -21,7 +21,8 @@ class FontCanvas(tk.Canvas):
     def __init__(self, master=None, width=133, height=200, bg="#ffffff"):
         super().__init__(master=master, width=width, height=height, bg=bg, highlightthickness=0)
 
-        self.font_directory = os.getcwd() + "/filesInput/fonts/"
+        self.font_directory = os.getcwd()[:-3] + "/filesInput/fonts/"
+        print("font_dir:", self.font_directory)
         self.sample_text = "Sample Text Abc123"
         self.font_size = 10
         self.selected_font: Optional[str] = None
@@ -183,7 +184,7 @@ class GraphCanvas(tk.Canvas):
     - Lines connect two point names (endpoints)
     """
 
-    def __init__(self, master=None, width=200, height=300, bg=theme.rgb_to_hex(theme.RANDOM_COLOR3)):
+    def __init__(self, master=None, width=200, height=300, bg=t.rgb_to_hex(t.RANDOM_COLOR3)):
         super().__init__(master=master, width=width, height=height, bg=bg, highlightthickness=0)
         self._sidepanel_callback: Optional[Callable[[str, dict], None]] = None
 
@@ -454,8 +455,8 @@ class GraphCanvas(tk.Canvas):
 
 
 class Collage(wordieTab.Wordietab):
-    def __init__(self, master=None, masterpiece_size=(1000, 500)):
-        super().__init__(master=master)
+    def __init__(self, width, height, master=None, masterpiece_size=(1000, 500)):
+        super().__init__(width, height, master)
         self.textbox_names = ["One", "Two", "Three"]
         self.collage_name_dict = init_collage_areas(self.textbox_names)
         self.setup_button_choices(["R a n D O c A p S p A c E D"], start_y_cell=0, start_x_cell=1)

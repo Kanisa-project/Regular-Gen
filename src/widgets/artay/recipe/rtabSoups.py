@@ -22,7 +22,7 @@ RECIPES_DICT = {
 
 
 class Soup(recipeTab.Recitab):
-    def __init__(self, master=None):
-        super().__init__(master=master)
+    def __init__(self, width, height, master=None):
+        super().__init__(width, height, master)
         self.setup_button_choices(list(RECIPES_DICT.keys()))
         self.button_dict["Beef Shtoe"][1].configure(command=lambda: self.set_used_recipe(RECIPES_DICT["Beef Shtoe"]))

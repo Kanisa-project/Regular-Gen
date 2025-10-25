@@ -23,20 +23,20 @@ class AlaNFT(artstyle.Artyle):
         :param TEXIOTY: Texioty frame, for textual input and output
         :param KINVOW: Kinvow frame, for visual input(eventually) and output.
         """
-        super(AlaNFT, self).__init__(master=master, idutc=idutc, width=width, height=height)
+        super(AlaNFT, self).__init__(master=master, width=width, height=height)
         self.osrsTab = None
         self.tab_name = "Recipe"
 
         self.recipeBook = ttk.Notebook(master=self)
 
-        self.othersTab = rtabOther.Other(master=self.recipeBook)
-        self.saucesTab = rtabSauces.Sauce(master=self.recipeBook)
-        self.sandwichesTab = rtabSandwiches.Sandwich(master=self.recipeBook)
-        self.soupsTab = rtabSoups.Soup(master=self.recipeBook)
-        self.marinadesTab = rtabMarinades.Marinade(master=self.recipeBook)
-        self.seasoningsTab = rtabSeasonings.Seasoning(master=self.recipeBook)
-        self.dessertsTab = rtabDesserts.Dessert(master=self.recipeBook)
-        self.casserolesTab = rtabCasseroles.Casserole(master=self.recipeBook)
+        self.othersTab = rtabOther.Other(master=self.recipeBook, width=width, height=height)
+        self.saucesTab = rtabSauces.Sauce(master=self.recipeBook, width=width, height=height)
+        self.sandwichesTab = rtabSandwiches.Sandwich(master=self.recipeBook, width=width, height=height)
+        self.soupsTab = rtabSoups.Soup(master=self.recipeBook, width=width, height=height)
+        self.marinadesTab = rtabMarinades.Marinade(master=self.recipeBook, width=width, height=height)
+        self.seasoningsTab = rtabSeasonings.Seasoning(master=self.recipeBook, width=width, height=height)
+        self.dessertsTab = rtabDesserts.Dessert(master=self.recipeBook, width=width, height=height)
+        self.casserolesTab = rtabCasseroles.Casserole(master=self.recipeBook, width=width, height=height)
 
         self.recipeBook.add(self.othersTab, text="Others")
         self.recipeBook.add(self.saucesTab, text="Sauces")

@@ -101,3 +101,42 @@ def angle_between_points(point1, point2):
         angle_deg += 360
 
     return -angle_deg
+
+
+def decipher_artributes(kre8dict: dict) -> dict:
+    selected_colors = []
+    artribute_dict = {}
+
+    if kre8dict["artributes"][1] == "Door":
+        artribute_dict["transparency"] = 0.85
+    elif kre8dict["artributes"][1] == "Window":
+        artribute_dict["transparency"] = 0.35
+
+    if kre8dict["artributes"][2] == "Rainbow":
+        for ltr in kre8dict["use_id"]:
+            if ltr.lower() in ALPHANUMERIC_COLORS:
+                selected_colors.append(ALPHANUMERIC_COLORS[ltr.lower()])
+            else:
+                selected_colors.append(PUNCTUATION_COLORS[ltr.lower()])
+    elif kre8dict["artributes"][2] == "Cloud":
+        shadelvl = 255 // len(kre8dict["use_id"])
+        selected_colors.append((0, 0, 0))
+        for i in range(len(kre8dict["use_id"])-2):
+            selected_colors.append(((i + 1) * shadelvl, (i + 1) * shadelvl, (i + 1) * shadelvl))
+        selected_colors.append((255, 255, 255))
+    print("HELPERCOLORS: ", selected_colors)
+    artribute_dict['colors'] = selected_colors
+
+    if kre8dict["artributes"][4] == "Chicken":
+        artribute_dict['size_scale'] = 0.2
+    elif kre8dict["artributes"][4] == "Dog":
+        artribute_dict['size_scale'] = 0.4
+    elif kre8dict["artributes"][4] == "Camel":
+        artribute_dict['size_scale'] = 0.8
+
+    if kre8dict["artributes"][6] == "Pen":
+        artribute_dict["accuracy"] = kre8dict["number_list"][:3]
+    elif kre8dict["artributes"][6] == "Crayon":
+        artribute_dict["accuracy"] = kre8dict["number_list"][3:]
+
+    return artribute_dict

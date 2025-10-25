@@ -16,7 +16,7 @@ class Wordie(artstyle.Artyle):
         :param master: aRtay frame, housing all the other artay.
         :param idutc: idutc frame, user input frame.
         """
-        super(Wordie, self).__init__(master=master, idutc=idutc, width=width, height=height)
+        super(Wordie, self).__init__(master=master, width=width, height=height)
         # Set up the name and add the possible choices.
         self.tab_name = "Wordie"
         self.idutc_frame = idutc
@@ -24,12 +24,12 @@ class Wordie(artstyle.Artyle):
         # self.wordie_choices = ["Collage", "Riddle", "Word Search", "Hangman", "Crossword"]
         # self.setup_radiobutton_choices(self.wordie_choices)
         self.wordieBook = ttk.Notebook(master=self)
-        self.hangmanTab = wtabHangman.Hangman(master=self.wordieBook)
-        self.wordsearchTab = wtabWordSearch.WordSearch(master=self.wordieBook)
-        self.crosswordTab = wtabCrossword.Crossword(master=self.wordieBook)
-        self.riddleTab = wtabRiddle.Riddle(master=self.wordieBook)
+        self.hangmanTab = wtabHangman.Hangman(master=self.wordieBook, width=width, height=height, text="Hangman")
+        self.wordsearchTab = wtabWordSearch.WordSearch(master=self.wordieBook, width=width, height=height)
+        self.crosswordTab = wtabCrossword.Crossword(master=self.wordieBook, width=width, height=height)
+        self.riddleTab = wtabRiddle.Riddle(master=self.wordieBook, width=width, height=height)
         # kinvow_size = (self.master.master.kinvow_frame.canvas_w, self.master.master.kinvow_frame.canvas_h)
-        self.collageTab = wtabCollage.Collage(master=self.wordieBook, masterpiece_size=kinvow_size)
+        self.collageTab = wtabCollage.Collage(master=self.wordieBook, masterpiece_size=kinvow_size, width=width, height=height)
 
         self.wordieBook.add(self.collageTab, text="Collage")
         self.wordieBook.add(self.riddleTab, text="Riddle")

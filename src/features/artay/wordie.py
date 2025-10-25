@@ -1,7 +1,7 @@
 import random
 import os
 
-from src.settings import theme
+from src.settings import themery as t
 from PIL import Image, ImageDraw, ImageFont
 
 FONT_NAME = "Akt"
@@ -149,17 +149,17 @@ def word_search(img: Image.Image, artribute_dict: dict, word_search_dict: dict) 
         if orientation == "Vertical":
             for c in word:
                 letters_array[cx][cy] = c.upper()
-                draw.text((cx * 16 + 4, cy * 16 - 2), font=font, text=c.upper(), fill=theme.QUARTZ, align='right')
+                draw.text((cx * 16 + 4, cy * 16 - 2), font=font, text=c.upper(), fill=t.QUARTZ, align='right')
                 cy += 1
         elif orientation == "Horizontal":
             for c in word:
                 letters_array[cx][cy] = c.upper()
-                draw.text((cx * 16 + 4, cy * 16 - 2), font=font, text=c.upper(), fill=theme.QUARTZ, align='right')
+                draw.text((cx * 16 + 4, cy * 16 - 2), font=font, text=c.upper(), fill=t.QUARTZ, align='right')
                 cx += 1
         elif orientation == "Diagonal":
             for c in word:
                 letters_array[cx][cy] = c.upper()
-                draw.text((cx * 16 + 4, cy * 16 - 2), font=font, text=c.upper(), fill=theme.QUARTZ, align='right')
+                draw.text((cx * 16 + 4, cy * 16 - 2), font=font, text=c.upper(), fill=t.QUARTZ, align='right')
                 cx += 1
                 cy += 1
 
@@ -184,7 +184,7 @@ def kollage(img: Image.Image, artribute_dict: dict, area_dict: dict) -> Image.Im
     for textbox in area_dict:
         text = area_dict[textbox][0]
         print('textbox', f'{os.getcwd()}/filesInput/fonts/{area_dict[textbox][4]}.ttf')
-        font = ImageFont.truetype(f'{os.getcwd()}/filesInput/fonts/{area_dict[textbox][5]}.ttf', (area_dict[textbox][4] // 10) + 16)
+        font = ImageFont.truetype(f'{os.getcwd()[:-3]}/filesInput/fonts/{area_dict[textbox][5]}.ttf', (area_dict[textbox][4] // 10) + 16)
         text_img = make_textual_image(img, text, font, random.choice(cl))
         start_point = area_dict[textbox][1]
         end_point = area_dict[textbox][3]

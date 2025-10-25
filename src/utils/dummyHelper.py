@@ -1,5 +1,5 @@
 import random
-from config import settings as s
+from src import settings as s
 
 all_card_template = {"card_name": [],
                      "card_set": [],

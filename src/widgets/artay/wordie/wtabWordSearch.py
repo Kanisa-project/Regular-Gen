@@ -3,8 +3,8 @@ from . import wordieTab
 
 
 class WordSearch(wordieTab.Wordietab):
-    def __init__(self, master=None):
-        super().__init__(master=master)
+    def __init__(self, width, height, master=None):
+        super().__init__(width, height, master)
         self.word_value_list = ["Zero", "One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine"]
 
         self.setup_button_choices(["Random Words"])

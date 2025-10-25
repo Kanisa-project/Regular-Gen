@@ -76,8 +76,8 @@ max_guesses = 0
 
 
 class Hangman(wordieTab.Wordietab):
-    def __init__(self, master=None):
-        super().__init__(master=master)
+    def __init__(self, width, height, master=None, text="Hangman"):
+        super().__init__(width, height, master, text)
         self.setup_button_choices(["Random Phrase"])
         self.button_dict["Random Phrase"][1].config(command=self.randomize_phrase)
         self.setup_text_boxes({"Phrase": random.choice(PHRASE_LIST)}, start_x_cell=1, width=42)
@@ -88,6 +88,7 @@ class Hangman(wordieTab.Wordietab):
 
     def call_this_back(self, extra):
         self.max_guesses = extra
+        print(extra)
         # set_local_max(extra)
 
     def randomize_phrase(self):

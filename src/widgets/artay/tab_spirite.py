@@ -116,14 +116,14 @@ class Spirite(artstyle.Artyle):
     AVAILABLE_SPIRITES = [
         "None", "Alien", "Asteroid", "Ball", "Medallion", "Ship", "Sword",
         "Tribloc", "RTJ", "Boat", "Platform", "Goal"]
-    def __init__(self, width, height, master=None, idutc=None):
+    def __init__(self, width, height, master=None):
         """
         A tab with options for loading different spirite layers. First select a spirit you would like to turn into a
         sprite, and then select the various different layers or have the computer make a random one.
 
         :param master: aRtay frame, housing all the other artay.
         """
-        super().__init__(master=master, idutc=idutc, width=int(width), height=height)
+        super().__init__(master=master, width=int(width), height=height)
         self.tab_name = "Spirite"
         self.current_spirite = "Ball"
         self.layer_definitions = LAYER_DICT.get(self.current_spirite, {})

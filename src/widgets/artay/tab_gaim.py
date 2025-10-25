@@ -7,8 +7,8 @@ from ...features.artay import gaim
 
 
 class Gaim(artstyle.Artyle):
-    def __init__(self, width, height, master=None, idutc=None):
-        super(Gaim, self).__init__(master=master, idutc=idutc, width=width, height=height)
+    def __init__(self, width, height, master=None):
+        super(Gaim, self).__init__(master=master, width=width, height=height)
         self.disp_img = None
         self.tab_name = "Gaim"
         self.gaim_optionmenu_choice_list = ["SpaceDits", "ABF", "ThurBo", "Othaido", "BootyDefence"]

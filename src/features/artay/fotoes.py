@@ -1,25 +1,25 @@
 import random
 from PIL import Image, ImageTk, ImageDraw
 
-from src.settings import theme
+from src.settings import themery as t
 
 
-def resize_foto(foto: Image, new_size: tuple) -> Image:
+def resize_foto(foto: Image.Image, new_size: tuple) -> Image.Image:
     """Resize a fotoes and return it."""
     return foto.resize(new_size)
 
 
-def crop_foto(foto: Image, cropping: (0, 0, 0, 0)) -> Image:
+def crop_foto(foto: Image.Image, cropping: (0, 0, 0, 0)) -> Image.Image:
     """Crop a fotoes and return it."""
     return foto.crop(cropping)
 
 
-def blend_foto(foto: Image, foto2: Image, blend_percent: float) -> Image:
+def blend_foto(foto: Image.Image, foto2: Image.Image, blend_percent: float) -> Image.Image:
     """Blend the two fotoes and return the one."""
     return Image.blend(foto, foto2, blend_percent)
 
 
-def shuffle_foto(img: Image, kre8dict: dict) -> Image:
+def shuffle_foto(img: Image.Image, kre8dict: dict) -> Image.Image:
     """
     Slice and shuffle the provided image.
 
@@ -51,16 +51,16 @@ def shuffle_foto(img: Image, kre8dict: dict) -> Image:
         picked_pos = random.choice(shuf_img_pos_list)
         img.paste(simg, picked_pos)
         sdraw = ImageDraw.Draw(simg)
-        sdraw.rectangle((0, 0, 13, 13), fill=theme.BLACK)
+        sdraw.rectangle((0, 0, 13, 13), fill=t.BLACK)
         sdraw.text((0, 0), str(sliced_images.index(simg)))
         if sliced_images.index(simg) == len(sliced_images)-1:
-            simg.paste(Image.new("RGB", (simg.size[0], simg.size[1]), color=theme.DRS_PURPLE))
+            simg.paste(Image.new("RGB", (simg.size[0], simg.size[1]), color=t.DRS_PURPLE))
         simg.save(f".temp/{sliced_images.index(simg)}.png")
         shuf_img_pos_list.remove(picked_pos)
     return img
 
 
-def hsb_filter_foto(img: Image, kre8dict: dict) -> Image:
+def hsb_filter_foto(img: Image.Image, kre8dict: dict) -> Image.Image:
     """
     Applies a hue, saturation, brightness filter to the provided image.
 
@@ -78,7 +78,7 @@ def hsb_filter_foto(img: Image, kre8dict: dict) -> Image:
     return img
 
 
-def rgb_filter_foto(img: Image, kre8dict: dict) -> Image:
+def rgb_filter_foto(img: Image.Image, kre8dict: dict) -> Image.Image:
     """
     Applies a red, green, blue filter to the provided image.
 

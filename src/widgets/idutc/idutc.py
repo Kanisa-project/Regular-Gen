@@ -4,14 +4,14 @@ import random
 from tkinter import StringVar, OptionMenu, Button, END
 from tkinter.filedialog import askopenfilename
 
-from src.widgets import helper_widget
+from src.widgets import basik_widget
 import mtgsdk as mtg
 
 from . import artributalcanvas
-from ...settings import theme, app_settings
+from ...settings import themery as t, app_settings
 
 
-class IDUTC(helper_widget.HelpingWidget):
+class IDUTC(basik_widget.BasikWidget):
     def __init__(self, width, height, master=None):
         """
         This is the frame for inputting the ID and UTC.
@@ -22,7 +22,7 @@ class IDUTC(helper_widget.HelpingWidget):
         self.configure(text="IDUTC:  ")
         self.grid_propagate(False)
         self.setup_text_boxes({"use_id": "r4nd0m",
-                               "use_utc": "2134506798"}, width=16)
+                               "use_utc": "2134506798"}, width=10)
         self.slider_choice_list = ["Transparency", "Coloration", "Animation Speed", "Size", "Motion Range", "Accuracy"]
         self.slider_limit_dict = {"Transparency": [0, 100],
                                   "Coloration": [0, 100],
@@ -30,7 +30,7 @@ class IDUTC(helper_widget.HelpingWidget):
                                   "Size": [0, 100],
                                   "Motion Range": [0, 100],
                                   "Accuracy": [0, 100]}
-        self.setup_slider_bars(self.slider_choice_list, start_x_cell=2, start_y_cell=3, slide_len=175)
+        self.setup_slider_bars(self.slider_choice_list, start_x_cell=2, start_y_cell=3, slide_len=75)
 
         self.entry_ID_string_var = self.textbox_dict['use_id'][0]
         self.entry_UTC_string_var = self.textbox_dict['use_utc'][0]
@@ -46,13 +46,10 @@ class IDUTC(helper_widget.HelpingWidget):
         self.button_dict["Set ID/UTC"][1].config(command=self.set_use_idutc)
         self.button_dict["Save kre8dict"][1].config(command=self.save_json)
         self.button_dict["Load kre8dict"][1].config(command=self.load_json)
-        # self.setup_button_choices(["Save Origin", "Load Origin"], start_x_cell=6)
-        # self.button_dict["Save Origin"][1].config(command=self.save_origin)
-        # self.button_dict["Load Origin"][1].config(command=self.load_origin)
 
-        self.texioty_commands = {
+        self.helper_commands = {
             "random_artributes": [self.randomize_artributes, "Randomize the artributes in IDUTC.",
-                                  {}, "IDUT", theme.rgb_to_hex(theme.LIGHT_CORAL), theme.rgb_to_hex(theme.DARK_SLATE_GREY)],
+                                  {}, "IDUT", t.rgb_to_hex(t.LIGHT_CORAL), t.rgb_to_hex(t.DARK_SLATE_GREY)],
         }
 
         self.artyle_artributes_dict = {
@@ -60,7 +57,7 @@ class IDUTC(helper_widget.HelpingWidget):
             "Transparency": ["Door", "Window"],
             "Coloration": ["Rainbow", "Cloud"],
             "Animation Speed": ["Ice", "Fire"],
-            "Size": ["Chicken", "Dog", "Camel"],
+            "Size": ["Chicken", "Camel"],
             "Motion Range": ["Sock", "Rock"],
             "Accuracy": ["Pen", "Crayon"]
         }
@@ -71,26 +68,18 @@ class IDUTC(helper_widget.HelpingWidget):
             if key == "Data_Source":
                 # ~~ set data_source to what you want
                 attribute_str_var.set("Random")
-            elif key == "Size":
-                # ~~ set size to what you want
-                attribute_str_var.set("Dog")
             self.artributeMenus[key] = [attribute_str_var,
                                         OptionMenu(self, attribute_str_var, *value)]
             self.artributeMenus[key][1].grid(column=0, row=2 + list(self.artyle_artributes_dict.keys()).index(key))
 
-        # self.generate_new_idutc()
-        self.entry_ID_string_var.set("r4nd0m")
-        self.entry_UTC_string_var.set("0000000000")
-        # self.set_use_idutc()
-        # self.kre8dict = self.setup_kre8dict(self.textbox_dict['use_id'][0].get(),
-        #                                     self.textbox_dict['use_utc'][0].get())
         self.kre8dict = self.setup_kre8dict(self.entry_ID_string_var.get(),
                                             self.entry_UTC_string_var.get())
         self.artributal = artributalcanvas.ArtributalCanvas(master=self, width=width * 0.3, height=width * 0.3)
-        # self.artributeMenus = self.artributal.artributeMenus
+        self.artributal.place(x=340, y=140)
+
+        self.generate_new_idutc()
         if not self.search_and_load_origin():
-            # self.txo.fresh_start_no_profile()
-            print("NNNNNOPPPE", width)
+            pass
         else:
             self.artributal.sync_with_use_id()
 
@@ -335,10 +324,10 @@ def new_color_list(id_used: str, is_float=True) -> list:
     """
     color_list = []
     for c in id_used:
-        if c.lower() in theme.ALPHANUMERIC_COLORS:
-            color = theme.ALPHANUMERIC_COLORS[c.lower()]
+        if c.lower() in t.ALPHANUMERIC_COLORS:
+            color = t.ALPHANUMERIC_COLORS[c.lower()]
         else:
-            color = theme.PUNCTUATION_COLORS[c.lower()]
+            color = t.PUNCTUATION_COLORS[c.lower()]
         if is_float:
             color = (round(color[0] / 255, 3),
                      round(color[1] / 255, 3),

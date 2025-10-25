@@ -1,8 +1,8 @@
 from src.utils import ast_visitor
-import helper_widget
+import basik_widget
 
 
-class Graphter(helper_widget.helpingWidget):
+class Graphter(basik_widget.BasikWidget):
     def __init__(self, width, height, master=None):
         super().__init__(master=master, width=width, height=height)
         self.setup_text_boxes({"file_name": "idutc.py"})

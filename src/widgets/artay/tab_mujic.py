@@ -4,17 +4,17 @@ from . import artstyle
 import numpy as np
 import wavio as wavio
 from ...features.artay import mujic
-from ...settings import theme
+from ...settings import themery as t
 
 
 class Mujic(artstyle.Artyle):
-    def __init__(self, width, height, master=None, idutc=None):
+    def __init__(self, width, height, master=None):
         """
         Musical masterpiece with a pinch of magic.
         :param master:
         :param idutc:
         """
-        super(Mujic, self).__init__(master=master, idutc=idutc, width=width, height=height)
+        super(Mujic, self).__init__(master=master, width=width, height=height)
         self.tab_name = "Mujic"
         self.slider_choice_list = ["Note duration", "Base frequency"]
         self.setup_radiobutton_choices(["Sine", "Sweep", "Chirp", "Convolve", "Mixture"])
@@ -22,7 +22,7 @@ class Mujic(artstyle.Artyle):
             "Note duration": [2, 32],
             "Base frequency": [40, 80],
             }
-        self.setup_dropdown_menus(word_str="1234")
+        self.setup_dropdown_menus(['1', '2', '3', '4'])
         self.setup_slider_bars(self.slider_choice_list)
         self.slider_dict["Note duration"][3].grid(column=5, row=0)
         self.slider_dict["Note duration"][2].grid(column=6, row=0)
@@ -65,12 +65,12 @@ class Mujic(artstyle.Artyle):
         w, h = img.size()
         cx, cy = w//2, h//2
         draw = ImageDraw.Draw(img)
-        draw.line((cx, cy, cx, cy+64), fill=theme.BLACK, width=2)
-        draw.line((cx+64, cy, cx+64, cy+80), fill=theme.BLACK, width=2)
-        draw.line((cx, cy, cx+64, cy), fill=theme.BLACK, width=2)
+        draw.line((cx, cy, cx, cy+64), fill=t.BLACK, width=2)
+        draw.line((cx+64, cy, cx+64, cy+80), fill=t.BLACK, width=2)
+        draw.line((cx, cy, cx+64, cy), fill=t.BLACK, width=2)
 
-        draw.ellipse((cx-4, cy+56, cx+16, cy+72), fill=theme.BLACK)
-        draw.ellipse((cx+60, cy+56, cx+96, cy+88), fill=theme.BLACK)
+        draw.ellipse((cx-4, cy+56, cx+16, cy+72), fill=t.BLACK)
+        draw.ellipse((cx+60, cy+56, cx+96, cy+88), fill=t.BLACK)
         return img
 
     def create_mujical_piece(self, img: Image, kre8dict: dict) -> Image:

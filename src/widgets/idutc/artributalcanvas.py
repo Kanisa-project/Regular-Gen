@@ -1,6 +1,6 @@
 import math
 import tkinter as tk
-from src.settings import theme
+from src.settings import themery as t
 from src.utils import helpers
 
 from src.widgets import idutc
@@ -15,18 +15,17 @@ class ArtributalCanvas(tk.Canvas):
         :param master:
         """
         super(ArtributalCanvas, self).__init__(master=master, width=width, height=height,
-                                               bg=theme.rgb_to_hex(theme.GHOST_WHITE))
+                                               bg=t.rgb_to_hex(t.GHOST_WHITE))
         self.idutc_frame: idutc.IDUTC = master
         self.center_point = (width//2, width//2)
         self.bind("<Button-1>", self.set_artribute)
         self.bind("<MouseWheel>", self.scroll_through_artribute)
         self.grid_propagate(False)
-        self.place(x=448, y=0)
         self.outer_artri_points = helpers.polypointlist(6, 30, int(self.center_point[0]), int(self.center_point[1]), 80)
         self.inner_radius = 30
         self.inner_artri_points = self._build_inner_points()
         self.create_polygon(self.outer_artri_points,
-                            outline=theme.rgb_to_hex(theme.COBALT), width=2)
+                            outline=t.rgb_to_hex(t.COBALT), width=2)
         self.artribute_titles = ["Transparency", "Coloration", "Animation Speed",
                                  "Size", "Motion Range", "Accuracy"]
         self.artyle_artributes_dict = {
@@ -34,7 +33,7 @@ class ArtributalCanvas(tk.Canvas):
             "Transparency": ["Door", "Window"],
             "Coloration": ["Rainbow", "Cloud"],
             "Animation Speed": ["Ice", "Fire"],
-            "Size": ["Chicken", "Dog", "Camel"],
+            "Size": ["Chicken", "Camel"],
             "Motion Range": ["Sock", "Rock"],
             "Accuracy": ["Pen", "Crayon"]
         }
@@ -59,7 +58,7 @@ class ArtributalCanvas(tk.Canvas):
     def update_center_point(self):
         self.delete('all')
         self.create_polygon(self.outer_artri_points, fill="",
-                            outline=theme.rgb_to_hex(theme.COBALT), width=2)
+                            outline=t.rgb_to_hex(t.COBALT), width=2)
 
         n = len(self.inner_artri_points)
         if n >= 3:
@@ -83,7 +82,7 @@ class ArtributalCanvas(tk.Canvas):
             artri_line_tup = plan_angled_line(point[0], point[1], angle_to_center,
                                               self.gather_artribute_length(artribute_title), 3, 'black')
             self.create_line(artri_line_tup[0][0], artri_line_tup[0][1],
-                             artri_line_tup[0][2], artri_line_tup[0][3], fill=theme.rgb_to_hex(theme.CRIMSON), width=2)
+                             artri_line_tup[0][2], artri_line_tup[0][3], fill=t.rgb_to_hex(t.CRIMSON), width=2)
 
     def sync_with_use_id(self):
         self.inner_artri_points = self._build_inner_points()
@@ -97,7 +96,7 @@ class ArtributalCanvas(tk.Canvas):
                          self.outer_artri_points[self.selected_index][1] - 16,
                          self.outer_artri_points[self.selected_index][0] + 16,
                          self.outer_artri_points[self.selected_index][1] + 16,
-                         outline=theme.rgb_to_hex(theme.DARK_GREEN), width=2, tags="select_circle")
+                         outline=t.rgb_to_hex(t.DARK_GREEN), width=2, tags="select_circle")
 
     def _get_use_id(self) -> str:
         try:
@@ -112,17 +111,17 @@ class ArtributalCanvas(tk.Canvas):
 
     def _letter_rgb(self, ch: str) -> tuple:
         c = ch.lower()
-        if c in theme.ALPHANUMERIC_COLORS:
-            return theme.ALPHANUMERIC_COLORS[c]
+        if c in t.ALPHANUMERIC_COLORS:
+            return t.ALPHANUMERIC_COLORS[c]
         return getattr(theme, "PUNCTUATION_COLORS", {}).get(c, (0, 0, 0))
 
     def _edge_color_for_index(self, idx: int) -> str:
         use_id = self._get_use_id()
         if not use_id:
-            return theme.rgb_to_hex(theme.DARK_GREEN)
+            return t.rgb_to_hex(t.DARK_GREEN)
         ch = use_id[idx % len(use_id)]
         rgb = self._letter_rgb(ch)
-        return theme.rgb_to_hex(rgb)
+        return t.rgb_to_hex(rgb)
 
 def artribute_emoji(keeword) -> str:
     emoji_text = ""
@@ -145,8 +144,8 @@ def artribute_emoji(keeword) -> str:
         emoji_text = "🐫"
     elif "Chicken" in keeword:
         emoji_text = "🐓"
-    elif "Dog" in keeword:
-        emoji_text = "🐶"
+    # elif "Dog" in keeword:
+    #     emoji_text = "🐶"
     elif "Rock" in keeword:
         emoji_text = "🗿"
     elif "Sock" in keeword:

@@ -2,14 +2,14 @@ import random
 from tkinter import *
 from PIL import Image
 
-from src.settings import theme
+from src.settings import themery as t
 from src.utils import helpers
-from src.widgets import artay, idutc, helper_widget
+from src.widgets import artay, idutc, basik_widget
 from src.widgets.texioty import texoty
 from src.domain.resource_loader import output_path, ensure_parent_dir, safe_filename
 
 
-class KINVOW(helper_widget.HelpingWidget):
+class KINVOW(basik_widget.BasikWidget):
     def __init__(self, width, height, master=None, idutc_frame=None, artay_frame=None):
         """
         Frame to show different options of different styles of art.
@@ -24,7 +24,7 @@ class KINVOW(helper_widget.HelpingWidget):
 
         # Initialize some Kinvow canvas variables.
         self.kinvow_img = None
-        self.use_canvas = Canvas(self, bg=theme.rgb_to_hex(theme.RANDOM_COLOR3), width=width - 25, height=height - 25)
+        self.use_canvas = Canvas(self, bg=t.rgb_to_hex(t.RANDOM_COLOR3), width=width - 25, height=height)
         self.use_canvas.grid(column=0, row=0, padx=3, pady=3)
         self.canvas_w = width
         self.canvas_h = height
@@ -41,12 +41,12 @@ class KINVOW(helper_widget.HelpingWidget):
 
         # Start setup of Texioty.
         self.txo: texoty.TEXOTY = None
-        self.texioty_commands = {
+        self.helper_commands = {
             "kre8dict": [self.priont_kre8dict, "Show the creationary dictionary.",
-                         {}, "KNVO", theme.rgb_to_hex(theme.LIGHT_GOLDENROD_YELLOW), theme.rgb_to_hex(theme.DARK_KHAKI)],
+                         {}, "KNVO", t.rgb_to_hex(t.LIGHT_GOLDENROD_YELLOW), t.rgb_to_hex(t.DARK_KHAKI)],
             # "graph": [self.create_graph, "Show the creationary dictionary.",
             #           {'filename': 'The name of the file you want a graph of.'}, "KNVO",
-            #           theme.rgb_to_hex(theme.LIGHT_GOLDENROD_YELLOW), theme.rgb_to_hex(theme.DARK_KHAKI)],
+            #           t.rgb_to_hex(t.LIGHT_GOLDENROD_YELLOW), t.rgb_to_hex(t.DARK_KHAKI)],
             "kin8": [self.create_from_masterpiece, "Create a masterpiece on Kinvow.",
                      {"glyth": "Gather glyth options and create something on Kinvow.",
                       "glyph": "Gather glyph options and create something on Kinvow.",
@@ -57,7 +57,7 @@ class KINVOW(helper_widget.HelpingWidget):
                       "mujic": "Gather mujic options and create something on Kinvow.",
                       "gaim": "Gather gaim options and create something on Kinvow.",
                       "meem": "Gather meem options and create something on Kinvow."
-                      }, "KNVO", theme.rgb_to_hex(theme.LIGHT_GOLDENROD_YELLOW), theme.rgb_to_hex(theme.DARK_KHAKI)]
+                      }, "KNVO", t.rgb_to_hex(t.LIGHT_GOLDENROD_YELLOW), t.rgb_to_hex(t.DARK_KHAKI)]
         }
 
     def priont_kre8dict(self, args):
@@ -75,7 +75,7 @@ class KINVOW(helper_widget.HelpingWidget):
             size = (int(self.canvas_w) + 1, int(self.canvas_h) + 1)  # FULL CANVAS
         else:
             size = helpers.set_masterpiece_size(size_type)
-        return Image.new("RGBA", size, theme.DRS_PURPLE)
+        return Image.new("RGBA", size, t.DRS_PURPLE)
 
     def create_from_masterpiece(self, args):
         """
@@ -103,18 +103,19 @@ class KINVOW(helper_widget.HelpingWidget):
 
         # Cycle through each kommand argument to collect which options from which artay.
         size_type = "tile"
-        print(kre8dict['artributes'], "ARTIES")
+        print(args, "args")
         if len(args) == 0:
+            print("no args")
             nim = self.starter_image(kre8dict['artributes'][4])
             self.create_artyles(nim, kre8dict, size_type, list(kre8dict.keys()))
-            save_name = safe_filename(kre8dict['use_id'])
+            save_name = safe_filename(self.txo.master.active_profile.username)
             dir_part = save_name
-            file_part = f"{save_name}.png"
+            file_part = f"{kre8dict['use_id']}_{save_name}.png"
             save_path = ensure_parent_dir(output_path(dir_part, safe_filename(file_part)))
             nim.save(save_path)
         else:
             nim = self.starter_image()
-            for artyle in args:
+            for artyle in [args]:
                 print(artyle)
                 kre8dict[artyle] = gather_options_dict[artyle]()
             self.create_artyles(nim, kre8dict, size_type, args)
@@ -133,11 +134,11 @@ class KINVOW(helper_widget.HelpingWidget):
         :param save_path: Needs to be an image.
         :return:
         """
-        print(f"saved {save_path}")
+        # print(f"saved {save_path}")
         self.kinvow_img = PhotoImage(file=save_path)
         self.use_canvas.create_image(self.canvas_w // 2, self.canvas_h // 2, image=self.kinvow_img)
 
-    def create_artyles(self, nim, kre8dict, abt, args):
+    def create_artyles(self, nim, kre8dict, abt, *args):
         """
         Decide which artay to generate and create for display on Kinvow.
 
@@ -257,7 +258,7 @@ class KINVOW(helper_widget.HelpingWidget):
         :return:
         """
         save_path = ''
-        nim = Image.new("RGBA", (64, 64), theme.DRS_PURPLE)
+        nim = Image.new("RGBA", (64, 64), t.DRS_PURPLE)
         save_name = pen_dict['use_id'] + "_" + pen_dict['use_utc']
         if len(pen_dict) >= 1:
             self.create_artyles(nim, pen_dict, 'masterpiece', list(pen_dict.keys()))

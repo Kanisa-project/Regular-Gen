@@ -1,4 +1,4 @@
-from . import theme
+from . import themery
 from . import app_settings
 
-__all__ = ["theme", "app_settings"]
+__all__ = ["themery", "app_settings"]
