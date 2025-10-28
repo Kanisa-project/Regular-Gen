@@ -1,4 +1,4 @@
-from tkinter import *
+from tkinter import StringVar, IntVar, Label, Scale, Entry, OptionMenu, Radiobutton, Button, Checkbutton
 from typing import List
 from tkinter import ttk
 from src.widgets.texioty.helpers.tex_helper import TexiotyHelper
@@ -70,8 +70,8 @@ class BasikWidget(ttk.LabelFrame, TexiotyHelper):
 
             row = i % 8
             col = i // 10
-            scale.grid(column=start_x_cell + col, row=row + start_y_cell, sticky="s", columnspan=2)
-            label.grid(column=start_x_cell + col, row=row + start_y_cell, sticky="nw")
+            scale.grid(column=start_x_cell + col+1, row=row + start_y_cell, sticky="e", columnspan=1)
+            label.grid(column=start_x_cell + col, row=row + start_y_cell, sticky="w")
 
     def setup_dropdown_menus(self, word_list: list, dropdown_name="", start_x_cell=0, start_y_cell=0):
         """
@@ -79,7 +79,6 @@ class BasikWidget(ttk.LabelFrame, TexiotyHelper):
         :param start_y_cell:
         :param start_x_cell:
         :param word_list: List of words to include in the dropdown menu.
-        :param word_str: A string to get random words for the dropdown menu.
         :param dropdown_name: Name this dropdown menu.
         :return:
         """
@@ -127,7 +126,7 @@ class BasikWidget(ttk.LabelFrame, TexiotyHelper):
             row = (i % 5)
             col = (i // 5)
             lbl.grid(column=col + start_x_cell, row=row + start_y_cell, sticky='e')
-            entry.grid(column=col + start_x_cell + 1, row=row + start_y_cell, columnspan=3)
+            entry.grid(column=col + start_x_cell + 1, row=row + start_y_cell, stick='w')
 
     def setup_button_choices(self, button_list: List[str], start_x_cell=0, start_y_cell=0):
         """
@@ -169,13 +168,3 @@ class BasikWidget(ttk.LabelFrame, TexiotyHelper):
             col = (i // 10)
 
             checkbutton.grid(column=col+start_x_cell, row=row+start_y_cell)
-
-
-    def setup_number_wheel(self, num_wheel_name: str, callback, start_x_cell=0, start_y_cell=0):
-        self.widget_display_array.append(num_wheel_name)
-        wheel_value = IntVar()
-        self.dropdown_menu_dict[num_wheel_name] = [wheel_value,
-                                                   ttk.OptionMenu(self, wheel_value, *list(range(-1, 10)),
-                                                                  command=lambda num_boxes: callback(wheel_value.get()))]
-        wheel_value.set(0)
-        self.dropdown_menu_dict[num_wheel_name][1].grid(column=start_x_cell, row=start_y_cell)

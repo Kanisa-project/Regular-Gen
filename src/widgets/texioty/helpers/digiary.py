@@ -10,6 +10,7 @@ class Digiary(TexiotyHelper):
         super().__init__(txo, txi)
         self.txo = txo
         self.txi = txi
+        self.helper_symbol = "DIRY"
         self.diary_line_length = 75
         self.diarySentenceList = []
         self.in_diary_mode = False

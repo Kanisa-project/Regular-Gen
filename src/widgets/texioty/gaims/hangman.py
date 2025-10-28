@@ -1,12 +1,17 @@
 import random
+from typing import Optional
 
+# from src.widgets.artay.wordie.wtabHangman import PHRASE_LIST
 from src.widgets.texioty.gaims.base_gaim import BaseGaim
-from src.settings import themery as t
+from src.settings import themery as t, utils as u
 
-PHRASE_LIST = ["You gave Sally a cheese wheel, she buried it under a tree.",
-               "You helped Tom move a couch, he burned it on the porch.",
-               "Shane kicked your shin after you gave him a flower.",
-               "This is just a phrase, we'll go out of it soon."]
+# PHRASE_LIST = ["You gave Sally a cheese wheel, she buried it under a tree.",
+#                "You helped Tom move a couch, he burned it on the porch.",
+#                "Shane kicked your shin after you gave him a flower.",
+#                "This is just a phrase, we'll go out of it soon."]
+
+PHRASE_LIST = [u.random_loading_phrase()[3:], u.random_loading_phrase()[3:],
+               u.random_loading_phrase()[3:], u.random_loading_phrase()[3:]]
 
 HANGMAN_TEXTMAN_LIST = ["  ╔╤╤═══╕   \n"
                         "  ║     ┇   \n"
@@ -138,7 +143,7 @@ class HangmanRunner(BaseGaim):
                 c += c[0]
             self.hidden_dict[c] = hide_it
 
-    def welcome_message(self, welcoming_msgs):
+    def welcome_message(self, welcoming_msgs=None):
         super().welcome_message([])
         self.txo.priont_string("")
         self.txo.priont_string("Hangman is where you guess a single letter at a time, in an attempt to solve a hidden phrase.")
@@ -172,7 +177,7 @@ class HangmanRunner(BaseGaim):
         """
         if len(guessed_letter) == 1:
             self.txo.priont_string(f"Guessing: {guessed_letter}")
-            self.check_hangman_letter(guessed_letter[0])
+            self.check_hangman_letter(guessed_letter[0].lower())
         else:
             self.txo.priont_string("Guess only one letter at a time.")
         self.welcome_message([])
@@ -185,7 +190,7 @@ class HangmanRunner(BaseGaim):
             self.txo.priont_string(f"  ....is incorrect")
 
     def check_hangman_letter(self, letter: str):
-        if letter in self.gaim_phrase and letter not in self.correct_letters:
+        if letter.lower() in self.gaim_phrase or letter.upper() in self.gaim_phrase:
             self.correct_letters.append(letter)
             self.update_hidden_dict(letter)
         else:
@@ -194,12 +199,17 @@ class HangmanRunner(BaseGaim):
 
     def update_hidden_dict(self, checked_letter: str):
         """Update the hidden dictionary with a checked correct letter."""
+        upper = checked_letter.upper()
+        lower = checked_letter.lower()
         for i in range(len(self.gaim_phrase)):
-            if checked_letter * (i + 1) in self.hidden_dict:
-                if self.hidden_dict[checked_letter * (i + 1)] == "◙":
-                    self.hidden_dict[checked_letter * (i + 1)] = checked_letter
+            if upper * (i + 1) in self.hidden_dict:
+                if self.hidden_dict[upper * (i + 1)] == "◙":
+                    self.hidden_dict[upper * (i + 1)] = upper
+            elif lower * (i + 1) in self.hidden_dict:
+                if self.hidden_dict[lower * (i + 1)] == "◙":
+                    self.hidden_dict[lower * (i + 1)] = lower
 
-    def display_help_message(self):
+    def display_help_message(self, helper_symbol: Optional[str] = None):
         super().display_help_message()
 
     def display_available_commands(self):

@@ -1,3 +1,5 @@
+from typing import Optional
+
 from src.widgets.texioty.helpers.tex_helper import TexiotyHelper
 from src.settings import themery as t, alphanumers as a, utils as u
 import json
@@ -5,7 +7,7 @@ import os
 import tempfile
 from datetime import datetime
 
-SAVE_DIR = "gaims/gaim_saves"
+SAVE_DIR = "filesOutput/saved_games/"
 
 class BaseGaim(TexiotyHelper):
     def __init__(self, txo, txi, game_name: str):
@@ -14,6 +16,7 @@ class BaseGaim(TexiotyHelper):
         self.txi = txi
         self.game_name = game_name
         self.gaim_prefix = ''
+        self.helper_symbol = "GAIM"
         self.gaim_commands = {
             "new": [self.new_game, f"Create a new game of {game_name}.",
                       {}, "GAIM", u.rgb_to_hex(t.ALICE_BLUE), u.rgb_to_hex(t.BLACK)],
@@ -24,7 +27,7 @@ class BaseGaim(TexiotyHelper):
             "stop": [self.stop_game, f"Stop playing {game_name}.",
                       {}, "GAIM", u.rgb_to_hex(t.ALICE_BLUE), u.rgb_to_hex(t.BLACK)]
         }
-        self.helper_commands = {}
+        self.helper_commands = self.helper_commands | self.gaim_commands
         self.game_state = {}
 
     def new_game(self):
@@ -69,13 +72,14 @@ class BaseGaim(TexiotyHelper):
             self.txo.priont_string(f"No saved game found for {player_name}.")
             return None
 
-    def welcome_message(self, welcoming_msgs: list):
+    def welcome_message(self, welcoming_msgs: Optional[list] = None):
         """Generic welcoming message."""
         self.txo.clear_add_header(f"{self.game_name}")
         self.txo.priont_string(f'Welcome to {self.game_name}!')
 
-    def display_help_message(self):
+    def display_help_message(self, helper_symbol: Optional[str] = None):
         """Generic help message."""
+        super().display_help_message()
         self.txo.priont_string("Using the 'commands' command will display a list of available commands.")
         self.txo.priont_string("Using the 'welcome' command will show the welcome message and some directions.")
 

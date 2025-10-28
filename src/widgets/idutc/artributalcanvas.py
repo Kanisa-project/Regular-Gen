@@ -21,7 +21,7 @@ class ArtributalCanvas(tk.Canvas):
         self.bind("<Button-1>", self.set_artribute)
         self.bind("<MouseWheel>", self.scroll_through_artribute)
         self.grid_propagate(False)
-        self.outer_artri_points = helpers.polypointlist(6, 30, int(self.center_point[0]), int(self.center_point[1]), 80)
+        self.outer_artri_points = helpers.polypointlist(6, 30, int(self.center_point[0]), int(self.center_point[1]), 100)
         self.inner_radius = 30
         self.inner_artri_points = self._build_inner_points()
         self.create_polygon(self.outer_artri_points,
@@ -51,7 +51,7 @@ class ArtributalCanvas(tk.Canvas):
 
     def gather_artribute_length(self, artri_title: str) -> int:
         if artri_title in list(self.idutc_frame.slider_dict.keys()):
-            return self.idutc_frame.slider_dict[artri_title][0].get()
+            return int(self.idutc_frame.slider_dict[artri_title][0].get())
         else:
             return 0
 

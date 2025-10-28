@@ -1,7 +1,6 @@
 from . import basik_widget
 from src.widgets.texioty import texoty
 from .artay.wordie import wtabHangman as hm
-import casino as cas
 from src.widgets import idutc
 from ..settings import themery as t
 from ..utils import helpers

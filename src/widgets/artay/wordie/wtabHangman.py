@@ -81,7 +81,7 @@ class Hangman(wordieTab.Wordietab):
         self.setup_button_choices(["Random Phrase"])
         self.button_dict["Random Phrase"][1].config(command=self.randomize_phrase)
         self.setup_text_boxes({"Phrase": random.choice(PHRASE_LIST)}, start_x_cell=1, width=42)
-        self.setup_number_wheel("max_guesses", self.call_this_back, start_y_cell=1)
+        # self.setup_number_wheel("max_guesses", self.call_this_back, start_y_cell=1)
         self.max_guesses = 0
 
         self.gaim_phrase = self.textbox_dict["Phrase"][0].get()

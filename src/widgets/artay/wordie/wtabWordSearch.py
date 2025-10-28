@@ -10,7 +10,7 @@ class WordSearch(wordieTab.Wordietab):
         self.setup_button_choices(["Random Words"])
         self.button_dict["Random Words"][1].config(command=self.randomize_words)
         self.setup_labels(["Words to find: "], start_x_cell=1)
-        self.setup_number_wheel("num_boxes", self.update_number_of_text_boxes, start_y_cell=1)
+        # self.setup_number_wheel("num_boxes", self.update_number_of_text_boxes, start_y_cell=1)
         # self.setup_dropdown_menus(word_list=list(range(0, 10)),
         #                           start_x_cell=0, start_y_cell=1, dropdown_name="num_boxes")
 

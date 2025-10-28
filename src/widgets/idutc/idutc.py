@@ -1,11 +1,7 @@
-import json
-import os.path
 import random
-from tkinter import StringVar, OptionMenu, Button, END
-from tkinter.filedialog import askopenfilename
+from tkinter import StringVar, OptionMenu, END
 
 from src.widgets import basik_widget
-import mtgsdk as mtg
 
 from . import artributalcanvas
 from ...settings import themery as t, app_settings
@@ -20,9 +16,8 @@ class IDUTC(basik_widget.BasikWidget):
         """
         super().__init__(master=master, width=width, height=height)
         self.configure(text="IDUTC:  ")
-        self.grid_propagate(False)
         self.setup_text_boxes({"use_id": "r4nd0m",
-                               "use_utc": "2134506798"}, width=10)
+                               "use_utc": "2134506798"}, start_x_cell=2)
         self.slider_choice_list = ["Transparency", "Coloration", "Animation Speed", "Size", "Motion Range", "Accuracy"]
         self.slider_limit_dict = {"Transparency": [0, 100],
                                   "Coloration": [0, 100],
@@ -30,7 +25,7 @@ class IDUTC(basik_widget.BasikWidget):
                                   "Size": [0, 100],
                                   "Motion Range": [0, 100],
                                   "Accuracy": [0, 100]}
-        self.setup_slider_bars(self.slider_choice_list, start_x_cell=2, start_y_cell=3, slide_len=75)
+        self.setup_slider_bars(self.slider_choice_list, slide_len=width*0.25)
 
         self.entry_ID_string_var = self.textbox_dict['use_id'][0]
         self.entry_UTC_string_var = self.textbox_dict['use_utc'][0]
@@ -41,14 +36,13 @@ class IDUTC(basik_widget.BasikWidget):
 
         # INITIATE THE BUTTONS TO CONTROL USE_ID AND USE_UTC
         self.setup_button_choices(["New ID/UTC", "Set ID/UTC"], start_x_cell=4)
-        self.setup_button_choices(["Save kre8dict", "Load kre8dict"], start_x_cell=5)
         self.button_dict["New ID/UTC"][1].config(command=self.generate_new_idutc)
         self.button_dict["Set ID/UTC"][1].config(command=self.set_use_idutc)
-        self.button_dict["Save kre8dict"][1].config(command=self.save_json)
-        self.button_dict["Load kre8dict"][1].config(command=self.load_json)
 
         self.helper_commands = {
-            "random_artributes": [self.randomize_artributes, "Randomize the artributes in IDUTC.",
+            "set_arty": [self.set_artribute, "Set an artribute for IDUTC.",
+                         {}, "IDUT", t.rgb_to_hex(t.LIGHT_CORAL), t.rgb_to_hex(t.DARK_SLATE_GREY)],
+            "rando_artries": [self.randomize_artributes, "Randomize the artributes in IDUTC.",
                                   {}, "IDUT", t.rgb_to_hex(t.LIGHT_CORAL), t.rgb_to_hex(t.DARK_SLATE_GREY)],
         }
 
@@ -70,18 +64,22 @@ class IDUTC(basik_widget.BasikWidget):
                 attribute_str_var.set("Random")
             self.artributeMenus[key] = [attribute_str_var,
                                         OptionMenu(self, attribute_str_var, *value)]
-            self.artributeMenus[key][1].grid(column=0, row=2 + list(self.artyle_artributes_dict.keys()).index(key))
+            # self.artributeMenus[key][1].grid(column=0, row=2 + list(self.artyle_artributes_dict.keys()).index(key))
 
         self.kre8dict = self.setup_kre8dict(self.entry_ID_string_var.get(),
                                             self.entry_UTC_string_var.get())
-        self.artributal = artributalcanvas.ArtributalCanvas(master=self, width=width * 0.3, height=width * 0.3)
-        self.artributal.place(x=340, y=140)
+        self.artributal = artributalcanvas.ArtributalCanvas(master=self, width=width * 0.4, height=width * 0.4)
+        self.artributal.place(x=340, y=100)
 
         self.generate_new_idutc()
-        if not self.search_and_load_origin():
-            pass
-        else:
-            self.artributal.sync_with_use_id()
+        self.artributal.sync_with_use_id()
+
+    def set_artribute(self, new_artribute: str):
+        for artri in self.slider_choice_list:
+            if artri == new_artribute:
+                self.slider_dict[artri].set(self.slider_limit_dict[artri][1])
+            else:
+                self.slider_dict[artri].set(self.slider_limit_dict[artri][0])
 
     def create_blank_profile(self):
         pass
@@ -97,7 +95,6 @@ class IDUTC(basik_widget.BasikWidget):
     def gather_random_attributes(self) -> list:
         """Gather and return a list of attribute keywords."""
         attribs_list = []
-        # print("ARTRIB", self.artyle_artributes_dict)
         for key, value in self.artyle_artributes_dict.items():
             attribs_list.append(random.choice(value))
         return attribs_list
@@ -123,89 +120,6 @@ class IDUTC(basik_widget.BasikWidget):
                                             self.entry_UTC_string_var.get())
         self.artributal.sync_with_use_id()
 
-    def save_json(self):
-        """
-        Saves the kre8dict dictionary as a JSON file in the folder of kre8dict use_id.
-        :return:
-        """
-        use_id = self.kre8dict["use_id"]
-        use_utc = self.kre8dict["use_utc"]
-        dump_dict = self.kre8dict
-        save_dir = getattr(self.txo.master, "active_profile", None)
-        save_dir = getattr(save_dir, "username", None) or use_id
-        if str(use_utc) == "0000000000":
-            os.makedirs(use_id, exist_ok=True)
-            file_path = f'{use_id}/0000000000.json'
-        else:
-            os.makedirs(save_dir, exist_ok=True)
-            file_path = f'{save_dir}/{use_id}_{use_utc}.json'
-        try:
-            with open(file_path, 'w') as f:
-                json.dump(dump_dict, f, indent=4)
-        except FileNotFoundError as e:
-            self.txo.priont_string(str(e))
-
-    def save_origin(self):
-        """
-        Save the current kre8dict as an 'origin' file: <use_id>/0000000000.json
-        """
-        use_id = self.entry_ID_string_var.get()
-        # Preserve existing kre8dict but write origin utc file
-        payload = dict(self.kre8dict)
-        payload["use_id"] = use_id
-        payload["use_utc"] = "0000000000"
-        os.makedirs(use_id, exist_ok=True)
-        with open(f"{use_id}/0000000000.json", "w") as f:
-            json.dump(payload, f, indent=4)
-
-    def load_json(self):
-        """Loads an idutc from a json file."""
-        home_path = os.getcwd()
-        loaded_file = askopenfilename(initialdir=f'{home_path}/{self.entry_ID_string_var.get()}')
-        if not loaded_file:
-            return
-        with open(loaded_file, 'r') as file:
-            loaded_data = json.load(file)
-        self.entry_ID_string_var.set(loaded_data['use_id'])
-        self.entry_UTC_string_var.set(loaded_data['use_utc'])
-        self.kre8dict = loaded_data
-        self.artributal.sync_with_use_id()
-
-    def load_origin(self) -> bool:
-        """
-        Load the first discovered origin file (<any_dir>/0000000000.json) into this widget.
-        Returns True if found and loaded, else False.
-        """
-        for item in os.listdir(os.getcwd()):
-            origin_path = os.path.join(item, "0000000000.json")
-            if os.path.isdir(item) and os.path.exists(origin_path):
-                with open(origin_path, 'r') as file:
-                    loaded_data = json.load(file)
-                self.entry_ID_string_var.set(loaded_data['use_id'])
-                self.entry_UTC_string_var.set(loaded_data['use_utc'])
-                self.kre8dict = loaded_data
-                self.artributal.sync_with_use_id()
-                return True
-        return False
-
-    def search_and_load_origin(self):
-        """
-        Discover and load an 'origin' file in immediate subdirectories (non-recursive).
-        """
-        found = False
-        for item in os.listdir(os.getcwd()):
-            origin_path = os.path.join(item, "0000000000.json")
-            if os.path.isdir(item) and os.path.exists(origin_path):
-                with open(origin_path, 'r') as file:
-                    loaded_data = json.load(file)
-                self.textbox_dict['use_id'][0].set(loaded_data['use_id'])
-                self.textbox_dict['use_utc'][0].set(loaded_data['use_utc'])
-                self.kre8dict = loaded_data
-                found = True
-                break
-        return found
-
-
     def setup_kre8dict(self, use_id: str, use_utc: str) -> dict:
         """
         Sets up the initial KRE8shun dictionary.
@@ -224,57 +138,6 @@ class IDUTC(basik_widget.BasikWidget):
     def randomize_artributes(self, args):
         for key, value in self.artyle_artributes_dict.items():
             self.artributeMenus[key][0].set(random.choice(value))
-
-
-def construct_file_path(base_path, attributes, filename):
-    return f"{base_path}/{attributes[3]}/{filename}.png"
-
-
-def add_data_source_dict(use_data: dict):
-    """
-    Adds data_source dictionary keys and values for the data source info.
-    :param use_data: dictionary to add data source infor to.
-    :return:
-    """
-    if use_data["data_source"] == "Reddit":
-        # submission = reddit.submission(use_data["use_ID"])
-        use_data["link"] = f'https://www.reddit.com/{use_data["use_ID"]}'
-        # use_data["submission"] = submission
-    elif use_data["data_source"] == "OSRS":
-        use_data["OSRS Player"] = "OSRSSTUFF"
-        use_data["Player Skills"] = ["Attack", "Defence", "Prayer"]
-    elif use_data["data_source"] == "MTG":
-        # card_name = use_data["use_id"]
-        named_cards = mtg.Card.where(name="Boros").all()
-        if len(named_cards) == 0:
-            named_cards = mtg.Card.where(name="King").all()
-        chosen_card = random.choice(named_cards)
-        flavor_list = []
-        lz = '0'
-        if len(str(chosen_card.multiverse_id)) < 10:
-            lz *= 10 - len(str(chosen_card.multiverse_id))
-        for card in named_cards:
-            if card.flavor not in flavor_list:
-                flavor_list.append(card.flavor)
-
-    elif use_data["data_source"] == "Human":
-        # use_data["name"] = ""
-        pass
-    elif use_data["data_source"] == "Barcode":
-        use_data["item_name"] = ""
-        use_data["item_info"] = []
-
-
-def create_button(parent, text, command, width, column, row):
-    new_button = Button(parent, text=text, command=command, width=width)
-    new_button.grid(column=column, row=row)
-    return new_button
-
-
-def create_attribute_menu(parent, attribute_var, attribute_options, column, row):
-    menu = OptionMenu(parent, attribute_var, *attribute_options)
-    menu.grid(column=column, row=row)
-    return menu
 
 
 def generate_id_string(string_length, char_set) -> str:

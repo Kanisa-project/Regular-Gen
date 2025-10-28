@@ -44,9 +44,6 @@ class KINVOW(basik_widget.BasikWidget):
         self.helper_commands = {
             "kre8dict": [self.priont_kre8dict, "Show the creationary dictionary.",
                          {}, "KNVO", t.rgb_to_hex(t.LIGHT_GOLDENROD_YELLOW), t.rgb_to_hex(t.DARK_KHAKI)],
-            # "graph": [self.create_graph, "Show the creationary dictionary.",
-            #           {'filename': 'The name of the file you want a graph of.'}, "KNVO",
-            #           t.rgb_to_hex(t.LIGHT_GOLDENROD_YELLOW), t.rgb_to_hex(t.DARK_KHAKI)],
             "kin8": [self.create_from_masterpiece, "Create a masterpiece on Kinvow.",
                      {"glyth": "Gather glyth options and create something on Kinvow.",
                       "glyph": "Gather glyph options and create something on Kinvow.",
@@ -199,76 +196,76 @@ class KINVOW(basik_widget.BasikWidget):
     def create_meem(self, img: Image.Image, kre8dict: dict, abt='masterpiece'):
         self.artay.meemTab.add_meem(img, kre8dict, abt)
 
-    def set_pen_masterpiece(self, args) -> dict:
-        """
-        Create a single letter ID and a 10-digit UTC masterpiece with artay as normally.
-        :param args: Should contain a single letter and a 10-digit number.
-        :return:
-        """
-        # Set up the pen kre8dict and available artay.
-        kanisa_pen_dict = self.idutc.setup_kre8dict(args[0], args[1])
-        kanisa_pen_dict['artributes'] = self.idutc.gather_random_attributes()
-        random_artyles = []
-        possible_artyles = ["glyth", "glyph", "wordie", "recipe", "spirite"]
-        random_options_dict = {'glyth': self.artay.glythTab.gather_random_options,
-                               'glyph': self.artay.glyphTab.gather_random_options,
-                               'wordie': self.artay.wordieTab.gather_random_options,
-                               'spirite': self.artay.spiriteTab.gather_random_options,
-                               'recipe': self.artay.recipeTab.gather_random_options}
-        # Pick 3 random artay and run their creations.
-        for i in range(3):
-            random_artyles.append(random.choice(possible_artyles))
-        for ran_artyle in random_artyles:
-            kanisa_pen_dict[ran_artyle] = random_options_dict[ran_artyle]()
-        # Add Loopring minting requirements.
-        kanisa_pen_dict.update(self.txo.master.helper_dict["LAPI"][0].attach_pen_min_reqs(args))
-
-        # Upload the masterpiece Pen to Pinata IPFS and update the pen kre8dict.
-        ipfs_pen = self.create_pen_image(kanisa_pen_dict)
-        kanisa_pen_dict['image'] += ipfs_pen
-        kanisa_pen_dict['animation_url'] += ipfs_pen
-        kanisa_pen_dict['collection_metadata'] += "0xd3c9d6d7d5cd249069d5f46f136357c0c2bd189b"
-        # Save the pen dictionary.
-        self.idutc.save_json_pen(kanisa_pen_dict)
-        return kanisa_pen_dict
-
-    def make_pencilcase(self, args):
-        """
-        Create a set of single letter masterpiece files meant to create a full masterpiece that can be rendered
-        in a Kanisa Render.
-        :param args: First arg should be (a-z) or (0-9) and second arg a 10-digit number.
-        :return:
-        """
-        if args[0] == 'a-z' and args[1].length == 10:
-            for char in 'abcdefghijklmnopqrstuvwxyz':
-                pen_dict = self.set_pen_masterpiece([char, args[1]])
-                # self.create_pen_image([char, "2367418095"])
-                self.idutc.save_json_pen(pen_dict)
-        elif args[0] == '0-9' and args[1].length == 10:
-            for char in '0123456789':
-                pen_dict = self.set_pen_masterpiece([char, args[1]])
-                # self.create_pen_image([char, "2367418095"])
-                self.idutc.save_json_pen(pen_dict)
-
-    def create_pen_image(self, pen_dict: dict) -> str:
-        """
-        Create a Kinvow image for a single character masterpiece.
-
-        :param pen_dict: Single letter kre8dict masterpiece.
-        :return:
-        """
-        save_path = ''
-        nim = Image.new("RGBA", (64, 64), t.DRS_PURPLE)
-        save_name = pen_dict['use_id'] + "_" + pen_dict['use_utc']
-        if len(pen_dict) >= 1:
-            self.create_artyles(nim, pen_dict, 'masterpiece', list(pen_dict.keys()))
-            save_path = f"kanisaPens/{save_name}.png"
-            for c in save_path:
-                if c in "?!&":
-                    save_path = save_path.replace(c, "")
-            nim.save(save_path)
-            # self.kinvow_img = PhotoImage(file=save_path)
-            # self.use_canvas.create_image(self.canvas_w // 2, self.canvas_h // 2, image=self.kinvow_img)
-        ipfs_pen_hash = self.txo.master.helper_dict["PAPI"][0].pin_pen_image(save_path, save_name)
-        pen_dict["file_path"] = save_path
-        return ipfs_pen_hash
+    # def set_pen_masterpiece(self, args) -> dict:
+    #     """
+    #     Create a single letter ID and a 10-digit UTC masterpiece with artay as normally.
+    #     :param args: Should contain a single letter and a 10-digit number.
+    #     :return:
+    #     """
+    #     # Set up the pen kre8dict and available artay.
+    #     kanisa_pen_dict = self.idutc.setup_kre8dict(args[0], args[1])
+    #     kanisa_pen_dict['artributes'] = self.idutc.gather_random_attributes()
+    #     random_artyles = []
+    #     possible_artyles = ["glyth", "glyph", "wordie", "recipe", "spirite"]
+    #     random_options_dict = {'glyth': self.artay.glythTab.gather_random_options,
+    #                            'glyph': self.artay.glyphTab.gather_random_options,
+    #                            'wordie': self.artay.wordieTab.gather_random_options,
+    #                            'spirite': self.artay.spiriteTab.gather_random_options,
+    #                            'recipe': self.artay.recipeTab.gather_random_options}
+    #     # Pick 3 random artay and run their creations.
+    #     for i in range(3):
+    #         random_artyles.append(random.choice(possible_artyles))
+    #     for ran_artyle in random_artyles:
+    #         kanisa_pen_dict[ran_artyle] = random_options_dict[ran_artyle]()
+    #     # Add Loopring minting requirements.
+    #     kanisa_pen_dict.update(self.txo.master.helper_dict["LAPI"][0].attach_pen_min_reqs(args))
+    #
+    #     # Upload the masterpiece Pen to Pinata IPFS and update the pen kre8dict.
+    #     ipfs_pen = self.create_pen_image(kanisa_pen_dict)
+    #     kanisa_pen_dict['image'] += ipfs_pen
+    #     kanisa_pen_dict['animation_url'] += ipfs_pen
+    #     kanisa_pen_dict['collection_metadata'] += "0xd3c9d6d7d5cd249069d5f46f136357c0c2bd189b"
+    #     # Save the pen dictionary.
+    #     self.idutc.save_json_pen(kanisa_pen_dict)
+    #     return kanisa_pen_dict
+    #
+    # def make_pencilcase(self, args):
+    #     """
+    #     Create a set of single letter masterpiece files meant to create a full masterpiece that can be rendered
+    #     in a Kanisa Render.
+    #     :param args: First arg should be (a-z) or (0-9) and second arg a 10-digit number.
+    #     :return:
+    #     """
+    #     if args[0] == 'a-z' and args[1].length == 10:
+    #         for char in 'abcdefghijklmnopqrstuvwxyz':
+    #             pen_dict = self.set_pen_masterpiece([char, args[1]])
+    #             # self.create_pen_image([char, "2367418095"])
+    #             self.idutc.save_json_pen(pen_dict)
+    #     elif args[0] == '0-9' and args[1].length == 10:
+    #         for char in '0123456789':
+    #             pen_dict = self.set_pen_masterpiece([char, args[1]])
+    #             # self.create_pen_image([char, "2367418095"])
+    #             self.idutc.save_json_pen(pen_dict)
+    #
+    # def create_pen_image(self, pen_dict: dict) -> str:
+    #     """
+    #     Create a Kinvow image for a single character masterpiece.
+    #
+    #     :param pen_dict: Single letter kre8dict masterpiece.
+    #     :return:
+    #     """
+    #     save_path = ''
+    #     nim = Image.new("RGBA", (64, 64), t.DRS_PURPLE)
+    #     save_name = pen_dict['use_id'] + "_" + pen_dict['use_utc']
+    #     if len(pen_dict) >= 1:
+    #         self.create_artyles(nim, pen_dict, 'masterpiece', list(pen_dict.keys()))
+    #         save_path = f"kanisaPens/{save_name}.png"
+    #         for c in save_path:
+    #             if c in "?!&":
+    #                 save_path = save_path.replace(c, "")
+    #         nim.save(save_path)
+    #         # self.kinvow_img = PhotoImage(file=save_path)
+    #         # self.use_canvas.create_image(self.canvas_w // 2, self.canvas_h // 2, image=self.kinvow_img)
+    #     ipfs_pen_hash = self.txo.master.helper_dict["PAPI"][0].pin_pen_image(save_path, save_name)
+    #     pen_dict["file_path"] = save_path
+    #     return ipfs_pen_hash

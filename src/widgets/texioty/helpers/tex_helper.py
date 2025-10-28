@@ -75,13 +75,14 @@ class TexiotyHelper:
     def __init__(self, txo: texoty.TEXOTY, txi: texity.TEXITY):
         self.txo = txo
         self.txi = txi
+        self.helper_symbol = "HLPR"
         self.helper_commands = {
             "welcome": [self.welcome_message, "Displays a welcoming message.",
-                     {}, "HLPR", u.rgb_to_hex(t.GREEN_YELLOW), u.rgb_to_hex(t.BLACK)],
+                     {}, self.helper_symbol, u.rgb_to_hex(t.GREEN_YELLOW), u.rgb_to_hex(t.BLACK)],
             "help": [self.display_help_message, "Displays a message of helpfulness.",
-                     {}, "HLPR", u.rgb_to_hex(t.GREEN_YELLOW), u.rgb_to_hex(t.BLACK)],
+                     {"⁰HLPR": "Optional argument for help on a specific topic."}, self.helper_symbol, u.rgb_to_hex(t.GREEN_YELLOW), u.rgb_to_hex(t.BLACK)],
             "commands": [self.display_available_commands, "Displays all available commands.",
-                         {}, "HLPR", u.rgb_to_hex(t.GREEN_YELLOW), u.rgb_to_hex(t.BLACK)],
+                         {"⁰HLPR": "Optional argument for help on a specific topic."}, self.helper_symbol, u.rgb_to_hex(t.GREEN_YELLOW), u.rgb_to_hex(t.BLACK)],
         }
 
     def print_block_font(self, blk_word: str):
@@ -109,19 +110,36 @@ class TexiotyHelper:
         self.print_block_font(title_word)
         self.txo.priont_string(random.choice('─━═_')*(len(title_word)*5))
 
-    def display_help_message(self):
+    def display_help_message(self, helper_symbol: Optional[str] = None):
         """
         Print the available commands for use with a header added to the top.
+        :param helper_symbol:
         :param args:
         :return:
         """
         self.txo.clear_add_header()
-        self.txo.priont_string("⦓⦙ Seems like you might need help, good luck!")
-        self.txo.priont_string("   Anything that can be done in this program can be")
-        self.txo.priont_string("   done through this Texioty widget.")
-        self.txo.priont_string("⦓⦙ Here are a couple of easy commands to get you started: \n\n")
-        self.txo.priont_command(self.txo.master.registry.commands["help"])
-        self.txo.priont_command(self.txo.master.registry.commands["commands"])
+        if helper_symbol:
+            if helper_symbol in self.txo.master.active_helpers:
+                self.txo.command_group_break(helper_symbol)
+                available_commands = self.txo.master.registry.commands
+                for command in available_commands:
+                    if available_commands[command].helper_symbol == helper_symbol:
+                        self.txo.priont_command(self.txo.master.registry.commands[command])
+
+            else:    # Wrong helper_symbol provided.
+                self.txo.priont_string(f"Sorry, I don't recognize '{helper_symbol}' as a helper symbol.")
+                self.txo.priont_string("⦓⦙ Here are a list of different helper symbols:")
+                self.txo.priont_list(self.txo.master.active_helpers, "Helper Symbols:")
+        else:    # No helper_symbol provided.
+            self.txo.priont_string("⦓⦙ Seems like you might need help, good luck!")
+            self.txo.priont_string("   Anything that can be done in this program can be")
+            self.txo.priont_string("   done through this Texioty widget.")
+            self.txo.priont_string("⦓⦙ Here are a list of different helper symbols:")
+            self.txo.priont_list(self.txo.master.active_helpers, parent_key="Helper Symbols:")
+
+    def display_full_command_card(self, command_name: str):
+        """Prints out the full command card for a given command name."""
+        self.txo.priont_command(self.txo.master.registry.commands[command_name])
 
     def display_available_commands(self):
         """Prints out all the commands that are available."""
@@ -138,7 +156,7 @@ class TexiotyHelper:
         self.txo.delete("0.0", END)
         self.txo.set_header()
 
-    def welcome_message(self, welcoming_msgs: list):
+    def welcome_message(self, welcoming_msgs: Optional[list]=None):
         """
         Display welcoming messages with a few commands to get started.
 
