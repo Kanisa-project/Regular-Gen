@@ -5,7 +5,7 @@ from discord import app_commands
 from discord.ext import commands
 from mtgsdk import Card
 
-from utils import dbHelper, dummyHelper
+from src.utils import dbHelper, dummyHelper
 
 
 def is_owner(interaction: discord.Interaction) -> bool:

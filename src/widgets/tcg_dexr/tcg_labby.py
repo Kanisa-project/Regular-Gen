@@ -8,8 +8,8 @@ import random
 
 from helpers.tex_helper import TexiotyHelper
 from question_prompts.base_prompt import BasePrompt
-from settings import themery as t, alphanumers as s, utils as u
-from settings.utils import available_profiles
+from src.settings import themery as t, alphanumers as s, utils as u
+from src.settings.utils import available_profiles
 
 TCG_OPTIONS = ['Magic the Gathering',
                'Pokemon',

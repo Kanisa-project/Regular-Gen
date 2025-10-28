@@ -5,7 +5,7 @@ import random
 
 from dotenv import load_dotenv
 
-from utils import dbHelper
+from src.utils import dbHelper
 
 load_dotenv()
 

@@ -5,8 +5,8 @@ import requests
 from dotenv import load_dotenv
 from tcgdexsdk import TCGdex, Query
 from tcg_api.sourceTCG import BaseAPIHelper
-from utils import dbHelper, glythed
-from utils.glythed import TcgDepicter
+from src.utils import dbHelper, glythed
+from src.utils.glythed import TcgDepicter
 
 load_dotenv()
 width_len = 36

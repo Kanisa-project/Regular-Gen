@@ -4,7 +4,7 @@ import discord
 from discord.ext import commands
 from discord import app_commands
 
-from utils import dbHelper
+from src.utils import dbHelper
 
 MANAMOJI_DICT = {
     '{0}': '<:mana0:1386425010565943317>',

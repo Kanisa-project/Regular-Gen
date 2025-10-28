@@ -7,7 +7,7 @@ from discord.ext import commands
 from mtgsdk import Card
 
 from tcg_api import sourceMTG
-from utils import dbHelper, dummyHelper, fotoes
+from src.utils import dbHelper, dummyHelper, fotoes
 
 MANAMOJI_DICT = {
     '{0}': '<:mana0:1386425010565943317>',

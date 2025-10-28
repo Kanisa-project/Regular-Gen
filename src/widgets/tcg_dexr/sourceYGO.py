@@ -4,8 +4,8 @@ import requests
 import yugioh
 
 from tcg_api.sourceTCG import BaseAPIHelper
-from utils import dbHelper
-from utils.glythed import TcgDepicter
+from src.utils import dbHelper
+from src.utils.glythed import TcgDepicter
 
 print_width_len = 36
 

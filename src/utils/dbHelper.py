@@ -1,7 +1,7 @@
 import random
 import sqlite3
 import sqlite3 as sq3
-from utils import dummyHelper
+from src.utils import dummyHelper
 from mtgsdk import Card
 
 

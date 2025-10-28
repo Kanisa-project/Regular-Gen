@@ -10,7 +10,7 @@ import random
 
 from question_prompts.spell_depicter import TcgDepicter
 from tcg_api.sourceTCG import BaseAPIHelper
-from utils import dbHelper, glythed
+from src.utils import dbHelper, glythed
 
 
 

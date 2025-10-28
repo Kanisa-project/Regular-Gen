@@ -1,9 +1,9 @@
 import requests
 import random
 from tcg_api.sourceTCG import BaseAPIHelper
-from utils.dbHelper import DatabaseHelper
-from utils import dbHelper
-from utils import glythed
+from src.utils.dbHelper import DatabaseHelper
+from src.utils import dbHelper
+from src.utils import glythed
 
 base_url = "https://digimoncard.io/api-public/"
 

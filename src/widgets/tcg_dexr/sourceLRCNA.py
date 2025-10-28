@@ -3,7 +3,7 @@ import random
 import requests
 
 from tcg_api.sourceTCG import BaseAPIHelper
-from utils import dbHelper
+from src.utils import dbHelper
 print_width_len = 36
 base_url = 'https://api.lorcana-api.com'
 

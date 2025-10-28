@@ -9,7 +9,7 @@ from pytube import YouTube
 
 import requests
 from dotenv import load_dotenv
-from settings import themery as t, alphanumers as a
+from src.settings import themery as t, alphanumers as a
 
 load_dotenv()
 
