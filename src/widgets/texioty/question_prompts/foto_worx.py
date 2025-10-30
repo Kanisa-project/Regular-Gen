@@ -70,9 +70,9 @@ class FotoWorxHop(BasePrompt):
     def create_foto_iterations(self, equipment_func: Callable):
         for i in range(self.foto_profile_dict["iterations"]):
             save_name = self.equipt_saved_name + str(i) + ".png"
-            foto = Image.open(f"question_prompts/worxhop_fotoes/base_img.jpeg")
+            foto = Image.open(f"src/widgets/texioty/question_prompts/worxhop_fotoes/base_img.jpeg")
             foto = equipment_func(foto, self.foto_profile_dict)
-            foto.save(f"question_prompts/worxhop_fotoes/{save_name}")
+            foto.save(f"src/widgets/texioty/question_prompts/worxhop_fotoes/{save_name}")
 
 def resize_foto(foto: Image.Image, new_size: tuple[int, int]) -> Image.Image:
     """Resize a foto and return it."""
@@ -372,18 +372,8 @@ def solidify_tiles(img, profile_dict: dict) -> Image.Image:
             img.paste(solid_tile, (int(r_c[1])*w, int(r_c[0])*h))
         except ValueError as e:
             print(e)
-    return img
-
-def flatop_foto(img: Image.Image, profile_dict: dict) -> Image.Image:
-    prof_keys = list(profile_dict.keys())
-    if "spatula_press" in prof_keys:
-        img = press_spatula(img, profile_dict["spatula_press"])
-    if "spatula_slide" in prof_keys:
-        img = slide_spatula(img, profile_dict["spatula_slide"])
-    if "steam_lid" in prof_keys:
-        img = steaming_lid(img, profile_dict["steam_lid"])
-    if "bordered" in prof_keys:
-        img = box_borderer(img, profile_dict["bordered"])
+        except IndexError as e:
+            print(e)
     return img
 
 def get_random_font(font_size: int):
@@ -417,35 +407,17 @@ def phrase_stamper(img: Image.Image, profile_dict: dict) -> Image.Image:
     return img
 
 
-def ticket_single_word(img, profile_dict: dict) -> Image.Image:
-    add_word = profile_dict['word']
-    direction = profile_dict['direction']
-    font_size = profile_dict['font_size']
-    draw = ImageDraw.Draw(img)
-    font_list = []
-    for i in range(profile_dict['num_of_fonts']):
-        font_list.append(get_random_font(font_size))
-    start_point = (random.randint(font_size, img.size[0]-font_size), random.randint(font_size, img.size[1]-font_size))
-    x_thirds = img.size[0]//3
-    y_thirds = img.size[1]//3
-    if start_point[0] < x_thirds:
-        x_dir = 1
-    elif x_thirds < start_point[0] < 2*x_thirds:
-        x_dir = 1
-    else:
-        x_dir = -1
-    if start_point[1] < y_thirds:
-        y_dir = 1
-    elif y_thirds < start_point[1] < 2*y_thirds:
-        y_dir = -1
-    else:
-        y_dir = -1
-    for i, letter in enumerate(add_word):
-        draw.text((start_point[0]+(i*x_dir*font_size), start_point[1]+(i*y_dir*font_size)), text=letter, font=random.choice(font_list), fill=(0, 0, 0))
-
+def flatop_foto(img: Image.Image, profile_dict: dict) -> Image.Image:
+    prof_keys = list(profile_dict.keys())
+    if "spatula_press" in prof_keys:
+        img = press_spatula(img, profile_dict["spatula_press"])
+    if "spatula_slide" in prof_keys:
+        img = slide_spatula(img, profile_dict["spatula_slide"])
+    if "steam_lid" in prof_keys:
+        img = steaming_lid(img, profile_dict["steam_lid"])
+    if "bordered" in prof_keys:
+        img = box_borderer(img, profile_dict["bordered"])
     return img
-
-
 def ticket_print_foto(img: Image.Image, profile_dict: dict) -> Image.Image:
     """Print some words/emojis/numbers on the img."""
     prof_keys = list(profile_dict.keys())
@@ -493,4 +465,34 @@ def pixtrude_foto(img: Image.Image, profile_dict: dict) -> Image.Image:
         img = pixel_encircler(img, profile_dict['encircled'])
     if "bordered" in prof_keys:
         img = pixel_borderer(img, profile_dict['bordered'])
+    return img
+
+
+
+def ticket_single_word(img, profile_dict: dict) -> Image.Image:
+    add_word = profile_dict['word']
+    direction = profile_dict['direction']
+    font_size = profile_dict['font_size']
+    draw = ImageDraw.Draw(img)
+    font_list = []
+    for i in range(profile_dict['num_of_fonts']):
+        font_list.append(get_random_font(font_size))
+    start_point = (random.randint(font_size, img.size[0]-font_size), random.randint(font_size, img.size[1]-font_size))
+    x_thirds = img.size[0]//3
+    y_thirds = img.size[1]//3
+    if start_point[0] < x_thirds:
+        x_dir = 1
+    elif x_thirds < start_point[0] < 2*x_thirds:
+        x_dir = 1
+    else:
+        x_dir = -1
+    if start_point[1] < y_thirds:
+        y_dir = 1
+    elif y_thirds < start_point[1] < 2*y_thirds:
+        y_dir = -1
+    else:
+        y_dir = -1
+    for i, letter in enumerate(add_word):
+        draw.text((start_point[0]+(i*x_dir*font_size), start_point[1]+(i*y_dir*font_size)), text=letter, font=random.choice(font_list), fill=(0, 0, 0))
+
     return img

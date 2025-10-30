@@ -69,17 +69,19 @@ class IDUTC(basik_widget.BasikWidget):
         self.kre8dict = self.setup_kre8dict(self.entry_ID_string_var.get(),
                                             self.entry_UTC_string_var.get())
         self.artributal = artributalcanvas.ArtributalCanvas(master=self, width=width * 0.4, height=width * 0.4)
-        self.artributal.place(x=340, y=100)
+        self.artributal.place(x=width//2, y=height//5)
 
         self.generate_new_idutc()
         self.artributal.sync_with_use_id()
 
     def set_artribute(self, new_artribute: str):
-        for artri in self.slider_choice_list:
-            if artri == new_artribute:
-                self.slider_dict[artri].set(self.slider_limit_dict[artri][1])
-            else:
-                self.slider_dict[artri].set(self.slider_limit_dict[artri][0])
+        print(new_artribute)
+        for artri in list(self.artyle_artributes_dict.keys()):
+            if new_artribute.title() in self.artyle_artributes_dict[artri]:
+                print("Settingarty: ", artri, new_artribute.title())
+                self.kre8dict['artributes'][list(self.artyle_artributes_dict.keys()).index(artri)] = new_artribute.title()
+                self.artributal.sync_with_use_id()
+                break
 
     def create_blank_profile(self):
         pass

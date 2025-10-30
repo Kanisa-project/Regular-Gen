@@ -224,6 +224,6 @@ def retrieve_lab_profiles(lab_to_get: str) -> dict:
         return data
 
 def retrieve_worx_profiles(equipment: str) -> dict:
-    with open(f'question_prompts/worxhop_fotoes/equipments/{equipment}.json') as json_equip:
+    with open(f'src/widgets/texioty/question_prompts/worxhop_fotoes/equipments/{equipment}.json') as json_equip:
         data = json.load(json_equip)
         return data

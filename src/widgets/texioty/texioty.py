@@ -57,7 +57,7 @@ class CommandRegistry:
         """
         Executes the command being used in Texity.
         :param name: Name of the command being executed.
-        :param args: Arguments to be used in the command execution.
+        :param exec_args: Arguments to be used in the command execution.
         :return:
         """
         command = self.commands.get(name)
@@ -66,17 +66,13 @@ class CommandRegistry:
             return
 
         cmd_handler = command.handler
-        print("Inspecting", name, inspect.getfullargspec(cmd_handler).annotations)
+        arg_types = list(inspect.getfullargspec(cmd_handler).annotations.values())
+        print(f"Inspecting {name} -> ", arg_types)
         try:
-            if len(inspect.getfullargspec(cmd_handler).args) == 1:
+            if len(inspect.getfullargspec(cmd_handler).args) == 1:  #If the only argument is self
                 cmd_handler()
             else:
                 cmd_handler(*exec_args)
-        # try:
-        #     if exec_args:
-        #         cmd_handler(*exec_args)
-        #     else:
-        #         cmd_handler()
         except Exception as e:
             print(f"Error executing '{name}': {e}", exec_args)
 
@@ -170,10 +166,9 @@ class Texioty(tk.LabelFrame):
         for key, helper in self.default_helpers.items():
             self.add_helper_widget(key, helper[0])
 
-    def close_program(self, args):
+    def close_program(self):
         """
         Literally just close the whole application.
-        :param args:
         :return:
         """
         self.master.destroy()

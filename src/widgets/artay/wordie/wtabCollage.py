@@ -21,7 +21,7 @@ class FontCanvas(tk.Canvas):
     def __init__(self, master=None, width=133, height=200, bg="#ffffff"):
         super().__init__(master=master, width=width, height=height, bg=bg, highlightthickness=0)
 
-        self.font_directory = os.getcwd()[:-3] + "/filesInput/fonts/"
+        self.font_directory = os.getcwd() + "/filesInput/fonts/"
         print("font_dir:", self.font_directory)
         self.sample_text = "Sample Text Abc123"
         self.font_size = 10

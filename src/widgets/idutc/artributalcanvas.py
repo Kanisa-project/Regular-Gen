@@ -73,6 +73,7 @@ class ArtributalCanvas(tk.Canvas):
         for i, point in enumerate(self.outer_artri_points):
             artribute_title = list(self.artyle_artributes_dict.keys())[i]
             artributal_emoji = artribute_emoji(self.idutc_frame.kre8dict['artributes'][i])
+            # artributal_emoji = artribute_emoji(self.idutc_frame.kre8dict['artributes'][i])
             self.create_text(point, text=artributal_emoji, fill='black', font=("Times New Roman", 16))
             dx = self.center_point[0] - point[0]
             dy = self.center_point[1] - point[1]
