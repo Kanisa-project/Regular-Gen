@@ -1,6 +1,3 @@
-import os
-import random
-import tkinter as tk
 from typing import Callable, Optional
 
 import src.widgets.texioty.texity as texity
@@ -50,7 +47,9 @@ class PromptRegistry(TexiotyHelper):
             self.txo.master.deciding_function = self.foto_worx.worxhop
 
     def profiler_prompt(self):
-        self.display_title('profile_make')
+        self.profilemake.decide_decision("What kind of profile to make", PROFILIZER_OPTIONS, "profile_type")
+        if self.txo.master.deciding_function is None or isinstance(self.txo.master.deciding_function, Callable):
+            self.txo.master.deciding_function = self.profilemake.profilize
 
     def display_help_message(self, helper_symbol: Optional[str] = None):
         super().display_help_message(helper_symbol)

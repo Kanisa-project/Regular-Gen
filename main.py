@@ -1,13 +1,13 @@
 import tkinter as tk
 
-from src.widgets import kinvow, gaim_player, idutc, artay, kalendar
+from src.widgets import kinvow, gaim_player, idutc, artay, kalendar, glythph
 from src.widgets.texioty import texioty
 from src.settings import themery as t
 import subprocess
 import threading
 
 large_widgets = ["Texioty", "Kinvow"]
-small_widgets = ["Calendar", "IDUTC", "aRtay", "Gaim Player", "Mujic Player", "Graphter"]
+small_widgets = ["Calendar", "IDUTC", "aRtay", "Gaim Player", "Mujic Player", "Graphter", "Glythph"]
 
 
 def start_simple_client():
@@ -32,6 +32,8 @@ class Application(tk.Frame):
                                           idutc_frame=self.idutc_frame, artay_frame=self.artay_frame)
         self.kinvow_frame.txo = self.texioty_frame.texoty
 
+        self.glythph_frame = glythph.Glythph(screen_w * .333, screen_h * .4, self.texioty_frame)
+
         self.calendar_frame = kalendar.Kalendar(width=screen_w * .333, height=screen_h * .4)
         self.calendar_frame.txo = self.texioty_frame.texoty
 
@@ -44,6 +46,7 @@ class Application(tk.Frame):
         self.texioty_frame.add_helper_widget("IDUT", self.idutc_frame)
         self.texioty_frame.add_helper_widget("KNVO", self.kinvow_frame)
         self.texioty_frame.add_helper_widget("ARTY", self.artay_frame)
+        self.texioty_frame.add_helper_widget("THPH", self.glythph_frame)
         # self.texioty_frame.add_helper_widget("GAIM", self.gaimplay_frame)
         print("Added the main frame helpers..")
 
@@ -53,6 +56,7 @@ class Application(tk.Frame):
             "IDUTC": self.idutc_frame,
             "Kinvow": self.kinvow_frame,
             "aRtay": self.artay_frame,
+            "Glythph": self.glythph_frame,
             "Gaim Player": self.gaimplay_frame
         }
         self.center_frame = SpotLighter(widget_dict=self.widget_dict, width=screen_w//3, height=screen_h//4)
@@ -90,6 +94,7 @@ class SpotLighter(tk.LabelFrame):
         self.western_default = tk.LabelFrame(width=width, height=height, background=t.rgb_to_hex(t.SANDY_BROWN))
         self.western_light = self.western_default
         self.western_light.grid(column=0, row=0, columnspan=1, rowspan=3, padx=1, pady=3, sticky='w')
+
         self.widget_dict = widget_dict
         self.init_spotlight_dropdowns()
 
@@ -170,7 +175,7 @@ class SpotLighter(tk.LabelFrame):
 
 if __name__ == '__main__':
     root = tk.Tk()
-    root.title('kanisaGen - v0.21.12')
+    root.title('kanisaGen - v0.11.02')
     print("Title loaded...")
 
     # ~~ ALLOW FOR FULLSCREEN HERE

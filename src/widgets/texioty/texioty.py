@@ -6,6 +6,7 @@ from typing import Dict, Any, Callable
 import inspect
 from .helpers.digiary import Digiary
 from .helpers.gaim_registry import GaimRegistry
+from .helpers.pijun_coop import PijunCoop
 from .helpers.prompt_registry import PromptRegistry
 from .helpers.tex_helper import TexiotyHelper
 from .helpers.dbHelper import DatabaseHelper
@@ -109,13 +110,16 @@ class Texioty(tk.LabelFrame):
         self.digiary = Digiary(self.texoty, self.texity)
         self.gaim_registry = GaimRegistry(self.texoty, self.texity)
         self.prompt_runner = PromptRegistry(self.texoty, self.texity)
+        self.pijun = PijunCoop(self.texoty, self.texity)
         self.default_helpers = {"TXTY": [self],
                                 "HLPR": [self.base_helper],
                                 "DIRY": [self.digiary],
                                 "GAIM": [self.gaim_registry],
+                                "PIJN": [self.pijun],
                                 "PRUN": [self.prompt_runner]}
         self.active_helper_dict = self.default_helpers
         self.deciding_function = None
+        self.current_prompt = None
 
         self.known_commands_dict = {
             "login": [self.log_profile_in, "This logs the user into a profile. ",
@@ -211,13 +215,14 @@ class Texioty(tk.LabelFrame):
             case "Diary":
                 if self.texity.parse_diary_line() != "/until_next_time":
                     parsed_input = self.texity.parse_diary_line()
-                    self.active_helper_dict["DIRY"][0].add_diary_line(parsed_input)
+                    self.digiary.add_diary_line(parsed_input)
                 else:
                     self.execute_command("/until_next_time", [])
 
             case "Questionnaire":
                 parsed_input = self.texity.parse_question_response()
-                self.active_helper_dict["PRUN"][0].store_response(parsed_input)
+                if self.current_prompt is not None:
+                    self.current_prompt.store_response(parsed_input)
 
             case "Decisioning":
                 parsed_input = self.texity.parse_decision()
@@ -286,24 +291,13 @@ class Texioty(tk.LabelFrame):
         except IndexError:
             self.texoty.priont_string("⦓⦙ What username to login to?")
 
-    def log_profile_out(self, args):
-        if self.active_profile:
-            self.texoty.priont_string(f"Logging {self.active_profile.username} out. Goodbye!")
-            self.active_profile = self.available_profiles["guest"]
-            self.texoty.set_header_theme(self.active_profile.color_theme[0],
-                                         self.active_profile.color_theme[1],
-                                         16,
-                                         self.active_profile.color_theme[2])
-        else:
-            self.texoty.priont_string("You have to log in before you can log out.")
-
     def create_profile(self, args):
         """Create a new profile."""
-        if "yes" in args:
+        if "yes" in args and self.current_prompt is not None:
             self.texoty.priont_string("Creating a new profile...")
-            profile_name = self.active_helper_dict["PRUN"][0].question_prompt_dict['profile_name'][1]
-            password = self.active_helper_dict["PRUN"][0].question_prompt_dict['password'][1]
-            color_theme = self.active_helper_dict["PRUN"][0].question_prompt_dict['color_theme'][1]
+            profile_name = self.current_prompt.question_prompt_dict['profile_name'][1]
+            password = self.current_prompt.question_prompt_dict['password'][1]
+            color_theme = self.current_prompt.question_prompt_dict['color_theme'][1]
             color_theme = t.DEFAULT_THEMES[color_theme]
             self.available_profiles[profile_name] = u.TexiotyProfile(profile_name, password, color_theme)
             save_path = f".profiles/{profile_name}.json"
@@ -316,9 +310,3 @@ class Texioty(tk.LabelFrame):
 
             else:
                 self.texoty.priont_string(f"Profile '{profile_name}' already exists, did not create.")
-
-    def dl_youtube_vid(self, args):
-        self.texoty.priont_string("Attempting to download:")
-        self.texoty.priont_string(f"    {args}")
-        u.download_youtube_video(args)
-        self.texoty.priont_string(f"Maybe finished, maybe completed.")

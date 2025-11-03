@@ -1,6 +1,8 @@
 from tkinter import StringVar, IntVar, Label, Scale, Entry, OptionMenu, Radiobutton, Button, Checkbutton
 from typing import List
 from tkinter import ttk
+
+from src.widgets.texioty import Texioty
 from src.widgets.texioty.helpers.tex_helper import TexiotyHelper
 
 
@@ -13,6 +15,11 @@ class BasikWidget(ttk.LabelFrame, TexiotyHelper):
         :param master:
         """
         super(BasikWidget, self).__init__(master=master, width=width, height=height)
+        if master and isinstance(master, Texioty):
+            super().__init__(master=master)
+        else:
+            print("No texioty detexted")
+            print(type(master))
         self.tab_name = "Basic"
         self.grid_propagate(False)
 

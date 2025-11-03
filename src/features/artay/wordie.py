@@ -183,8 +183,8 @@ def kollage(img: Image.Image, artribute_dict: dict, area_dict: dict) -> Image.Im
     draw = ImageDraw.Draw(img)
     for textbox in area_dict:
         text = area_dict[textbox][0]
-        print('textbox', f'{os.getcwd()}/filesInput/fonts/{area_dict[textbox][4]}.ttf')
-        font = ImageFont.truetype(f'{os.getcwd()[:-3]}/filesInput/fonts/{area_dict[textbox][5]}.ttf', (area_dict[textbox][4] // 10) + 16)
+        print('textbox', f'{os.getcwd()}/filesInput/fonts/{area_dict[textbox][5]}.ttf')
+        font = ImageFont.truetype(f'{os.getcwd()}/filesInput/fonts/{area_dict[textbox][5]}.ttf', (area_dict[textbox][4] // 10) + 16)
         text_img = make_textual_image(img, text, font, random.choice(cl))
         start_point = area_dict[textbox][1]
         end_point = area_dict[textbox][3]
