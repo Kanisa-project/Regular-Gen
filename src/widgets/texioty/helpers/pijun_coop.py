@@ -17,17 +17,10 @@ class PijunCoop(TexiotyHelper):
         self.pijun_address = ("4.20.60.0", 8080)
         self.pijuns = {}
         self.pijun_addresses = {}
-        self.helper_commands['pijun'] = [self.connect_pijun, "Setup a pijun to send.",
+        self.helper_commands['pijun'] = [self.send_pijun, "Find a pijun to send.",
                                          {}, "PIJN", t.rgb_to_hex(t.PIGEON_GREY), t.rgb_to_hex(t.BLACK)]
         self.helper_commands['coop'] = [self.host_dovecot, "Define a pijun coop.",
                                          {}, "PIJN", t.rgb_to_hex(t.PIGEON_GREY), t.rgb_to_hex(t.BLACK)]
-
-    def handle_pijun(self, pijun):
-        while True:
-            name = pijun.recv(self.buff_size).decode("utf-8")
-            self.txo.priont_string(f"connection from {name}")
-            pijun.send(bytes("Welcome to the pijun coop.", "utf-8"))
-            self.pijuns[pijun] = name
 
     def host_dovecot(self, host: str, port: str):
         try:
@@ -42,7 +35,7 @@ class PijunCoop(TexiotyHelper):
         coop_thread.start()
         self.txo.priont_string("coop_thread_started")
 
-    def connect_pijun(self, host: str, port: str):
+    def send_pijun(self, host: str, port: str):
         try:
             port = int(port)
         except ValueError:
