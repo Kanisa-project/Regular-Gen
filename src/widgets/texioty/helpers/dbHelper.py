@@ -2,7 +2,7 @@ import random
 import sqlite3
 import sqlite3 as sq3
 from src.utils import dummyHelper
-from mtgsdk import Card
+# from mtgsdk import Card
 
 
 def create_table_statement_maker(table_name: str, column_names: list) -> (str, dict):
@@ -168,19 +168,19 @@ class DatabaseHelper:
         return data
 
 
-if __name__ == "__main__":
-    dbhelp = DatabaseHelper('mtg_spells.db')
-    card_list = Card.where(set="ONE").where(layout='normal').all()
-    for i in range(16):
-        next_card = random.choice(card_list)
-        while "Land" in next_card.type:
-            next_card = random.choice(card_list)
-        insert_norm_spells_table_sql = insert_table_statement_maker('norm_spells',
-                                                                    list(dummyHelper.mtg_card_template.keys()))[0]
-        print(dbhelp.execute_query(insert_norm_spells_table_sql,
-                                   [next_card.name, next_card.set, str(next_card.cmc),
-                                    next_card.layout, next_card.type.replace('\u2014', '-'),
-                                    str(next_card.colors), next_card.mana_cost]))
-    for card in dbhelp.get_available_spells():
-        if card[3] == "normal":
-            print(card)
+# if __name__ == "__main__":
+#     dbhelp = DatabaseHelper('mtg_spells.db')
+#     card_list = Card.where(set="ONE").where(layout='normal').all()
+#     for i in range(16):
+#         next_card = random.choice(card_list)
+#         while "Land" in next_card.type:
+#             next_card = random.choice(card_list)
+#         insert_norm_spells_table_sql = insert_table_statement_maker('norm_spells',
+#                                                                     list(dummyHelper.mtg_card_template.keys()))[0]
+#         print(dbhelp.execute_query(insert_norm_spells_table_sql,
+#                                    [next_card.name, next_card.set, str(next_card.cmc),
+#                                     next_card.layout, next_card.type.replace('\u2014', '-'),
+#                                     str(next_card.colors), next_card.mana_cost]))
+#     for card in dbhelp.get_available_spells():
+#         if card[3] == "normal":
+#             print(card)

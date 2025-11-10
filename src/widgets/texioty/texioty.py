@@ -9,15 +9,14 @@ from .helpers.gaim_registry import GaimRegistry
 from .helpers.pijun_coop import PijunCoop
 from .helpers.prompt_registry import PromptRegistry
 from .helpers.tex_helper import TexiotyHelper
-from .helpers.dbHelper import DatabaseHelper
 from src.widgets.texioty import texoty
 from src.widgets.texioty import texity
 from src.settings import themery as t, utils as u
 import os
-import sys
 import subprocess
 import threading
 import time
+from pyroute2 import NDB, IPDB, IPRoute
 
 POLL_INTERVAL = 1.0
 
@@ -30,6 +29,7 @@ def list_interfaces():
 
 def read_file(path):
     try:
+        # os.chmod(path, 0o666)
         with open(path, 'r') as f:
             return f.read().strip()
     except Exception:
@@ -78,6 +78,7 @@ def interpret_state(info):
     if carrier is True:
         if ips:
             return "connected_with_ip", f"Connected with IP {', '.join(ips)}"
+        # assign_ip("enp4s0")
         return "cabled_detected_no_ip", "Cable detected (no IP)"
     if oper and oper.lower() in ("up", "unknown", "dormant", "lowerlayerdown"):
         if ips:
@@ -97,7 +98,7 @@ class CoopWatcher(threading.Thread):
 
     def run(self):
         while not self._stop.is_set():
-            print('CoopWatcher running.')
+            # print('CoopWatcher running.')
             try:
                 raw = get_linux_status()
                 interp = {}
@@ -215,12 +216,12 @@ class Texioty(tk.LabelFrame):
         self.digiary = Digiary(self.texoty, self.texity)
         self.gaim_registry = GaimRegistry(self.texoty, self.texity)
         self.prompt_runner = PromptRegistry(self.texoty, self.texity)
-        self.pijun = PijunCoop(self.texoty, self.texity)
+        self.pijun_coop = PijunCoop(self.texoty, self.texity)
         self.default_helpers = {"TXTY": [self],
                                 "HLPR": [self.base_helper],
                                 "DIRY": [self.digiary],
                                 "GAIM": [self.gaim_registry],
-                                "PIJN": [self.pijun],
+                                "PIJN": [self.pijun_coop],
                                 "PRUN": [self.prompt_runner]}
         self.active_helper_dict = self.default_helpers
         self.deciding_function = None
@@ -422,4 +423,16 @@ class Texioty(tk.LabelFrame):
             info = status[iface]
             code = info.get('code', "unknown")
             text = info.get('text', "")
+            if "(no IP)" in text:
+                # self.texoty.priont_string("No IP detected")
+                self.assign_ip(iface)
             self.texoty.priont_string(f"{iface}: {code} {text}")
+
+    def assign_ip(self, iface):
+        """Assign an IP address to a given interface."""
+        try:
+            print(f"Trying to assign IP to {iface}")
+            subprocess.run(["sudo", "ip", "addr", "add", "74.1.241.0/30", "dev", iface], check=True)
+            self.texoty.priont_string(f"IP assigned to {iface}")
+        except Exception as e:
+            print(f"Error assigning IP: {e}")

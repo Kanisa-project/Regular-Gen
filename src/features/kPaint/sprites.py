@@ -2,8 +2,8 @@ import random
 
 import pygame as pg
 import math
-from .. import settings as s
-import os
+# from .. import settings as s
+from src.settings import app_settings as s, themery as t, utils as u
 
 def nothing():
     pass
@@ -54,7 +54,7 @@ class ColorPalette(pg.sprite.Sprite):
     def __init__(self):
         pg.sprite.Sprite.__init__(self)
         self.image = pg.Surface((s.SCREEN_WIDTH,100))
-        self.image.fill(s.LIGHT_GREEN)
+        self.image.fill(t.LIGHT_GREEN)
         self.rect = self.image.get_rect()
         self.rect.x = 0
         self.rect.y = s.SCREEN_HEIGHT - 100
@@ -63,7 +63,7 @@ class ColorPalette(pg.sprite.Sprite):
         self.random_palist = []
         self.x = -20
         self.i = 0
-        for item in s.RANDOM_COLORS:
+        for item in t.RANDOM_COLORS:
             self.y = -20
             self.x += 40
             self.color_palist += [Colorbox(self.x,self.y,item)]
@@ -80,7 +80,7 @@ class ToolBox(pg.sprite.Sprite):
     def __init__(self):
         pg.sprite.Sprite.__init__(self)
         self.image = pg.Surface((100,s.SCREEN_HEIGHT))
-        self.image.fill(s.CYAN)
+        self.image.fill(t.CYAN)
         self.rect = self.image.get_rect()
         self.rect.x = s.SCREEN_WIDTH - 100
         self.rect.y = 0
@@ -89,15 +89,15 @@ class ToolBox(pg.sprite.Sprite):
         for item in self.toolbox_list:
             self.tool_group.add(item)
         self.myfont = pg.font.SysFont("monospace", 15)
-        self.label = self.myfont.render("WHAT", 1, s.RED)
+        self.label = self.myfont.render("WHAT", 1, t.RED)
         
     def update(self,c,b,g):
-        self.image.fill(s.CYAN)
-        radlabel = self.myfont.render("Radius: " + str(g.radius), 0, s.BLACK)
-        sizelabel = self.myfont.render("Sides: " + str(g.sides), 0, s.BLACK)
-        redlabel = self.myfont.render("Red: " + str(g.chosen_color[0]), 0, s.RED)
-        grnlabel = self.myfont.render("Green: " + str(g.chosen_color[1]), 0, s.GREEN)
-        blulabel = self.myfont.render("Blue: " + str(g.chosen_color[2]), 0, s.BLUE)
+        self.image.fill(t.CYAN)
+        radlabel = self.myfont.render("Radius: " + str(g.radius), 0, t.BLACK)
+        sizelabel = self.myfont.render("Sides: " + str(g.sides), 0, t.BLACK)
+        redlabel = self.myfont.render("Red: " + str(g.chosen_color[0]), 0, t.RED)
+        grnlabel = self.myfont.render("Green: " + str(g.chosen_color[1]), 0, t.GREEN)
+        blulabel = self.myfont.render("Blue: " + str(g.chosen_color[2]), 0, t.BLUE)
         self.image.blit(radlabel, (0, s.SCREEN_HEIGHT - 230))
         self.image.blit(sizelabel, (0, s.SCREEN_HEIGHT - 250))
         self.image.blit(redlabel, (0, s.SCREEN_HEIGHT - 270))
@@ -107,7 +107,7 @@ class ToolBox(pg.sprite.Sprite):
 class Brush:
     def __init__(self):
         self.chosen_shape = "circle"
-        self.chosen_color = s.WHITE
+        self.chosen_color = t.WHITE
         self.precision = True
         self.radius = 42
         self.sides = 6
@@ -158,11 +158,11 @@ class Circlebox(pg.sprite.Sprite):
     def __init__(self):
         pg.sprite.Sprite.__init__(self)
         self.image = pg.Surface((42,42))
-        self.image.fill(s.BLACK)
+        self.image.fill(t.BLACK)
         self.rect = self.image.get_rect()
         self.rect.x = s.SCREEN_WIDTH - 100
         self.rect.y = 0
-        pg.draw.circle(self.image,s.CYAN,(21,21),15,2)
+        pg.draw.circle(self.image,t.CYAN,(21,21),15,2)
         self.shape = "circle"
     
     def update(self,brush):
@@ -177,11 +177,11 @@ class Linebox(pg.sprite.Sprite):
     def __init__(self):
         pg.sprite.Sprite.__init__(self)
         self.image = pg.Surface((42,42))
-        self.image.fill(s.BLACK)
+        self.image.fill(t.BLACK)
         self.rect = self.image.get_rect()
         self.rect.x = s.SCREEN_WIDTH - 100
         self.rect.y = 50
-        pg.draw.line(self.image,s.CYAN,(0,0),(42,42),5)
+        pg.draw.line(self.image,t.CYAN,(0,0),(42,42),5)
         self.shape = "line"
         self.listoflines = []
     
@@ -197,12 +197,12 @@ class Polybox(pg.sprite.Sprite):
     def __init__(self):
         pg.sprite.Sprite.__init__(self)
         self.image = pg.Surface((42,42))
-        self.image.fill(s.BLACK)
+        self.image.fill(t.BLACK)
         self.rect = self.image.get_rect()
         self.rect.x = s.SCREEN_WIDTH - 100
         self.rect.y = 100
         self.polygon_pointlist = polypointlist(5,0,21,21,20)
-        pg.draw.polygon(self.image,s.CYAN,self.polygon_pointlist,2)
+        pg.draw.polygon(self.image,t.CYAN,self.polygon_pointlist,2)
         self.shape = "polygon"
     
     def update(self,brush):
@@ -217,15 +217,15 @@ class circleFoL(pg.sprite.Sprite):
     def __init__(self):
         pg.sprite.Sprite.__init__(self)
         self.image = pg.Surface((42,42))
-        self.image.fill(s.BLACK)
+        self.image.fill(t.BLACK)
         self.rect = self.image.get_rect()
         self.rect.x = s.SCREEN_WIDTH - 50
         self.rect.y = 0
-        pg.draw.circle(self.image,s.GREEN,(21,21),8,2)
+        pg.draw.circle(self.image,t.GREEN,(21,21),8,2)
         self.shape = "circleFoL"
         self.polygon_pointlist = polypointlist(6,0,21,21,8)
         for item in self.polygon_pointlist:
-            pg.draw.circle(self.image,s.CYAN,(int(item[0]),int(item[1])),8,2)
+            pg.draw.circle(self.image,t.CYAN,(int(item[0]),int(item[1])),8,2)
     
     def update(self,brush):
         pass
@@ -239,11 +239,11 @@ class lineFoL(pg.sprite.Sprite):
     def __init__(self):
         pg.sprite.Sprite.__init__(self)
         self.image = pg.Surface((42,42))
-        self.image.fill(s.BLACK)
+        self.image.fill(t.BLACK)
         self.rect = self.image.get_rect()
         self.rect.x = s.SCREEN_WIDTH - 50
         self.rect.y = 50
-        pg.draw.line(self.image,s.CYAN,(0,0),(0,42),2)
+        pg.draw.line(self.image,t.CYAN,(0,0),(0,42),2)
         self.shape = "lineFoL"
         self.polygon_pointlist = polypointlist(6,0,21,21,8)
     
@@ -259,7 +259,7 @@ class polyFoL(pg.sprite.Sprite):
     def __init__(self):
         pg.sprite.Sprite.__init__(self)
         self.image = pg.Surface((42,42))
-        self.image.fill(s.BLACK)
+        self.image.fill(t.BLACK)
         self.rect = self.image.get_rect()
         self.rect.x = s.SCREEN_WIDTH - 50
         self.rect.y = 100
@@ -267,8 +267,8 @@ class polyFoL(pg.sprite.Sprite):
         self.polygon_pointlist = polypointlist(6,0,21,21,8)
         for point in self.polygon_pointlist:
             self.polygon2_pointlist = polypointlist(6,0,point[0],point[1],8)
-            pg.draw.polygon(self.image,s.CYAN,(self.polygon2_pointlist),2)
-        pg.draw.polygon(self.image,s.CYAN,(self.polygon_pointlist),2)
+            pg.draw.polygon(self.image,t.CYAN,(self.polygon2_pointlist),2)
+        pg.draw.polygon(self.image,t.CYAN,(self.polygon_pointlist),2)
     
     def update(self,brush):
         pass
@@ -282,12 +282,12 @@ class Box(pg.sprite.Sprite):
     def __init__(self):
         pg.sprite.Sprite.__init__(self)
         self.image = pg.Surface((42,42))
-        self.image.fill(s.BLACK)
+        self.image.fill(t.BLACK)
         self.rect = self.image.get_rect()
         self.rect.x = s.SCREEN_WIDTH - 50
         self.rect.y = 150
         self.shape = "box"
-        pg.draw.rect(self.image,s.CYAN,(10,10,22,22),3)
+        pg.draw.rect(self.image,t.CYAN,(10,10,22,22),3)
     
     def update(self,brush):
         pass
@@ -301,22 +301,22 @@ class Precisionbox(pg.sprite.Sprite):
     def __init__(self):
         pg.sprite.Sprite.__init__(self)
         self.image = pg.Surface((65,22))
-        self.image.fill(s.BLACK)
+        self.image.fill(t.BLACK)
         self.rect = self.image.get_rect()
         self.rect.x = s.SCREEN_WIDTH - 100
         self.rect.y = 200
         self.myfont = pg.font.SysFont("monospace", 15)
-        self.label = self.myfont.render("WHAT", 1, s.RED)
+        self.label = self.myfont.render("WHAT", 1, t.RED)
         
     def update(self,brush):
         if brush.precision:
-            self.image.fill(s.BLACK)
-            self.label = self.myfont.render("Precise", 1, s.WHITE)
+            self.image.fill(t.BLACK)
+            self.label = self.myfont.render("Precise", 1, t.WHITE)
             self.image.blit(self.label, (0, 0))
             
         else:
-            self.image.fill(s.BLACK)
-            self.label = self.myfont.render("WiLd", 1,brush.chosen_color, s.WHITE)
+            self.image.fill(t.BLACK)
+            self.label = self.myfont.render("WiLd", 1,brush.chosen_color, t.WHITE)
             self.image.blit(self.label, (0, 0))
     
     def selectshape(self,brush,c):

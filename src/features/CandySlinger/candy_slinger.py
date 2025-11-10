@@ -1,4 +1,4 @@
-import settings as s
+# import settings as s
 import pygame as pg
 import random
 import json
@@ -82,24 +82,18 @@ class BaseGaim:
         pg.init()
         pg.mixer.init()
         self.font = pg.font.SysFont("Parkinsans", 16)
-        self.screen = pg.display.set_mode((s.SCREEN_WIDTH, s.SCREEN_HEIGHT))
-        pg.display.set_caption('Candy Slinger')
+        self.screen = pg.display.set_mode((1280, 768))
         self.clock = pg.time.Clock()
         self.all_sprites = pg.sprite.Group()
         self.running = True
         self.mouse_pos = (0, 0)
-        if is_new_game:
-            self.player = new_gaim(player_name)
-        else:
-            self.player = load_gaim(player_name)
-        self.world = World(self.player)
 
     def save_gaim(self):
         pass
 
     def run(self):
         while self.running:
-            self.clock.tick(s.FPS)
+            self.clock.tick(60)
             self.events()
             self.update()
             self.draw()

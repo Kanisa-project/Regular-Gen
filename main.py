@@ -1,19 +1,51 @@
+import sys
 import tkinter as tk
 
-from src.widgets import kinvow, gaim_player, idutc, artay, kalendar, glythph
+import pygame
+
+from src.widgets import kinvow, py_launcher, idutc, artay, kalendar, glythph
 from src.widgets.texioty import texioty
 from src.settings import themery as t
 import subprocess
 import threading
 
+global root
+global _launch_game_requested
+
 large_widgets = ["Texioty", "Kinvow"]
-small_widgets = ["Calendar", "IDUTC", "aRtay", "Gaim Player", "Mujic Player", "Graphter", "Glythph"]
+small_widgets = ["Calendar", "IDUTC", "aRtay", "Launchrr", "Mujic Player", "Graphter", "Glythph"]
 
+def run_pygame_game():
+    """Run a simple pygame demo loop until the user quits pygame.
+       This function runs on the main thread and blocks until pygame quits.
+    """
+    pygame.init()
+    # Example window size
+    size = (640, 480)
+    screen = pygame.display.set_mode(size)
+    pygame.display.set_caption("Pygame - Press ESC or close window to quit")
 
-def start_simple_client():
-    client_script_path = "./test_client.py"
-    threading.Thread(target=subprocess.run, args=(["python", client_script_path], )).start()
+    clock = pygame.time.Clock()
+    running = True
+    while running:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                running = False
+            elif event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_ESCAPE:
+                    running = False
 
+        # Example update/draw
+        screen.fill((30, 30, 60))
+        # draw a moving rectangle just to show something
+        t = time.time()
+        x = int((size[0] / 2) + 100 * pygame.math.sin(t))
+        pygame.draw.rect(screen, (200, 120, 40), (x, size[1] // 2 - 25, 50, 50))
+
+        pygame.display.flip()
+        clock.tick(60)
+
+    pygame.quit()
 
 class Application(tk.Frame):
     def __init__(self, screen_w: int, screen_h: int, master=None):
@@ -22,24 +54,26 @@ class Application(tk.Frame):
         :param master:
         """
         super().__init__(master)
-        self.texioty_frame = texioty.Texioty(width=screen_w * .333, height=screen_h * .95)
+        sml_width = screen_w * .333
+        sml_height = screen_h * .4
+        lrg_width = screen_w * .325
+        lrg_height = screen_h * .96
+        self.texioty_frame = texioty.Texioty(width=lrg_width, height=lrg_height)
 
-        self.idutc_frame = idutc.IDUTC(width=screen_w * .333, height=screen_h * .4)
+        self.idutc_frame = idutc.IDUTC(width=sml_width, height=sml_height)
 
-        self.artay_frame = artay.ARTAY(width=screen_w * .333, height=screen_h * .4, idutc_frame=self.idutc_frame)
+        self.artay_frame = artay.ARTAY(width=sml_width, height=sml_height, idutc_frame=self.idutc_frame)
 
-        self.kinvow_frame = kinvow.KINVOW(width=screen_w * .333, height=screen_h * .97,
+        self.kinvow_frame = kinvow.KINVOW(width=lrg_width, height=lrg_height,
                                           idutc_frame=self.idutc_frame, artay_frame=self.artay_frame)
         self.kinvow_frame.txo = self.texioty_frame.texoty
 
-        self.glythph_frame = glythph.Glythph(screen_w * .333, screen_h * .4, self.texioty_frame)
+        self.glythph_frame = glythph.Glythph(width=sml_width, height=sml_height, master=self.texioty_frame)
 
-        self.calendar_frame = kalendar.Kalendar(width=screen_w * .333, height=screen_h * .4)
+        self.calendar_frame = kalendar.Kalendar(width=sml_width, height=sml_height)
         self.calendar_frame.txo = self.texioty_frame.texoty
 
-        self.gaimplay_frame = gaim_player.GaimPlayer(width=screen_w * .333, height=screen_h * .4, idutc_frame=self.idutc_frame)
-        self.gaimplay_frame.txo = self.texioty_frame.texoty
-        self.texioty_frame.gaim_player = self.gaimplay_frame
+        self.launchrr_frame = py_launcher.Launchrr(width=sml_width, height=sml_height, master=self.texioty_frame, tk_root_window=master)
         print("Created the main frame helper widgets..")
 
         self.texioty_frame.add_helper_widget("CLDR", self.calendar_frame)
@@ -47,6 +81,7 @@ class Application(tk.Frame):
         self.texioty_frame.add_helper_widget("KNVO", self.kinvow_frame)
         self.texioty_frame.add_helper_widget("ARTY", self.artay_frame)
         self.texioty_frame.add_helper_widget("THPH", self.glythph_frame)
+        self.texioty_frame.add_helper_widget("GAIM", self.launchrr_frame)
         # self.texioty_frame.add_helper_widget("GAIM", self.gaimplay_frame)
         print("Added the main frame helpers..")
 
@@ -57,7 +92,7 @@ class Application(tk.Frame):
             "Kinvow": self.kinvow_frame,
             "aRtay": self.artay_frame,
             "Glythph": self.glythph_frame,
-            "Gaim Player": self.gaimplay_frame
+            "Launchrr": self.launchrr_frame
         }
         self.center_frame = SpotLighter(widget_dict=self.widget_dict, width=screen_w//3, height=screen_h//4)
         self.center_frame.grid(column=1, row=1, columnspan=1, rowspan=1, padx=1, pady=1, sticky='nesw')
@@ -146,7 +181,7 @@ class SpotLighter(tk.LabelFrame):
             new_widget = self.eastern_default
         self.eastern_light.grid(column=3)
         self.eastern_light = new_widget
-        self.eastern_light.grid(column=2, row=0, columnspan=1, rowspan=3, padx=1, pady=3, sticky='e')
+        self.eastern_light.grid(column=2, row=0, columnspan=1, rowspan=3, padx=6, pady=3, sticky='e')
 
     def change_southern_light(self, new_widget: tk.Widget):
         """
@@ -170,10 +205,11 @@ class SpotLighter(tk.LabelFrame):
             new_widget = self.western_default
         self.western_light.grid(column=3)
         self.western_light = new_widget
-        self.western_light.grid(column=0, row=0, columnspan=1, rowspan=3, padx=1, pady=3, sticky='w')
+        self.western_light.grid(column=0, row=0, columnspan=1, rowspan=3, padx=6, pady=3, sticky='w')
 
 
-if __name__ == '__main__':
+def build_app():
+    global root
     root = tk.Tk()
     root.title('kanisaGen - v0.11.02')
     print("Title loaded...")
@@ -193,3 +229,44 @@ if __name__ == '__main__':
     print("app becoming Application....")
     app.mainloop()
     print("Mainloop ending.....")
+
+def main():
+    build_app()
+    global _launch_game_requested
+    while True:
+        _launch_game_requested = False
+        try:
+            root.mainloop()
+        except Exception as e:
+            break
+
+        if not bool(root.winfo_exists()):
+            break
+
+        if _launch_game_requested:
+            try:
+                root.withdraw()
+            except Exception as e:
+                pass
+
+            run_pygame_game()
+
+            try:
+                root.deiconify()
+                root.lift()
+                root.focus_force()
+            except Exception as e:
+                pass
+            continue
+        else:
+            break
+    try:
+        root.destroy()
+    except Exception as e:
+        pass
+    sys.exit(0)
+
+
+
+if __name__ == '__main__':
+    main()

@@ -6,7 +6,7 @@ from src.widgets.texioty import Texioty
 from src.widgets.texioty.helpers.tex_helper import TexiotyHelper
 
 
-class BasikWidget(ttk.LabelFrame, TexiotyHelper):
+class BasikWidget(TexiotyHelper, ttk.LabelFrame):
     def __init__(self, width, height, master=None, text="Basic"):
         """
         Base widget with some basic functions for setting up any other widget.
@@ -14,10 +14,11 @@ class BasikWidget(ttk.LabelFrame, TexiotyHelper):
         :param height:
         :param master:
         """
-        super(BasikWidget, self).__init__(master=master, width=width, height=height)
         if master and isinstance(master, Texioty):
-            super().__init__(master=master)
+            ttk.LabelFrame.__init__(self, master=None, width=width, height=height)
+            TexiotyHelper.__init__(self, txo=master.texoty, txi=master.texity)
         else:
+            ttk.LabelFrame.__init__(self, master=master, width=width, height=height)
             print("No texioty detexted")
             print(type(master))
         self.tab_name = "Basic"

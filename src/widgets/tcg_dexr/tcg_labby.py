@@ -1,4 +1,3 @@
-import glob
 import math
 from typing import Callable
 
@@ -6,8 +5,8 @@ from mtgsdk import Card
 from PIL import Image, ImageDraw
 import random
 
-from helpers.tex_helper import TexiotyHelper
-from question_prompts.base_prompt import BasePrompt
+from src.widgets.texioty.helpers.tex_helper import TexiotyHelper
+from src.widgets.texioty.question_prompts.base_prompt import BasePrompt
 from src.settings import themery as t, alphanumers as s, utils as u
 from src.settings.utils import available_profiles
 

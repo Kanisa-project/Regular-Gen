@@ -3,6 +3,10 @@
 APP_TITLE = "kanisaGen"
 DEFAULT_BG = "#0f6faa"
 
+SCREEN_WIDTH = 1280
+SCREEN_HEIGHT = 720
+FPS = 60
+
 
 ALPHANUMERIC = "abcdefghijklmnopqrstuvwxyz0123456789"
 MIN_CREATION_UTC = 1119553200
@@ -392,4 +396,3 @@ ALPHANUMERIC_WORD_LISTS = {
     "y": ["yankee", "yelled", "yip", "yuck", "yakima", "yarn", "yellow", "yak", "yam", "yup"],
     "z": ["zulu", "zebra", "zoinks", "zealand", "zhengzhou", "zombie", "zaffre", "zebra", "zucchini", "zoom"]
 }
-

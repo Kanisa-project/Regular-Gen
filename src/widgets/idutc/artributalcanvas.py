@@ -21,7 +21,7 @@ class ArtributalCanvas(tk.Canvas):
         self.bind("<Button-1>", self.set_artribute)
         self.bind("<MouseWheel>", self.scroll_through_artribute)
         self.grid_propagate(False)
-        self.outer_artri_points = helpers.polypointlist(6, 30, int(self.center_point[0]), int(self.center_point[1]), 100)
+        self.outer_artri_points = helpers.polypointlist(6, 30, int(self.center_point[0]), int(self.center_point[1]), int(width * .45))
         self.inner_radius = 30
         self.inner_artri_points = self._build_inner_points()
         self.create_polygon(self.outer_artri_points,
@@ -66,6 +66,9 @@ class ArtributalCanvas(tk.Canvas):
                 p1 = self.inner_artri_points[i]
                 p2 = self.inner_artri_points[(i + 1) % n]
                 edge_color = self._edge_color_for_index(i)
+                if self.idutc_frame.kre8dict['artributes'][i] == 'Cloud':
+                    print("Clouding...")
+                    edge_color = t.rgb_to_hex(((255 // i), (255 // i), (255 // i)))
                 self.create_polygon(p1, p2, self.center_point, fill=edge_color)
 
         self.create_polygon(self.inner_artri_points, fill='',

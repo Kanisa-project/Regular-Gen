@@ -35,7 +35,7 @@ class IDUTC(basik_widget.BasikWidget):
         self.utc_entry.config(bg='pink')
 
         # INITIATE THE BUTTONS TO CONTROL USE_ID AND USE_UTC
-        self.setup_button_choices(["New ID/UTC", "Set ID/UTC"], start_x_cell=4)
+        self.setup_button_choices(["New ID/UTC", "Set ID/UTC"], start_y_cell=7)
         self.button_dict["New ID/UTC"][1].config(command=self.generate_new_idutc)
         self.button_dict["Set ID/UTC"][1].config(command=self.set_use_idutc)
 
