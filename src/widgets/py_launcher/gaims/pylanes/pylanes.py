@@ -1,4 +1,6 @@
 import pygame as pg
+
+from src.widgets.py_launcher.gaims.base_gaim.base_gaim import BaseGaim
 from src.widgets.py_launcher.gaims.pylanes import settings as s
 from src.widgets.py_launcher.gaims.pylanes import base_character
 import math
@@ -266,9 +268,9 @@ class HUD(pg.sprite.Sprite):
         screen.blit(player_score_text, (20, s.SCREEN_HEIGHT-32))
         screen.blit(enemy_score_text, (s.SCREEN_WIDTH-260, 526))
 
-class PyLanes:
-    def __init__(self, nothing_name=None):
-        super().__init__()
+class PyLanes(BaseGaim):
+    def __init__(self, player_name=None):
+        super().__init__(player_name)
         pg.display.set_caption('PyLane Summoners')
         self.all_summon_circles = pg.sprite.Group()
         self.all_fighter_units = pg.sprite.Group()
@@ -288,13 +290,13 @@ class PyLanes:
 
     def run(self):
         while self.running:
-            self.handle_events()
+            self.events()
             self.update()
             self.draw()
             self.clock.tick(s.FPS)
         pg.quit()
 
-    def handle_events(self):
+    def events(self):
         for event in pg.event.get():
             # Handle summoning circle events and update selected circle
             for circle in self.all_summon_circles:
@@ -326,6 +328,8 @@ class PyLanes:
             
             # Handle key presses for gem selection
             if event.type == pg.KEYDOWN:
+                if event.key == pg.K_ESCAPE:
+                    self.running = False
                 if event.key == pg.K_1:
                     self.hud.selected_gem_type = 'ruby'
                 elif event.key == pg.K_2:

@@ -15,7 +15,6 @@ INSTRUCTIONS = {'objective': 'There will be goals to change the aspect of the br
 class Gaim(BaseGaim):
     def __init__(self, player_name):
         super().__init__(player_name)
-        pg.display.set_caption('k_paint')
         self.canvas = spirites.Canvas()
         self.palette = spirites.ColorPalette()
         self.toolbox = spirites.ToolBox()
@@ -120,6 +119,8 @@ class Gaim(BaseGaim):
                             self.canvas.pointlist = [(0, 0), (0, 0), (0, 0)]
 
             elif event.type == pg.KEYDOWN:
+                if event.key == pg.K_ESCAPE:
+                    self.running = False
                 #IF A KEY IS PRESSED
                 # self.keystring = pg.key.name(event.key)
                 # for item in runes.rune_list:
@@ -135,6 +136,7 @@ class Gaim(BaseGaim):
                 #self.brush.thickness += 1
                 #if event.key == pg.K_LEFT and self.brush.thickness >= 2:
                 #self.brush.thickness -= 1
+        # super().events()
 
     def update(self):
         #game loop update
