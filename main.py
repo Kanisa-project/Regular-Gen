@@ -4,48 +4,25 @@ import tkinter as tk
 import pygame
 
 from src.widgets import kinvow, py_launcher, idutc, artay, kalendar, glythph
+from src.widgets.py_launcher.launchrr import Launchrr
 from src.widgets.texioty import texioty
 from src.settings import themery as t
 import subprocess
 import threading
-
-global root
-global _launch_game_requested
+import time
+import math
+# global root
 
 large_widgets = ["Texioty", "Kinvow"]
 small_widgets = ["Calendar", "IDUTC", "aRtay", "Launchrr", "Mujic Player", "Graphter", "Glythph"]
 
-def run_pygame_game():
+def run_pygame_game(gaim_for_launch):
     """Run a simple pygame demo loop until the user quits pygame.
        This function runs on the main thread and blocks until pygame quits.
     """
-    pygame.init()
-    # Example window size
-    size = (640, 480)
-    screen = pygame.display.set_mode(size)
-    pygame.display.set_caption("Pygame - Press ESC or close window to quit")
-
-    clock = pygame.time.Clock()
-    running = True
-    while running:
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                running = False
-            elif event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_ESCAPE:
-                    running = False
-
-        # Example update/draw
-        screen.fill((30, 30, 60))
-        # draw a moving rectangle just to show something
-        t = time.time()
-        x = int((size[0] / 2) + 100 * pygame.math.sin(t))
-        pygame.draw.rect(screen, (200, 120, 40), (x, size[1] // 2 - 25, 50, 50))
-
-        pygame.display.flip()
-        clock.tick(60)
-
-    pygame.quit()
+    print(f"Launching game: {gaim_for_launch}")
+    gaim_for_launch("Bluebeard").run()
+    # pygame.quit()
 
 class Application(tk.Frame):
     def __init__(self, screen_w: int, screen_h: int, master=None):
@@ -73,7 +50,7 @@ class Application(tk.Frame):
         self.calendar_frame = kalendar.Kalendar(width=sml_width, height=sml_height)
         self.calendar_frame.txo = self.texioty_frame.texoty
 
-        self.launchrr_frame = py_launcher.Launchrr(width=sml_width, height=sml_height, master=self.texioty_frame, tk_root_window=master)
+        self.launchrr_frame = Launchrr(width=sml_width, height=sml_height, master=self.texioty_frame, tk_root_window=master)
         print("Created the main frame helper widgets..")
 
         self.texioty_frame.add_helper_widget("CLDR", self.calendar_frame)
@@ -105,6 +82,7 @@ class Application(tk.Frame):
         self.center_frame.change_northern_light(self.idutc_frame)
 
         self.texioty_frame.log_profile_in('bluebeard', "p455")
+
 
 
 class SpotLighter(tk.LabelFrame):
@@ -208,8 +186,8 @@ class SpotLighter(tk.LabelFrame):
         self.western_light.grid(column=0, row=0, columnspan=1, rowspan=3, padx=6, pady=3, sticky='w')
 
 
-def build_app():
-    global root
+def build_app() -> Application:
+    # global root
     root = tk.Tk()
     root.title('kanisaGen - v0.11.02')
     print("Title loaded...")
@@ -227,46 +205,31 @@ def build_app():
     print("Setting screen dimensions to ", screen_width, screen_height, "....")
     app = Application(screen_width, screen_height, master=root)
     print("app becoming Application....")
-    app.mainloop()
-    print("Mainloop ending.....")
+    return app
 
 def main():
-    build_app()
-    global _launch_game_requested
-    while True:
-        _launch_game_requested = False
+    main_app = build_app()
+    while main_app:
         try:
-            root.mainloop()
+            main_app.mainloop()
         except Exception as e:
+            print("Problem with main_app", e)
             break
 
-        if not bool(root.winfo_exists()):
-            break
+        _launch_game_requested = main_app.launchrr_frame.launch_gaim_flag
+        main_app.launchrr_frame.launch_gaim_flag = False
 
-        if _launch_game_requested:
-            try:
-                root.withdraw()
-            except Exception as e:
-                pass
-
-            run_pygame_game()
-
-            try:
-                root.deiconify()
-                root.lift()
-                root.focus_force()
-            except Exception as e:
-                pass
-            continue
+        if _launch_game_requested and main_app.launchrr_frame.loaded_gaim:
+            _launch_game_requested = False
+            run_pygame_game(main_app.launchrr_frame.loaded_gaim)
         else:
             break
-    try:
-        root.destroy()
-    except Exception as e:
-        pass
+        print("MAINAPP", main_app)
+
     sys.exit(0)
 
 
 
 if __name__ == '__main__':
     main()
+    # run_pygame_game()

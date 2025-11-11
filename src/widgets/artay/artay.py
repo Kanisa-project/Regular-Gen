@@ -56,28 +56,28 @@ class ARTAY(ttk.LabelFrame):
         self.tabControl.add(self.gaimTab, text="Gaim")
         self.tabControl.add(self.meemTab, text="Meem")
         self.tabControl.grid(column=0, row=0)
-        self.helper_commands = {
-            "glyth": [self.change_glyth, "Add glyth options to the kre8dict.",
-                      {"add": "Add a glyth to the kre8dict.",
-                       "new": "Make a new option for glyth."}, "ARTY", t.rgb_to_hex(t.LIGHT_GOLDENROD_YELLOW),
-                      t.rgb_to_hex(t.DARK_SEA_GREEN)],
-            "glyph": [self.change_glyph, "Add glyph options to the kre8dict.",
-                      {"add": "Add a glyph to the kre8dict.",
-                       "new": "Make a new option for glyph."}, "ARTY", t.rgb_to_hex(t.LIGHT_GOLDENROD_YELLOW),
-                      t.rgb_to_hex(t.DARK_SEA_GREEN)],
-            "wordie": [self.change_wordie, "Change wordie options and choices.",
-                       {"add": "Add a wordie type to the kre8dict.",
-                        "font": "Select which font for Kinvow to use."}, "ARTY", t.rgb_to_hex(t.LIGHT_GOLDENROD_YELLOW),
-                       t.rgb_to_hex(t.DARK_SEA_GREEN)],
-            "recipe": [self.change_recipe, "Change recipe options and choices.",
-                       {"add": "Add a recipe to the kre8dict.",
-                        "new": "Make a new recipe for the book."}, "ARTY", t.rgb_to_hex(t.LIGHT_GOLDENROD_YELLOW),
-                       t.rgb_to_hex(t.DARK_SEA_GREEN)],
-            "spirite": [self.change_spirite, "Change spirite options and choices.",
-                        {"add": "Add a spirite to the kre8dict.",
-                         "new": "Import a new set of spirite layers."}, "ARTY", t.rgb_to_hex(t.LIGHT_GOLDENROD_YELLOW),
-                        t.rgb_to_hex(t.DARK_SEA_GREEN)]
-        }
+        # self.helper_commands = {
+        #     "glyth": [self.change_glyth, "Add glyth options to the kre8dict.",
+        #               {"add": "Add a glyth to the kre8dict.",
+        #                "new": "Make a new option for glyth."}, "ARTY", t.rgb_to_hex(t.LIGHT_GOLDENROD_YELLOW),
+        #               t.rgb_to_hex(t.DARK_SEA_GREEN)],
+        #     "glyph": [self.change_glyph, "Add glyph options to the kre8dict.",
+        #               {"add": "Add a glyph to the kre8dict.",
+        #                "new": "Make a new option for glyph."}, "ARTY", t.rgb_to_hex(t.LIGHT_GOLDENROD_YELLOW),
+        #               t.rgb_to_hex(t.DARK_SEA_GREEN)],
+        #     "wordie": [self.change_wordie, "Change wordie options and choices.",
+        #                {"add": "Add a wordie type to the kre8dict.",
+        #                 "font": "Select which font for Kinvow to use."}, "ARTY", t.rgb_to_hex(t.LIGHT_GOLDENROD_YELLOW),
+        #                t.rgb_to_hex(t.DARK_SEA_GREEN)],
+        #     "recipe": [self.change_recipe, "Change recipe options and choices.",
+        #                {"add": "Add a recipe to the kre8dict.",
+        #                 "new": "Make a new recipe for the book."}, "ARTY", t.rgb_to_hex(t.LIGHT_GOLDENROD_YELLOW),
+        #                t.rgb_to_hex(t.DARK_SEA_GREEN)],
+        #     "spirite": [self.change_spirite, "Change spirite options and choices.",
+        #                 {"add": "Add a spirite to the kre8dict.",
+        #                  "new": "Import a new set of spirite layers."}, "ARTY", t.rgb_to_hex(t.LIGHT_GOLDENROD_YELLOW),
+        #                 t.rgb_to_hex(t.DARK_SEA_GREEN)]
+        # }
 
     def change_glyth(self, args: list):
         self.txo.priont_string(f"Glything up a {args}")

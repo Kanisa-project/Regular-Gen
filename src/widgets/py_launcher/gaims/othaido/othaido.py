@@ -18,7 +18,7 @@ class StartScreen:
         pg.init()
         pg.mixer.init()
         self.screen = pg.display.set_mode((s.SCREEN_WIDTH, s.SCREEN_HEIGHT))
-        pg.display.set_caption("Othaido")
+        pg.display.set_caption("othaido")
         self.clock = pg.time.Clock()
 
         self.mouse_pos = (0, 0)
@@ -205,16 +205,16 @@ class Gaim(candy_slinger.BaseGaim):
         self.all_sprites.add(self.infobox)
         self.all_sprites.add(self.timer)
         self.running = True
-        pg.display.set_caption("Othaido")
+        pg.display.set_caption("othaido")
         self.appropriate_sounds()
         self.aett_names = ["Freya", "Hagal", "Tyr"]
 
     def appropriate_sounds(self):
-        pg.mixer.music.load(os.path.join('gaims/Othaido/assets', "MysticalTheme.mp3"))
+        pg.mixer.music.load(os.path.join('gaims/othaido/assets', "MysticalTheme.mp3"))
         pg.mixer.music.set_volume(0.6)
-        self.select1_sound = pg.mixer.Sound(os.path.join('gaims/Othaido/assets', "Blip_Select3.wav"))
+        self.select1_sound = pg.mixer.Sound(os.path.join('gaims/othaido/assets', "Blip_Select3.wav"))
         self.select1_sound.set_volume(0.5)
-        self.select2_sound = pg.mixer.Sound(os.path.join('gaims/Othaido/assets', "Blip_Select5.wav"))
+        self.select2_sound = pg.mixer.Sound(os.path.join('gaims/othaido/assets', "Blip_Select5.wav"))
         self.select2_sound.set_volume(0.5)
         pg.mixer.music.play()
 

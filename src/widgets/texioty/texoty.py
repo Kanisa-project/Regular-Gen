@@ -53,7 +53,8 @@ class TEXOTY(Text):
         :return:
         """
         welcome_line = msg
-        half_blocks = '▄▌█▐▀'
+        # half_blocks = '▄▌█▐▀'
+        half_blocks = ' '
         header_line = ""
         header_bot = ""
         # Checks if Texioty frame has an active profile logged in, else logins to a guest.

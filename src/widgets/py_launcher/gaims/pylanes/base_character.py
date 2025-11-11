@@ -1,6 +1,8 @@
+import random
+
 import pygame as pg
-import settings as s
-from summoning_circle import SummoningCircle
+from src.widgets.py_launcher.gaims.pylanes import settings as s
+from src.widgets.py_launcher.gaims.pylanes.summoning_circle import SummoningCircle
 
 OCCUPATIONS = {
     'barbarian': {},
@@ -222,8 +224,8 @@ class EnemyCharacter(BaseCharacter):
     
     def ai_place_summon_circle(self):
         """AI logic for placing summon circles"""
-        import random
-        import settings as s
+        # import random
+        # import settings as s
         
         # Place summon circle at a strategic location
         # For now, place it randomly on the AI's side of the screen

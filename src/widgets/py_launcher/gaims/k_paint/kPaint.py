@@ -1,8 +1,8 @@
 #PAINT TYPE GAME
 import random
 
-from src.features.CandySlinger import candy_slinger
-from src.features.kPaint import sprites as spirites
+from src.widgets.py_launcher.gaims.base_gaim.base_gaim import BaseGaim
+from src.widgets.py_launcher.gaims.k_paint import sprites as spirites
 import pygame as pg
 from src.settings import themery as t, app_settings as s
 
@@ -12,10 +12,10 @@ INSTRUCTIONS = {'objective': 'There will be goals to change the aspect of the br
                      'controls': 'You will need to change the brush settings to match the goal for points.',
                      'scoring': 'The faster you attain the goal, the more points you get.'}
 
-class Gaim(candy_slinger.BaseGaim):
+class Gaim(BaseGaim):
     def __init__(self, player_name):
         super().__init__(player_name)
-        pg.display.set_caption('kPaint')
+        pg.display.set_caption('k_paint')
         self.canvas = spirites.Canvas()
         self.palette = spirites.ColorPalette()
         self.toolbox = spirites.ToolBox()
@@ -64,7 +64,7 @@ class Gaim(candy_slinger.BaseGaim):
                         now = datetime.datetime.now()
                         name_string = f'{now.year}{now.month}{now.day}-{now.hour}{now.minute}{now.second}.png'
                         self.canvas.save(f'{name_string}')
-                        print("Saved as: gaims/kPaint/img/" + name_string)
+                        print("Saved as: gaims/k_paint/img/" + name_string)
                     #====IF RIGHT CLICK
                     elif event.button == 3:
                         pass

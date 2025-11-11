@@ -11,9 +11,9 @@ class Gaim(artstyle.Artyle):
         super(Gaim, self).__init__(master=master, width=width, height=height)
         self.disp_img = None
         self.tab_name = "Gaim"
-        self.gaim_optionmenu_choice_list = ["SpaceDits", "ABF", "ThurBo", "Othaido", "BootyDefence"]
+        self.gaim_optionmenu_choice_list = ["SpaceDits", "ABF", "ThurBo", "othaido", "BootyDefence"]
         # self.spirite_option_dict = {
-        #     "Othaido": ["RTJ", "Boat"],
+        #     "othaido": ["RTJ", "Boat"],
         #     "SpaceDits": ["Alien", "Ship", "Asteroid"],
         #     "ABF": ["Ball", "Platform"],
         #     "ThurBo": ["Sword", "Tribloc"],

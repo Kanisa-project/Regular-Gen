@@ -2,8 +2,11 @@ import random
 
 import pygame as pg
 import math
+
+from src.domain.resource_loader import ensure_parent_dir
 # from .. import settings as s
-from src.settings import app_settings as s, themery as t, utils as u
+from src.settings import app_settings as s, themery as t
+
 
 def nothing():
     pass
@@ -37,7 +40,7 @@ class Canvas(pg.sprite.Sprite):
                 pg.draw.polygon(self.image,brush.chosen_color,self.polygon_pointlist,2)
         
     def save(self,name):
-        pg.image.save(self.image, f'gaims/kPaint/kre8d/{name}')
+        pg.image.save(self.image, ensure_parent_dir(f'gaims/kPaint/kre8d/{name}'))
         
     def keystroke(self,txt):
         self.rx += 10

@@ -39,7 +39,7 @@ title_msg = "A game where you can buy and sell candy all around town."
 
 class CandySlingerRunner(BaseGaim):
     def __init__(self, txo, txi):
-        super().__init__(txo, txi, "CandySlinger")
+        super().__init__(txo, txi, "candy_slinger")
         self.gaim_commands["move"] = [self.move_location, "Move to a new location in the city.",
                                        {'location': 'Destination to move to.'}, "CNDY", t.rgb_to_hex(t.LIGHT_SEA_GREEN), t.rgb_to_hex(t.BLACK)]
         self.gaim_commands["buy"] = [self.buy_candy, "Buy some candy from your location.",

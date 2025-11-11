@@ -1,7 +1,7 @@
 import random
 
 import pygame as pg
-import settings as s
+from src.widgets.py_launcher.gaims.pylanes import settings as s
 
 class FighterUnit(pg.sprite.Sprite):
     """

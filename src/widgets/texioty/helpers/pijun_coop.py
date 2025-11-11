@@ -13,13 +13,15 @@ class PijunCoop(TexiotyHelper):
         self.pijun_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         self.coop_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 
-        self.coop_address = ("74.1.241.0", 8080)
+        self.coop_address = ("7.41.241.10", 8080)
         self.pijun_address = ("4.20.60.0", 8080)
         self.pijuns = {}
         self.pijun_addresses = {}
         self.helper_commands['pijun'] = [self.send_pijun, "Find a pijun to send.",
                                          {}, "PIJN", t.rgb_to_hex(t.PIGEON_GREY), t.rgb_to_hex(t.BLACK)]
         self.helper_commands['coop'] = [self.host_dovecot, "Define a pijun coop.",
+                                         {}, "PIJN", t.rgb_to_hex(t.PIGEON_GREY), t.rgb_to_hex(t.BLACK)]
+        self.helper_commands['enter'] = [self.host_dovecot, "Define a pijun coop.",
                                          {}, "PIJN", t.rgb_to_hex(t.PIGEON_GREY), t.rgb_to_hex(t.BLACK)]
 
     def host_dovecot(self, host: str, port: str):

@@ -1,4 +1,5 @@
-from src.settings import themery as t, utils as u
+from src.settings import themery as t
+from src.services import utils as u
 
 from .tex_helper import TexiotyHelper
 

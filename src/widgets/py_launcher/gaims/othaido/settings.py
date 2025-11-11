@@ -40,6 +40,9 @@ rune_dict = {}
 rune_dict["Freya"] = []
 rune_dict["Hagal"] = []
 rune_dict["Tyr"] = []
-rune_dict["Freya"].append([runes.fehurune,runes.uruzrune,runes.thurisazrune,runes.ansuzrune,runes.raidhorune,runes.kenazrune,runes.geborune,runes.wunjorune])
-rune_dict["Hagal"].append([runes.hagalazrune,runes.nauthizrune,runes.isarune,runes.jerarune,runes.eihwazrune,runes.perthrorune,runes.elhazrune,runes.sowilorune])
-rune_dict["Tyr"].append([runes.tiwazrune,runes.berkanorune,runes.ehwazrune,runes.mannazrune,runes.laguzrune,runes.ingwazrune,runes.othalarune,runes.dagazrune])
+rune_dict["Freya"].append([runes.fehurune, runes.uruzrune, runes.thurisazrune, runes.ansuzrune, runes.raidhorune, runes.kenazrune,
+                           runes.geborune, runes.wunjorune])
+rune_dict["Hagal"].append([runes.hagalazrune, runes.nauthizrune, runes.isarune, runes.jerarune, runes.eihwazrune, runes.perthrorune,
+                           runes.elhazrune, runes.sowilorune])
+rune_dict["Tyr"].append([runes.tiwazrune, runes.berkanorune, runes.ehwazrune, runes.mannazrune, runes.laguzrune, runes.ingwazrune,
+                         runes.othalarune, runes.dagazrune])

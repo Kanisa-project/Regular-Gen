@@ -3,7 +3,8 @@ from typing import Optional
 
 # from src.widgets.artay.wordie.wtabHangman import PHRASE_LIST
 from src.widgets.texioty.gaims.base_gaim import BaseGaim
-from src.settings import themery as t, utils as u
+from src.settings import themery as t
+from src.services import utils as u
 
 # PHRASE_LIST = ["You gave Sally a cheese wheel, she buried it under a tree.",
 #                "You helped Tom move a couch, he burned it on the porch.",

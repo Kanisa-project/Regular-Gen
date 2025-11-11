@@ -1,5 +1,6 @@
 import json
 import os.path
+import random
 import tkinter as tk
 from dataclasses import dataclass
 from typing import Dict, Any, Callable
@@ -11,12 +12,12 @@ from .helpers.prompt_registry import PromptRegistry
 from .helpers.tex_helper import TexiotyHelper
 from src.widgets.texioty import texoty
 from src.widgets.texioty import texity
-from src.settings import themery as t, utils as u
+from src.settings import themery as t
+from ...services import utils as u
 import os
 import subprocess
 import threading
 import time
-from pyroute2 import NDB, IPDB, IPRoute
 
 POLL_INTERVAL = 1.0
 
@@ -195,6 +196,7 @@ class Texioty(tk.LabelFrame):
         super(Texioty, self).__init__(master)
         self.helper_commands = None
         self.current_mode = "Texioty"
+        self.current_coop_address = "0.0.0.0/25"
         self.registry = CommandRegistry({})
 
         self.active_helpers = ['TXTY', 'HLPR', 'DIRY', 'GAIM', 'PRUN']
@@ -281,7 +283,7 @@ class Texioty(tk.LabelFrame):
         Literally just close the whole application.
         :return:
         """
-        self.master.destroy()
+        self.master.quit()
 
     def add_helper_widget(self, helper_symbol: str, helper_widget):
         """
@@ -297,11 +299,6 @@ class Texioty(tk.LabelFrame):
         except AttributeError as e:
             print(f"ATTERROR: {e}")
         self.active_helper_dict[helper_symbol] = [helper_widget]
-
-    def clear_texoty(self):
-        """Clear all the text from texoty and replace the header."""
-        self.texoty.delete("0.0", tk.END)
-        self.texoty.set_header()
 
     def process_texity(self, event=None):
         """
@@ -430,9 +427,18 @@ class Texioty(tk.LabelFrame):
 
     def assign_ip(self, iface):
         """Assign an IP address to a given interface."""
+        new_address = f"7.41.241.{random.randint(0, 255)}/25"
         try:
-            print(f"Trying to assign IP to {iface}")
-            subprocess.run(["sudo", "ip", "addr", "add", "74.1.241.0/30", "dev", iface], check=True)
-            self.texoty.priont_string(f"IP assigned to {iface}")
+            subprocess.run(["sudo", "ip", "addr", "add", new_address, "dev", iface], check=True)
+            self.texoty.priont_string(f"{new_address} assigned to {iface}")
+            self.current_coop_address = new_address
         except Exception as e:
-            print(f"Error assigning IP: {e}")
+            print(f"Error assigning {new_address}: {e}")
+
+    def unassign_ip(self, iface):
+        try:
+            subprocess.run(["sudo", "ip", "addr", "del", self.current_coop_address, "dev", iface], check=True)
+            self.texoty.priont_string(f"{self.current_coop_address} unassigned from {iface}")
+            self.current_coop_address = "0.0.0.0/25"
+        except Exception as e:
+            print(f"Error unassigning {self.current_coop_address}: {e}")

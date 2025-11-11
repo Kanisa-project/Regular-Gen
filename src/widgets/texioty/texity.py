@@ -1,7 +1,7 @@
 import tkinter as tk
 from dataclasses import dataclass
 from typing import Any
-from src.settings.utils import clamp
+from src.services.utils import clamp
 
 
 @dataclass

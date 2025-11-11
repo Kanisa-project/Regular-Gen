@@ -4,9 +4,10 @@ from typing import List
 from PIL import Image
 
 from src.widgets.basik_widget import BasikWidget
-from src.settings import themery as t, utils as u
+from src.settings import themery as t
+from src.services import utils as u
 from src.widgets.glythph import glyther
-from src.widgets.glythph import glyphinator
+
 
 class Glythph(BasikWidget):
     def __init__(self, width, height, master=None):

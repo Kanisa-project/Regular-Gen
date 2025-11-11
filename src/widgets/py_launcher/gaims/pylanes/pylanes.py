@@ -1,6 +1,6 @@
 import pygame as pg
-import settings as s
-import base_character
+from src.widgets.py_launcher.gaims.pylanes import settings as s
+from src.widgets.py_launcher.gaims.pylanes import base_character
 import math
 
 INSTRUCTIONS = {'objective': 'Controlling one of the wizards "Lepht" or "Rhite" you will create summoning cirles.',
@@ -15,8 +15,8 @@ class HUD(pg.sprite.Sprite):
         self.image.fill(s.WHITE)
         self.rect = self.image.get_rect()
         self.rect.y = int(s.SCREEN_HEIGHT*0.667)
-        self.font = pg.font.Font("assets/Parkinsans.ttf", 16)
-        self.small_font = pg.font.Font("assets/Parkinsans.ttf", 12)
+        self.font = pg.font.Font("src/widgets/py_launcher/gaims/pylanes/assets/Parkinsans.ttf", 16)
+        self.small_font = pg.font.Font("src/widgets/py_launcher/gaims/pylanes/assets/Parkinsans.ttf", 12)
         self.game = game
         self.hud_size = self.image.get_size()
         self.hud_center = (self.hud_size[0]//2 + 120, self.hud_size[1]//2)
@@ -266,8 +266,8 @@ class HUD(pg.sprite.Sprite):
         screen.blit(player_score_text, (20, s.SCREEN_HEIGHT-32))
         screen.blit(enemy_score_text, (s.SCREEN_WIDTH-260, 526))
 
-class Gaim:
-    def __init__(self):
+class PyLanes:
+    def __init__(self, nothing_name=None):
         super().__init__()
         pg.display.set_caption('PyLane Summoners')
         self.all_summon_circles = pg.sprite.Group()
@@ -380,4 +380,4 @@ def valid_area(x, y, is_lepht=True) -> bool:
 
 
 if __name__ == "__main__":
-    Gaim().run()
+    PyLanes().run()

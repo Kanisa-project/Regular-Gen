@@ -45,15 +45,15 @@ class KINVOW(basik_widget.BasikWidget):
             "kre8dict": [self.priont_kre8dict, "Show the creationary dictionary.",
                          {}, "KNVO", t.rgb_to_hex(t.LIGHT_GOLDENROD_YELLOW), t.rgb_to_hex(t.DARK_KHAKI)],
             "kin8": [self.create_from_masterpiece, "Create a masterpiece on Kinvow.",
-                     {"glyth": "Gather glyth options and create something on Kinvow.",
-                      "glyph": "Gather glyph options and create something on Kinvow.",
-                      "wordie": "Gather wordie options and create something on Kinvow.",
-                      "spirite": "Gather spirite options and create something on Kinvow.",
-                      "recipe": "Gather recipe options and create something on Kinvow.",
-                      "fotoes": "Gather fotoes options and create something on Kinvow.",
-                      "mujic": "Gather mujic options and create something on Kinvow.",
-                      "gaim": "Gather gaim options and create something on Kinvow.",
-                      "meem": "Gather meem options and create something on Kinvow."
+                     {"glyth": "Gather glyth options and show on Kinvow.",
+                      "glyph": "Gather glyph options and show on Kinvow.",
+                      "wordie": "Gather wordie options and show on Kinvow.",
+                      "spirite": "Gather spirite options and show on Kinvow.",
+                      "recipe": "Gather recipe options and show on Kinvow.",
+                      "fotoes": "Gather fotoes options and show on Kinvow.",
+                      "mujic": "Gather mujic options and show on Kinvow.",
+                      "gaim": "Gather gaim options and show on Kinvow.",
+                      "meem": "Gather meem options and show on Kinvow."
                       }, "KNVO", t.rgb_to_hex(t.LIGHT_GOLDENROD_YELLOW), t.rgb_to_hex(t.DARK_KHAKI)]
         }
 

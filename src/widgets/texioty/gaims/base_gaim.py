@@ -1,7 +1,8 @@
 from typing import Optional
 
 from src.widgets.texioty.helpers.tex_helper import TexiotyHelper
-from src.settings import themery as t, alphanumers as a, utils as u
+from src.settings import themery as t
+from src.services import utils as u
 import json
 import os
 import tempfile

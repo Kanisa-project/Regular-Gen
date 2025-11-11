@@ -62,7 +62,7 @@ OTHAIDO_OBJECT_DICT = {
 GAYM_OBJECT_DICT = {
     "ABF": ABF_OBJECT_DICT,
     "ThurBo": THURBO_OBJECT_DICT,
-    "Othaido": OTHAIDO_OBJECT_DICT,
+    "othaido": OTHAIDO_OBJECT_DICT,
     "BootyDefence": BOOTYRACE_OBJECT_DICT,
     "SpaceDits": SPACEDITS_OBJECT_DICT
 }
@@ -116,7 +116,7 @@ ENVIRONMENT_FACTOR_OPTIONS_DICT = {
     "Safe": ["Does the environment have spikes and lava or flowers and bunnies?", True],
     "Difficulty": ["How many obstacles are in the way?", 0],
     "Theme": ["Is it set in space or on a farm or in the city?", ["Space", "Farm", "City"]],
-    "Engine": ["Which engine will power the gaim?", ["ABF", "ThurBo", "SpaceDits", "Booty Defence", "Othaido"]]
+    "Engine": ["Which engine will power the gaim?", ["ABF", "ThurBo", "SpaceDits", "Booty Defence", "othaido"]]
 }
 
 

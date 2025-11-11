@@ -4,7 +4,8 @@ from dataclasses import dataclass
 from tkinter import END
 from typing import Optional, List, Callable, Tuple
 
-from src.settings import themery as t, utils as u
+from src.settings import themery as t
+from src.services import utils as u
 import src.widgets.texioty.texity as texity
 import src.widgets.texioty.texoty as texoty
 

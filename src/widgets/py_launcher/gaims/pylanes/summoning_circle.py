@@ -1,8 +1,8 @@
 import random
 import math
 import pygame as pg
-import settings as s
-from fighter_unit import FighterUnit
+from src.widgets.py_launcher.gaims.pylanes import settings as s
+from .fighter_unit import FighterUnit
 
 class SummoningCircle(pg.sprite.Sprite):
     def __init__(self, x, y, direction, circle_crafter):
