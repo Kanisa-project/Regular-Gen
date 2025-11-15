@@ -210,7 +210,7 @@ class HangmanRunner(BaseGaim):
                 if self.hidden_dict[lower * (i + 1)] == "◙":
                     self.hidden_dict[lower * (i + 1)] = lower
 
-    def display_help_message(self, helper_symbol: Optional[str] = None):
+    def display_help_message(self, helper_tag: Optional[str] = None):
         super().display_help_message()
 
     def display_available_commands(self):

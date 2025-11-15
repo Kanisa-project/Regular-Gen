@@ -17,7 +17,7 @@ class BaseGaim(TexiotyHelper):
         self.txi = txi
         self.game_name = game_name
         self.gaim_prefix = ''
-        self.helper_symbol = "GAIM"
+        self.helper_tag = "GAIM"
         self.gaim_commands = {
             "new": [self.new_game, f"Create a new game of {game_name}.",
                       {}, "GAIM", u.rgb_to_hex(t.ALICE_BLUE), u.rgb_to_hex(t.BLACK)],
@@ -78,7 +78,7 @@ class BaseGaim(TexiotyHelper):
         self.txo.clear_add_header(f"{self.game_name}")
         self.txo.priont_string(f'Welcome to {self.game_name}!')
 
-    def display_help_message(self, helper_symbol: Optional[str] = None):
+    def display_help_message(self, helper_tag: Optional[str] = None):
         """Generic help message."""
         super().display_help_message()
         self.txo.priont_string("Using the 'commands' command will display a list of available commands.")

@@ -1,5 +1,14 @@
 import pygame as pg
 
+class SpiriteFactory:
+    def __init__(self):
+        pass
+
+    def load_sprite(self, file_path: str):
+        pass
+
+    def load_spirit(self, file_path: str):
+        pass
 
 class BaseGaim:
     def __init__(self, player_name, is_new_game=False):

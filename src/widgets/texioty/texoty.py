@@ -8,6 +8,7 @@ from functools import partial
 # import settings as s
 from src.widgets.texioty import texioty
 from src.widgets.texioty import texity
+import psutil
 
 
 class TEXOTY(Text):
@@ -72,6 +73,7 @@ class TEXOTY(Text):
         self.set_text_on_line(0,
                               f"{welcome_line}{header_line[len(welcome_line):]}{header_line[len(self.active_profile.username):]}{self.active_profile.username}")
         self.set_text_on_line(2, f"╙{header_bot[2:]}╛")
+        # self.set_text_on_line(3, str(psutil.sensors_battery()))
         self.configure(bg=self.active_profile.color_theme[2])
 
     def set_header_theme(self, primary_color: str, secondary_color: str, len_msg: int, font_color: str = "black"):
@@ -192,7 +194,7 @@ class TEXOTY(Text):
         :param command:
         :return:
         """
-        # self.command_group_break(command.helper_symbol)
+        # self.command_group_break(command.helper_tag)
         self.priont_command_colorized(f'{command.name}╕', command.text_color, command.bg_color)
         if not command.possible_args:
             help_message_text = f'{" " * len(command.name)}╘► {command.help_message}'
@@ -220,7 +222,7 @@ class TEXOTY(Text):
             break_line += random.choice('┉┅')
         self.insert(END, f"\n╫{break_line}╫", 'break_line')
 
-    def command_group_break(self, helper_symbol: str):
+    def command_group_break(self, helper_tag: str):
         """
         Adds a break line in Texoty with style.
         :return:
@@ -235,7 +237,7 @@ class TEXOTY(Text):
         self.tag_configure('break_line', foreground=fg, background=bg)
         for _ in range(self.texoty_w - 28):
             break_line += random.choice('┉┅')
-        self.insert(END, f"\n╫{help_shade}{helper_symbol} {break_line}╫", 'break_line')
+        self.insert(END, f"\n╫{help_shade}{helper_tag} {break_line}╫", 'break_line')
 
     def priont_string(self, striong: str, line_index=END):
         """

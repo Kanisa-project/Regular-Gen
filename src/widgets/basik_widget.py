@@ -24,7 +24,7 @@ class BasikWidget(TexiotyHelper, ttk.LabelFrame):
         self.tab_name = "Basic"
         self.grid_propagate(False)
 
-        self.font = ("Helvetica", int(width * 0.02))
+        self.font = ("Helvetica", int(width * 0.015))
 
         self.checkbutton_dict = {}
         self.radiobutton_dict = {}
@@ -76,7 +76,7 @@ class BasikWidget(TexiotyHelper, ttk.LabelFrame):
             scale.bind("<Button-3>", lambda e, s = scale: _snap_to_click(e, s))
             self.slider_dict[parameter] = [int_var, str_var, scale, label]
 
-            row = i % 8
+            row = i % 10
             col = i // 10
             scale.grid(column=start_x_cell + col+1, row=row + start_y_cell, sticky="e", columnspan=1)
             label.grid(column=start_x_cell + col, row=row + start_y_cell, sticky="w")
@@ -116,10 +116,11 @@ class BasikWidget(TexiotyHelper, ttk.LabelFrame):
             radiobutton.grid(column=col + start_x_cell, row=row + start_y_cell)
             self.radiobutton_dict[option] = [int_var, new_str_var, radiobutton]
 
-    def setup_text_boxes(self, keyed_dict: dict, start_x_cell=0, start_y_cell=0, width=10):
+    def setup_text_boxes(self, keyed_dict: dict, start_x_cell=0, start_y_cell=0, width=10, labeled_boxes=True):
         """
         Set up a specified number of text boxes on the artyle tab.
 
+        :param labeled_boxes:
         :param keyed_dict:
         :param width:
         :param start_y_cell:
@@ -133,9 +134,11 @@ class BasikWidget(TexiotyHelper, ttk.LabelFrame):
             self.textbox_dict[word] = [str_var, entry]
             row = (i % 5)
             col = (i // 5)
-            lbl.grid(column=col + start_x_cell, row=row + start_y_cell, sticky='e')
-            entry.grid(column=col + start_x_cell + 1, row=row + start_y_cell, stick='w')
-
+            if labeled_boxes:
+                lbl.grid(column=col + start_x_cell, row=row + start_y_cell, sticky='e')
+                entry.grid(column=col + start_x_cell + 1, row=row + start_y_cell, stick='w')
+            else:
+                entry.grid(column=col + start_x_cell, row=row + start_y_cell)
     def setup_button_choices(self, button_list: List[str], start_x_cell=0, start_y_cell=0):
         """
         Take in a list of texts and create a button for each one, starting at the specified cell.

@@ -1,6 +1,8 @@
 import datetime
 import random
 from os.path import exists
+from typing import Optional
+
 from src.settings import themery as t
 from src.services import utils as u
 
@@ -11,16 +13,27 @@ class Digiary(TexiotyHelper):
         super().__init__(txo, txi)
         self.txo = txo
         self.txi = txi
-        self.helper_symbol = "DIRY"
+        self.helper_tag = "DIRY"
         self.diary_line_length = 75
         self.diarySentenceList = []
         self.in_diary_mode = False
-        self.helper_commands = {
-            "dear_sys,": [self.start_diary_mode, "Starts a diary entry.",
-                          {}, "DIRY", u.rgb_to_hex(t.VIOLET_RED), u.rgb_to_hex(t.BLACK)],
-            "/until_next_time": [self.stop_diary_mode, "Ends a diary entry.",
-                                 {}, "DIRY", u.rgb_to_hex(t.VIOLET_RED), u.rgb_to_hex(t.BLACK)]}
-        
+        self.helper_commands["dear_sys,"] = [self.start_diary_mode, "Starts a diary entry.",
+                                            {}, "DIRY", u.rgb_to_hex(t.VIOLET_RED), u.rgb_to_hex(t.BLACK)]
+        self.helper_commands["/until_next_time"] = [self.stop_diary_mode, "Ends a diary entry.",
+                                                    {}, "DIRY", u.rgb_to_hex(t.VIOLET_RED), u.rgb_to_hex(t.BLACK)]
+        # self.helper_commands = {
+        #     "help": [self.display_help_message, "Displays a message of helpfulness.",
+        #              {}, "DIRY", u.rgb_to_hex(t.VIOLET_RED), u.rgb_to_hex(t.BLACK)],
+        #     "dear_sys,": [self.start_diary_mode, "Starts a diary entry.",
+        #                   {}, "DIRY", u.rgb_to_hex(t.VIOLET_RED), u.rgb_to_hex(t.BLACK)],
+        #     "/until_next_time": [self.stop_diary_mode, "Ends a diary entry.",
+        #                          {}, "DIRY", u.rgb_to_hex(t.VIOLET_RED), u.rgb_to_hex(t.BLACK)]}
+
+
+    def display_help_message(self, helper_tag: Optional[str] = None):
+        super().display_help_message(helper_tag)
+        self.txo.priont_string("HELPING")
+        print("HELPING")
 
     def start_diary_mode(self) -> datetime.datetime:
         """Begin a diary entry and add a timestamp line to the beginning of the entry."""

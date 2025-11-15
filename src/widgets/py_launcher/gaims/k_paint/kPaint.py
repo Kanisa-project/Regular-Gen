@@ -62,8 +62,8 @@ class Gaim(BaseGaim):
                     elif event.button == 2:
                         now = datetime.datetime.now()
                         name_string = f'{now.year}{now.month}{now.day}-{now.hour}{now.minute}{now.second}.png'
-                        self.canvas.save(f'{name_string}')
-                        print("Saved as: gaims/k_paint/img/" + name_string)
+                        self.canvas.save(f'../../../filesOutput/Bluebeard/kPaint/{name_string}')
+                        print(f"Saved as: {name_string}")
                     #====IF RIGHT CLICK
                     elif event.button == 3:
                         pass
@@ -132,11 +132,10 @@ class Gaim(BaseGaim):
                     self.brush.sides += 1
                 if event.key == pg.K_DOWN and self.brush.sides >= 2:
                     self.brush.sides -= 1
-                #if event.key == pg.K_RIGHT:
-                #self.brush.thickness += 1
-                #if event.key == pg.K_LEFT and self.brush.thickness >= 2:
-                #self.brush.thickness -= 1
-        # super().events()
+                if event.key == pg.K_RIGHT:
+                    self.brush.thickness += 1
+                if event.key == pg.K_LEFT and self.brush.thickness >= 2:
+                    self.brush.thickness -= 1
 
     def update(self):
         #game loop update

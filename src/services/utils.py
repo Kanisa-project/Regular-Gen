@@ -95,6 +95,26 @@ REGIUS_POEM_OPEN = ["Whoever will both well read and look",
                     "Fifteen articles they there sought,",
                     "And fifteen points there they wrought,"]
 
+FIRST_REGIUS_ARTICLE = ["Here begins the first article.",
+                        "The first article of this geometry;-",
+                        "The master mason must be full securely",
+                        "Both steadfast, trusty and true,",
+                        "It shall him never then rue;",
+                        "And pay thy fellows after the cost,",
+                        "As victuals goeth then, well thou woste; (knowest)",
+                        "And pay them truly, upon thy fay, (faith)",
+                        "What they deserven may; (may deserve)",
+                        "And to their hire take no more,",
+                        "But what that they may serve for;",
+                        "And spare neither for love nor drede, (dread)",
+                        "Of neither parties to take no mede; (bribe)",
+                        "Of lord nor fellow, whoever he be,",
+                        "Of them thou take no manner of fee;",
+                        "And as a judge stand upright,",
+                        "And then thou dost to both good right;",
+                        "And truly do this wheresoever thou gost, (goest)",
+                        "Thy worship, thy profit, it shall be most. "]
+
 def check_file_exists(path: str) -> bool:
     """Use glob to check if a file exists."""
     if glob.glob(path):
@@ -303,4 +323,10 @@ def retrieve_lab_profiles(lab_to_get: str) -> dict:
 def retrieve_worx_profiles(equipment: str) -> dict:
     with open(f'src/widgets/texioty/question_prompts/worxhop_fotoes/equipments/{equipment}.json') as json_equip:
         data = json.load(json_equip)
+        return data
+
+
+def load_idutc(idutc_path: str) -> dict:
+    with open(idutc_path, "r") as idutc_json:
+        data = json.load(idutc_json)
         return data

@@ -1,20 +1,12 @@
 import sys
 import tkinter as tk
-
-import pygame
-
-from src.widgets import kinvow, py_launcher, idutc, artay, kalendar, glythph
+from src.widgets import kinvow, idutc, artay, kalendar, glythph, wordier
 from src.widgets.py_launcher.launchrr import Launchrr
 from src.widgets.texioty import texioty
 from src.settings import themery as t
-import subprocess
-import threading
-import time
-import math
-# global root
 
 large_widgets = ["Texioty", "Kinvow"]
-small_widgets = ["Calendar", "IDUTC", "aRtay", "Launchrr", "Mujic Player", "Graphter", "Glythph"]
+small_widgets = ["Calendar", "Wordier", "IDUTC", "aRtay", "Launchrr", "Mujic Player", "Glythph"]
 
 def run_pygame_game(gaim_for_launch):
     """Run a simple pygame demo loop until the user quits pygame.
@@ -22,7 +14,6 @@ def run_pygame_game(gaim_for_launch):
     """
     print(f"Launching game: {gaim_for_launch}")
     gaim_for_launch("Bluebeard").run()
-    # pygame.quit()
 
 class Application(tk.Frame):
     def __init__(self, screen_w: int, screen_h: int, master=None):
@@ -33,20 +24,21 @@ class Application(tk.Frame):
         super().__init__(master)
         sml_width = screen_w * .333
         sml_height = screen_h * .4
-        lrg_width = screen_w * .325
+        lrg_width = screen_w * .32
         lrg_height = screen_h * .96
         self.texioty_frame = texioty.Texioty(width=lrg_width, height=lrg_height)
 
-        self.idutc_frame = idutc.IDUTC(width=sml_width, height=sml_height)
+        self.idutc_frame = idutc.IDUTC(width=sml_width, height=sml_height, master=self.texioty_frame)
 
         self.artay_frame = artay.ARTAY(width=sml_width, height=sml_height, idutc_frame=self.idutc_frame)
 
         self.kinvow_frame = kinvow.KINVOW(width=lrg_width, height=lrg_height,
                                           idutc_frame=self.idutc_frame, artay_frame=self.artay_frame)
         self.kinvow_frame.txo = self.texioty_frame.texoty
-
+        print(self.kinvow_frame.use_canvas.size(), "SIZED")
         self.glythph_frame = glythph.Glythph(width=sml_width, height=sml_height, master=self.texioty_frame)
-
+        self.wordier_frame = wordier.Wordier(width=sml_width, height=sml_height,
+                                             master=self.texioty_frame, masterpiece_size=(self.kinvow_frame.canvas_w//8, self.kinvow_frame.canvas_h//4))
         self.calendar_frame = kalendar.Kalendar(width=sml_width, height=sml_height)
         self.calendar_frame.txo = self.texioty_frame.texoty
 
@@ -58,6 +50,7 @@ class Application(tk.Frame):
         self.texioty_frame.add_helper_widget("KNVO", self.kinvow_frame)
         self.texioty_frame.add_helper_widget("ARTY", self.artay_frame)
         self.texioty_frame.add_helper_widget("THPH", self.glythph_frame)
+        self.texioty_frame.add_helper_widget("WRDR", self.wordier_frame)
         self.texioty_frame.add_helper_widget("GAIM", self.launchrr_frame)
         # self.texioty_frame.add_helper_widget("GAIM", self.gaimplay_frame)
         print("Added the main frame helpers..")
@@ -68,6 +61,7 @@ class Application(tk.Frame):
             "IDUTC": self.idutc_frame,
             "Kinvow": self.kinvow_frame,
             "aRtay": self.artay_frame,
+            "Wordier": self.wordier_frame,
             "Glythph": self.glythph_frame,
             "Launchrr": self.launchrr_frame
         }
@@ -78,8 +72,8 @@ class Application(tk.Frame):
 
         self.center_frame.change_western_light(self.texioty_frame)
         self.center_frame.change_eastern_light(self.kinvow_frame)
-        self.center_frame.change_southern_light(self.artay_frame)
-        self.center_frame.change_northern_light(self.idutc_frame)
+        self.center_frame.change_southern_light(self.glythph_frame)
+        self.center_frame.change_northern_light(self.wordier_frame)
 
         self.texioty_frame.log_profile_in('bluebeard', "p455")
 
@@ -119,7 +113,7 @@ class SpotLighter(tk.LabelFrame):
         north_light_var = tk.StringVar()
         north_light_var.set('IDUTC')
         south_light_var = tk.StringVar()
-        south_light_var.set('aRtay')
+        south_light_var.set('Glythph')
         east_light_var = tk.StringVar()
         east_light_var.set('Kinvow')
         west_light_var = tk.StringVar()

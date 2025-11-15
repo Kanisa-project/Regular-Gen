@@ -4,7 +4,6 @@ import pygame as pg
 import math
 
 from src.domain.resource_loader import ensure_parent_dir
-# from .. import settings as s
 from src.settings import app_settings as s, themery as t
 
 

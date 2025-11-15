@@ -127,7 +127,7 @@ class BostonTrail(BaseGaim):
         self.display_party_members()
         self.display_inventory_distance()
 
-    def display_help_message(self, helper_symbol=None):
+    def display_help_message(self, helper_tag=None):
         self.clear_texoty()
         self.txo.priont_string("Type 'travel <distance>' to travel further, where <distance> is a number of miles.\n")
         self.txo.priont_string("Type 'hunt <animal>' to hunt an animal.")

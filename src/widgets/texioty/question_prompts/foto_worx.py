@@ -72,7 +72,7 @@ class FotoWorxHop(BasePrompt):
             save_name = self.equipt_saved_name + str(i) + ".png"
             foto = Image.open(f"src/widgets/texioty/question_prompts/worxhop_fotoes/base_img.jpeg")
             foto = equipment_func(foto, self.foto_profile_dict)
-            foto.save(f"src/widgets/texioty/question_prompts/worxhop_fotoes/{save_name}")
+            foto.save(f"filesOutput/Bluebeard/worxhop_fotoes/{save_name}")
 
 def resize_foto(foto: Image.Image, new_size: tuple[int, int]) -> Image.Image:
     """Resize a foto and return it."""

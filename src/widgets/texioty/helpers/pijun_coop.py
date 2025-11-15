@@ -118,6 +118,8 @@ class PijunCoop(TexiotyHelper):
         self.pijuns = {}
         self.pijun_addresses = {}
         self.watcher = CoopWatcher(self.on_pijun_change, poll_interval=POLL_INTERVAL)
+        self.helper_commands['coop'] = [self.host_dovecot, "Host a coop server for pijuns.",
+                                         {}, "PIJN", t.rgb_to_hex(t.PIGEON_GREY), t.rgb_to_hex(t.BLACK)]
         self.helper_commands['pijun'] = [self.send_pijun, "Find a pijun to send.",
                                          {}, "PIJN", t.rgb_to_hex(t.PIGEON_GREY), t.rgb_to_hex(t.BLACK)]
         self.helper_commands['enter'] = [self.enter_dovecot, "Enter a pijun coop.",
@@ -191,4 +193,7 @@ class PijunCoop(TexiotyHelper):
             self.txo.priont_string(f"{self.coop_address} unassigned from {iface}")
         except Exception as e:
             print(f"Error unassigning {self.coop_address}: {e}")
+
+    def host_dovecot(self):
+        pass
 

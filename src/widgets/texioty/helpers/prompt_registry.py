@@ -30,7 +30,7 @@ class PromptRegistry(TexiotyHelper):
         super().__init__(txo, txi)
         self.txo = txo
         self.txi = txi
-        self.helper_symbol = "PRUN"
+        self.helper_tag = "PRUN"
         self.in_questionnaire_mode = False
         self.current_prompt = "N/A"
         self.foto_worx = FotoWorxHop(txo, txi)
@@ -52,8 +52,8 @@ class PromptRegistry(TexiotyHelper):
         if self.txo.master.deciding_function is None or isinstance(self.txo.master.deciding_function, Callable):
             self.txo.master.deciding_function = self.profilemake.profilize
 
-    def display_help_message(self, helper_symbol: Optional[str] = None):
-        super().display_help_message(helper_symbol)
+    def display_help_message(self, helper_tag: Optional[str] = None):
+        super().display_help_message(helper_tag)
         self.txo.priont_string("The prompt runner is for prompting the user with questions.")
         self.txo.priont_string("This helper will go through a series of questions, retraining information.")
         self.txo.priont_string("At the end of the prompt, things happen based on the results.")

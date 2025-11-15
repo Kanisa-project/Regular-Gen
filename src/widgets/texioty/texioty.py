@@ -31,7 +31,7 @@ class CommandRegistry:
             del self.commands[help_symb]
             return
 
-        to_delete = [name for name, cmd in self.commands.items() if getattr(cmd, "helper_symbol", None) == help_symb]
+        to_delete = [name for name, cmd in self.commands.items() if getattr(cmd, "helper_tag", None) == help_symb]
         for name in to_delete:
             del self.commands[name]
 
@@ -52,7 +52,7 @@ class CommandRegistry:
                                              handler=handler,
                                              help_message=msg,
                                              possible_args=p_args,
-                                             helper_symbol=help_symb,
+                                             helper_tag=help_symb,
                                              text_color=t_color,
                                              bg_color=b_color)
 
@@ -114,7 +114,7 @@ class Texioty(tk.LabelFrame):
         self.gaim_registry = GaimRegistry(self.texoty, self.texity)
         self.prompt_runner = PromptRegistry(self.texoty, self.texity)
         self.pijun_coop = PijunCoop(self.texoty, self.texity)
-        self.pijun_coop.watcher.start()
+        # self.pijun_coop.watcher.start()
         self.default_helpers = {"TXTY": [self],
                                 "HLPR": [self.base_helper],
                                 "DIRY": [self.digiary],
@@ -181,10 +181,10 @@ class Texioty(tk.LabelFrame):
         """
         self.master.quit()
 
-    def add_helper_widget(self, helper_symbol: str, helper_widget):
+    def add_helper_widget(self, helper_tag: str, helper_widget):
         """
         Add a helper widget and all of its commands to texioty while supplying access to texoty.
-        :param helper_symbol: Symbol of helper (e.g. TXTY GAIM DIRY)
+        :param helper_tag: Symbol of helper (e.g. TXTY GAIM DIRY)
         :param helper_widget:
         :return:
         """
@@ -194,7 +194,7 @@ class Texioty(tk.LabelFrame):
                 self.add_command_dict(helper_widget.helper_commands)
         except AttributeError as e:
             print(f"ATTERROR: {e}")
-        self.active_helper_dict[helper_symbol] = [helper_widget]
+        self.active_helper_dict[helper_tag] = [helper_widget]
 
     def process_texity(self, event=None):
         """
@@ -239,7 +239,7 @@ class Texioty(tk.LabelFrame):
                 else:
                     self.execute_command(parsed_input[0], parsed_input[1:])
 
-                if self.active_helper_dict["GAIM"][0].current_gaim:
+                if hasattr(self.active_helper_dict["GAIM"][0], "current_gaim"):
                     prefix = self.active_helper_dict["GAIM"][0].current_gaim.gaim_prefix
         self.texity.command_string_var.set(prefix)
 
@@ -299,7 +299,7 @@ class Texioty(tk.LabelFrame):
             color_theme = self.current_prompt.question_prompt_dict['color_theme'][1]
             color_theme = t.DEFAULT_THEMES[color_theme]
             self.available_profiles[profile_name] = u.TexiotyProfile(profile_name, password, color_theme)
-            save_path = f".profiles/{profile_name}.json"
+            save_path = f"filesOutput/.profiles/{profile_name}.json"
             # print(save_path)
             if not os.path.exists(save_path):
                 with open(save_path, 'w') as f:

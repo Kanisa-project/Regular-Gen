@@ -127,7 +127,7 @@ class CandySlingerRunner(BaseGaim):
             self.txo.priont_string(f"│{candy_buy_line}{' '*(len(location_line)-len(candy_buy_line))}║")
         self.txo.priont_string(f"╘{'═'*(len(location_line))}╝\n")
 
-    def display_help_message(self, helper_symbol=None):
+    def display_help_message(self, helper_tag=None):
         self.txo.clear_add_header("Candy Slinger Help")
         self.txo.priont_string("Type 'move <location>' to move to a new location.")
         self.txo.priont_string(f" i.e. 'move {random.choice(list(LOCATIONS.keys()))}' or 'move {random.choice(list(LOCATIONS.keys()))}'.")

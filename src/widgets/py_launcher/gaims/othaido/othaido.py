@@ -8,6 +8,8 @@ from gaims import settings as s
 from gaims.CandySlinger import candy_slinger
 from gaims.Othaido import sprites as spirites
 
+from src.widgets.py_launcher.gaims.base_gaim.base_gaim import BaseGaim
+
 INSTRUCTIONS = {'objective': 'A game of memory and matching with the Elder Futhark runes.',
                 'controls': 'Each tile will flip over and reveal some information about the revealed rune.',
                 'scoring': 'The quicker you match with the fewer the flips, the more points you get.'}
@@ -187,7 +189,7 @@ class StartScreen:
                     waiting = False
 
 
-class Gaim(candy_slinger.BaseGaim):
+class Gaim(BaseGaim):
     def __init__(self):
         super().__init__()
         self.selected_hexplate = []

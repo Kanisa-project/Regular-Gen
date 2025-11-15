@@ -10,7 +10,7 @@ class Command:
     handler: Any
     help_message: str
     possible_args: dict
-    helper_symbol: str
+    helper_tag: str
     text_color: str
     bg_color: str
 

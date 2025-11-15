@@ -5,6 +5,28 @@ from src.utils import helpers
 
 from src.widgets import idutc
 
+ARTRIMOJI = {
+    "Door": '🚪',
+    "Window": '🪟',
+    "Cloud": '☁',
+    "Rainbow": '🌈',
+    "Fire": '🔥',
+    "Ice": '🧊',
+    "Camel": '🐫',
+    "Chicken": '🐓',
+    "Rock": '🗿',
+    "Sock": '🧦',
+    "Crayon": '🖍',
+    "Pen": '🖋',
+    "Confetti": '🎊',
+    "Mosaic": '🧱',
+    "Butterfly": '🦋',
+    "Sponge": '🧽',
+    "Metal": '🛡️',
+    "Petal": '🌷',
+    "Printer": '🖨️',
+    "Stamp": '📠'
+}
 
 class ArtributalCanvas(tk.Canvas):
     def __init__(self, width=180, height=180, master=None):
@@ -21,13 +43,13 @@ class ArtributalCanvas(tk.Canvas):
         self.bind("<Button-1>", self.set_artribute)
         self.bind("<MouseWheel>", self.scroll_through_artribute)
         self.grid_propagate(False)
-        self.outer_artri_points = helpers.polypointlist(6, 30, int(self.center_point[0]), int(self.center_point[1]), int(width * .45))
+        self.artribute_titles = ["one-more_extra_filler_bad_code", "Transparency", "Coloration", "Animation Speed", "Size", "Motion Range",
+                                   "Accuracy", "Structure", "Symmetry", "Material Rigidity", "Repetition"]
+        self.outer_artri_points = helpers.polypointlist(len(self.artribute_titles)-1, 18, int(self.center_point[0]), int(self.center_point[1]), int(width * .45))
         self.inner_radius = 30
         self.inner_artri_points = self._build_inner_points()
         self.create_polygon(self.outer_artri_points,
                             outline=t.rgb_to_hex(t.COBALT), width=2)
-        self.artribute_titles = ["Transparency", "Coloration", "Animation Speed",
-                                 "Size", "Motion Range", "Accuracy"]
         self.artyle_artributes_dict = {
             "Data_Source": ["Random", "Human", "Reddit", "OSRS", "Twitter", "Discord"],
             "Transparency": ["Door", "Window"],
@@ -35,14 +57,18 @@ class ArtributalCanvas(tk.Canvas):
             "Animation Speed": ["Ice", "Fire"],
             "Size": ["Chicken", "Camel"],
             "Motion Range": ["Sock", "Rock"],
-            "Accuracy": ["Pen", "Crayon"]
+            "Accuracy": ["Pen", "Crayon"],
+            "Structure": ["Confetti", "Mosaic"],
+            "Symmetry": ["Butterfly", "Sponge"],
+            "Material Rigidity": ["Metal", "Petal"],
+            "Repetition": ["Printer", "Stamp"]
         }
         self.update_center_point()
         self.selected_artribute = "Size"
         self.selected_index = 3
 
     def set_artribute(self, event):
-        self.create_oval(event.x - 3, event.y - 3, event.x + 3, event.y + 3, fill="black", width=3)
+        # self.create_oval(event.x - 3, event.y - 3, event.x + 3, event.y + 3, fill="black", width=3)
         click_point = (event.x, event.y)
         distance = helpers.clamp(math.sqrt((self.center_point[0]-click_point[0]) ** 2 + (self.center_point[1] - click_point[1]) ** 2), 0, 80)
         self.inner_radius = int(distance + 10)
@@ -66,16 +92,19 @@ class ArtributalCanvas(tk.Canvas):
                 p1 = self.inner_artri_points[i]
                 p2 = self.inner_artri_points[(i + 1) % n]
                 edge_color = self._edge_color_for_index(i)
-                if self.idutc_frame.kre8dict['artributes'][i] == 'Cloud':
+                print(self.idutc_frame.kre8dict['artributes'])
+                if "Cloud" in self.idutc_frame.kre8dict['artributes']:
                     print("Clouding...")
-                    edge_color = t.rgb_to_hex(((255 // i), (255 // i), (255 // i)))
+                    shade_lvl = 255 // len(self.idutc_frame.kre8dict['artributes'])
+                    edge_color = t.rgb_to_hex((shade_lvl * i, shade_lvl * i, shade_lvl * i))
                 self.create_polygon(p1, p2, self.center_point, fill=edge_color)
 
         self.create_polygon(self.inner_artri_points, fill='',
                             outline='', width=2)
         for i, point in enumerate(self.outer_artri_points):
-            artribute_title = list(self.artyle_artributes_dict.keys())[i]
-            artributal_emoji = artribute_emoji(self.idutc_frame.kre8dict['artributes'][i])
+            print(i, "->", point, self.artribute_titles[i])
+            artribute_title = self.artribute_titles[i]
+            artributal_emoji = ARTRIMOJI[list(self.idutc_frame.kre8dict['artributes'].keys())[i-1]]
             # artributal_emoji = artribute_emoji(self.idutc_frame.kre8dict['artributes'][i])
             self.create_text(point, text=artributal_emoji, fill='black', font=("Times New Roman", 16))
             dx = self.center_point[0] - point[0]

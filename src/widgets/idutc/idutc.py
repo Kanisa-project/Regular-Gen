@@ -1,13 +1,15 @@
+import json
 import random
 from tkinter import StringVar, OptionMenu, END
+from typing import Optional
 
-from src.widgets import basik_widget
+from src.widgets.basik_widget import BasikWidget
 
 from . import artributalcanvas
 from ...settings import themery as t, app_settings
 
 
-class IDUTC(basik_widget.BasikWidget):
+class IDUTC(BasikWidget):
     def __init__(self, width, height, master=None):
         """
         This is the frame for inputting the ID and UTC.
@@ -16,16 +18,45 @@ class IDUTC(basik_widget.BasikWidget):
         """
         super().__init__(master=master, width=width, height=height)
         self.configure(text="IDUTC:  ")
-        self.setup_text_boxes({"use_id": "r4nd0m",
-                               "use_utc": "2134506798"}, start_x_cell=2)
-        self.slider_choice_list = ["Transparency", "Coloration", "Animation Speed", "Size", "Motion Range", "Accuracy"]
+        self.setup_text_boxes({"use_id": "r4nd0m"}, start_x_cell=2, labeled_boxes=False)
+        self.setup_text_boxes({"use_utc": "2134506798"}, start_x_cell=4, labeled_boxes=False)
+        self.slider_choice_list = ["Transparency", "Coloration", "Animation Speed", "Size", "Motion Range",
+                                   "Accuracy", "Structure", "Symmetry", "Material Rigidity", "Repetition"]
+
+        self.artributal_dict = {
+            "Transparency": {"Window": [70, 100],
+                             "Door": [0, 69]},
+            "Coloration": {"Rainbow": [0, 50],
+                           "Cloud": [50, 100]},
+            "Animation Speed": {"Ice": [0, 21],
+                                "Fire": [22, 100]},
+            "Size": {"Chicken": [0, 30],
+                     "Camel": [31, 100]},
+            "Motion Range": {"Rock": [0, 10],
+                             "Sock": [11, 100]},
+            "Accuracy": {"Pen": [0, 22],
+                         "Crayon": [23, 100]},
+            "Structure": {"Confetti": [0, 50],
+                          "Mosaic": [51, 100]},
+            "Symmetry": {"Butterfly": [0, 50],
+                         "Sponge": [51, 100]},
+            "Material Rigidity": {"Petal": [0, 79],
+                                  "Metal": [80, 100]},
+            "Repetition": {"Printer": [0, 50],
+                           "Stamp": [51, 100]}
+        }
+
         self.slider_limit_dict = {"Transparency": [0, 100],
                                   "Coloration": [0, 100],
                                   "Animation Speed": [0, 100],
                                   "Size": [0, 100],
                                   "Motion Range": [0, 100],
-                                  "Accuracy": [0, 100]}
-        self.setup_slider_bars(self.slider_choice_list, slide_len=width*0.25)
+                                  "Accuracy": [0, 100],
+                                  "Structure": [0, 100],
+                                  "Symmetry": [0, 100],
+                                  "Material Rigidity": [0, 100],
+                                  "Repetition": [0, 100]}
+        self.setup_slider_bars(self.slider_choice_list, slide_len=width*0.22)
 
         self.entry_ID_string_var = self.textbox_dict['use_id'][0]
         self.entry_UTC_string_var = self.textbox_dict['use_utc'][0]
@@ -35,9 +66,12 @@ class IDUTC(basik_widget.BasikWidget):
         self.utc_entry.config(bg='pink')
 
         # INITIATE THE BUTTONS TO CONTROL USE_ID AND USE_UTC
-        self.setup_button_choices(["New ID/UTC", "Set ID/UTC"], start_y_cell=7)
+        self.setup_button_choices(["New ID/UTC"], start_y_cell=1, start_x_cell=2)
+        self.setup_button_choices(["Set ID/UTC"], start_y_cell=1, start_x_cell=3)
+        self.setup_button_choices(["Save ID/UTC"], start_y_cell=1, start_x_cell=4)
         self.button_dict["New ID/UTC"][1].config(command=self.generate_new_idutc)
         self.button_dict["Set ID/UTC"][1].config(command=self.set_use_idutc)
+        self.button_dict["Save ID/UTC"][1].config(command=self.save_use_idutc)
 
         self.helper_commands = {
             "set_arty": [self.set_artribute, "Set an artribute for IDUTC.",
@@ -47,21 +81,22 @@ class IDUTC(basik_widget.BasikWidget):
         }
 
         self.artyle_artributes_dict = {
-            "Data_Source": ["Random", "Human", "Reddit", "OSRS", "Twitter", "Discord"],
             "Transparency": ["Door", "Window"],
             "Coloration": ["Rainbow", "Cloud"],
             "Animation Speed": ["Ice", "Fire"],
             "Size": ["Chicken", "Camel"],
             "Motion Range": ["Sock", "Rock"],
-            "Accuracy": ["Pen", "Crayon"]
+            "Accuracy": ["Pen", "Crayon"],
+            "Structure": ["Confetti", "Mosaic"],
+            "Symmetry": ["Butterfly", "Sponge"],
+            "Material Rigidity": ["Metal", "Petal"],
+            "Repetition": ["Printer", "Stamp"]
         }
         self.artributeMenus = {}
         for key, value in self.artyle_artributes_dict.items():
+            print(key, "->", value)
             attribute_str_var = StringVar()
             attribute_str_var.set(random.choice(value))
-            if key == "Data_Source":
-                # ~~ set data_source to what you want
-                attribute_str_var.set("Random")
             self.artributeMenus[key] = [attribute_str_var,
                                         OptionMenu(self, attribute_str_var, *value)]
             # self.artributeMenus[key][1].grid(column=0, row=2 + list(self.artyle_artributes_dict.keys()).index(key))
@@ -83,16 +118,17 @@ class IDUTC(basik_widget.BasikWidget):
                 self.artributal.sync_with_use_id()
                 break
 
-    def create_blank_profile(self):
-        pass
+    def display_help_message(self, helper_tag: Optional[str] = None):
+        self.txo.priont_string("IDUTC:  is from the :IDUCT")
 
-    def gather_attributes(self) -> list:
+    def gather_artributes(self) -> dict:
         """Gather and return a list of attribute keywords."""
-        attribs_list = []
-        # print("GATHERING", self.artributeMenus)
+        attribs_dict = {}
+        print("GATHERING", self.artributeMenus)
         for key, value in self.artributeMenus.items():
-            attribs_list.append(value[0].get())
-        return attribs_list
+            print(key, "->", value[0].get())
+            attribs_dict[value[0].get()] = self.slider_dict[key][0].get()
+        return attribs_dict
 
     def gather_random_attributes(self) -> list:
         """Gather and return a list of attribute keywords."""
@@ -110,8 +146,9 @@ class IDUTC(basik_widget.BasikWidget):
         self.utc_entry.delete(0, END)
         self.id_entry.insert(0, use_id)
         self.utc_entry.insert(0, str(use_utc))
-        self.set_use_idutc()
-        self.artributal.sync_with_use_id()
+        self.randomize_artributes()
+        # self.set_use_idutc()
+        # self.artributal.sync_with_use_id()
 
     def set_use_idutc(self):
         """
@@ -133,13 +170,21 @@ class IDUTC(basik_widget.BasikWidget):
             "use_utc": use_utc,
             "color_list": new_color_list(use_id, is_float=False),
             "number_list": number_list,
-            "artributes": self.gather_attributes()
+            "artributes": self.gather_artributes()
         }
         return creation_dict
 
-    def randomize_artributes(self, args):
+    def randomize_artributes(self):
         for key, value in self.artyle_artributes_dict.items():
             self.artributeMenus[key][0].set(random.choice(value))
+            self.slider_dict[key][0].set(random.randint(self.slider_limit_dict[key][0],
+                                                        self.slider_limit_dict[key][1]))
+
+    def save_use_idutc(self):
+        save_path = f"filesOutput/Bluebeard/.idutc/{self.entry_ID_string_var.get()}_{self.entry_UTC_string_var.get()}.json"
+        with open(save_path, "w") as f:
+            f.write(json.dumps(self.kre8dict, indent=4))
+        self.txo.priont_string(f"Saved IDUTC to {save_path}")
 
 
 def generate_id_string(string_length, char_set) -> str:

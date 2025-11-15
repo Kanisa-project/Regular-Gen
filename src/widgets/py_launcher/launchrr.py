@@ -1,7 +1,7 @@
 from src.widgets.basik_widget import BasikWidget
 from src.settings import themery as t
 from src.services import utils as u
-from src.widgets.py_launcher import pylanes, kPaint
+from src.widgets.py_launcher import pylanes, kPaint, all_balls_fall
 
 
 class Launchrr(BasikWidget):
@@ -12,7 +12,8 @@ class Launchrr(BasikWidget):
                                           {}, "GAIM", u.rgb_to_hex(t.JUNGLE_GREEN), u.rgb_to_hex(t.DARK_SEA_GREEN)]
         self.available_gaims = {
             'k_paint': kPaint.Gaim,
-            'pylanes': pylanes.PyLanes
+            'pylanes': pylanes.PyLanes,
+            'ABF': all_balls_fall.AllBallsFall
         }
         self.setup_dropdown_menus(list(self.available_gaims.keys()))
         self.setup_button_choices(["Launch"], start_y_cell=1)

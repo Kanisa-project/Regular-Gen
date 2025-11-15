@@ -68,7 +68,7 @@ class Fotoes(artstyle.Artyle):
         """Add a single fotoes"""
         x = openfilename_str()
         x = x[len(os.getcwd()):]
-        self.button_dict["Change Foto 1"][0].set(x)
+        self.button_dict["Change Foto 1"][0].set(x.split('/')[-1])
 
     def random_foto(self, args=''):
         print(os.getcwd()[:-4] + self.button_dict["Change Directory"][0].get() + "/*.png")
@@ -79,7 +79,7 @@ class Fotoes(artstyle.Artyle):
         """Add a second fotoes"""
         x = openfilename_str()
         x = x[len(os.getcwd()):]
-        self.button_dict["Change Foto 2"][0].set(x)
+        self.button_dict["Change Foto 2"][0].set(x.split('/')[-1])
 
     def random_foto2(self, args=''):
         print(os.getcwd()[:-4] + self.button_dict["Change Directory"][0].get() + "/*.png")
@@ -152,8 +152,11 @@ class Fotoes(artstyle.Artyle):
             self.checkbutton_dict[option][0].set(0)
 
 
-def openfilename_str() -> str:
-    filename = filedialog.askopenfilename(title='Open..')
+def openfilename_str(init_dir=None) -> str:
+    if init_dir:
+        filename = filedialog.askopenfilename(title='Open..', initialdir=init_dir)
+    else:
+        filename = filedialog.askopenfilename(title='Open..', initialdir='/home/trevor/Documents/PycharmProjects/Regular-Gen')
     return filename
 
 def openfiledir_str() -> str:

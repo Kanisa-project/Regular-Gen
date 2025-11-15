@@ -24,12 +24,10 @@ class KINVOW(basik_widget.BasikWidget):
 
         # Initialize some Kinvow canvas variables.
         self.kinvow_img = None
-        self.use_canvas = Canvas(self, bg=t.rgb_to_hex(t.RANDOM_COLOR3), width=width - 25, height=height)
+        self.use_canvas = Canvas(self, bg=t.rgb_to_hex(t.RANDOM_COLOR3), width=width, height=height)
         self.use_canvas.grid(column=0, row=0, padx=3, pady=3)
         self.canvas_w = width
         self.canvas_h = height
-        self.img_w = 0
-        self.img_h = 0
 
         # Configure the frame and grid settings.
         self.configure(text="Kinvow:  ")
