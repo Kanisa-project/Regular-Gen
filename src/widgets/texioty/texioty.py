@@ -181,6 +181,10 @@ class Texioty(tk.LabelFrame):
         """
         self.master.quit()
 
+    def set_texity_input(self, new_input):
+        self.texity.command_string_var.set(new_input)
+        self.texity.focus_set()
+
     def add_helper_widget(self, helper_tag: str, helper_widget):
         """
         Add a helper widget and all of its commands to texioty while supplying access to texoty.

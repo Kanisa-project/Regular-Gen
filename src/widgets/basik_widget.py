@@ -24,7 +24,7 @@ class BasikWidget(TexiotyHelper, ttk.LabelFrame):
         self.tab_name = "Basic"
         self.grid_propagate(False)
 
-        self.font = ("Helvetica", int(width * 0.015))
+        self.font = ("Helvetica", int(width * 0.0174))
 
         self.checkbutton_dict = {}
         self.radiobutton_dict = {}

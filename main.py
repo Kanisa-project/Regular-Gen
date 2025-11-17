@@ -1,6 +1,6 @@
 import sys
 import tkinter as tk
-from src.widgets import kinvow, idutc, artay, kalendar, glythph, wordier
+from src.widgets import kinvow, idutc, artay, kalendar, glythph, wordier, spirite_forge
 from src.widgets.py_launcher.launchrr import Launchrr
 from src.widgets.texioty import texioty
 from src.settings import themery as t
@@ -35,10 +35,12 @@ class Application(tk.Frame):
         self.kinvow_frame = kinvow.KINVOW(width=lrg_width, height=lrg_height,
                                           idutc_frame=self.idutc_frame, artay_frame=self.artay_frame)
         self.kinvow_frame.txo = self.texioty_frame.texoty
-        print(self.kinvow_frame.use_canvas.size(), "SIZED")
+
         self.glythph_frame = glythph.Glythph(width=sml_width, height=sml_height, master=self.texioty_frame)
         self.wordier_frame = wordier.Wordier(width=sml_width, height=sml_height,
                                              master=self.texioty_frame, masterpiece_size=(self.kinvow_frame.canvas_w//8, self.kinvow_frame.canvas_h//4))
+        self.spirite_forge_frame = spirite_forge.SpiriteForge(width=sml_width, height=sml_height, master=self.texioty_frame)
+
         self.calendar_frame = kalendar.Kalendar(width=sml_width, height=sml_height)
         self.calendar_frame.txo = self.texioty_frame.texoty
 
@@ -52,6 +54,7 @@ class Application(tk.Frame):
         self.texioty_frame.add_helper_widget("THPH", self.glythph_frame)
         self.texioty_frame.add_helper_widget("WRDR", self.wordier_frame)
         self.texioty_frame.add_helper_widget("GAIM", self.launchrr_frame)
+        self.texioty_frame.add_helper_widget("SPRI", self.spirite_forge_frame)
         # self.texioty_frame.add_helper_widget("GAIM", self.gaimplay_frame)
         print("Added the main frame helpers..")
 
@@ -72,8 +75,8 @@ class Application(tk.Frame):
 
         self.center_frame.change_western_light(self.texioty_frame)
         self.center_frame.change_eastern_light(self.kinvow_frame)
-        self.center_frame.change_southern_light(self.glythph_frame)
-        self.center_frame.change_northern_light(self.wordier_frame)
+        self.center_frame.change_southern_light(self.spirite_forge_frame)
+        self.center_frame.change_northern_light(self.launchrr_frame)
 
         self.texioty_frame.log_profile_in('bluebeard', "p455")
 
@@ -111,7 +114,7 @@ class SpotLighter(tk.LabelFrame):
         :return:
         """
         north_light_var = tk.StringVar()
-        north_light_var.set('IDUTC')
+        north_light_var.set('Wordier')
         south_light_var = tk.StringVar()
         south_light_var.set('Glythph')
         east_light_var = tk.StringVar()

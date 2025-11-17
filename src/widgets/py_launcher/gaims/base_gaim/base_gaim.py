@@ -1,13 +1,16 @@
 import pygame as pg
 
-class SpiriteFactory:
+class SpiriteMerge:
     def __init__(self):
-        pass
+        self.sprite = None
 
     def load_sprite(self, file_path: str):
         pass
 
     def load_spirit(self, file_path: str):
+        pass
+
+    def full_spirite(self) -> pg.sprite.Sprite:
         pass
 
 class BaseGaim:

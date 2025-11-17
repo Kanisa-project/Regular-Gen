@@ -168,6 +168,7 @@ class TexiotyHelper:
         today_date = datetime.datetime.date(datetime.datetime.now())
         today_day = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"][
             datetime.datetime.weekday(today_date)]
+        self.txo.priont_click_command("welcome", "help")
         self.txo.priont_string(
             f"⦓⦙ Welcome to Texioty! The date is {today_date} on a {today_day}.")
         for msg in welcoming_msgs:

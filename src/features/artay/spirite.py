@@ -39,15 +39,16 @@ def stack_layers(img: Image.Image, artribute_dict: dict, size=(128, 128)) -> Ima
     :param size:
     :return:
     """
-    object_str = artribute_dict['spirite']['spirite_type']
-    cl = artribute_dict["colors"]
+    object_str = artribute_dict['spirite_type']
+    cl = artribute_dict["color_list"]
     object_image = Image.new('RGBA', (128, 128), (0, 0, 0, 0))
-    print(artribute_dict['spirite'])
-    for layer_dict in artribute_dict['spirite']['layers']:
+    print(artribute_dict)
+    for layer_dict in artribute_dict['layers']:
         pim = Image.open(f'filesInput/spirites/{object_str}/{layer_dict["name"]}{layer_dict["number"]}.png')
-        cim = Image.new('RGBA', (128, 128), random.choice(cl))
+        print(cl)
+        cim = Image.new('RGBA', (128, 128), random.choice(random.choice(cl)))
         pim = pim.convert(mode='RGBA')
-        cim = Image.blend(pim, cim, artribute_dict['transparency'])
+        cim = Image.blend(pim, cim, 0)
         object_image.paste(cim, (0, 0), mask=pim)
     return object_image.resize(size)
 

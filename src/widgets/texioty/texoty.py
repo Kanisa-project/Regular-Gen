@@ -47,6 +47,9 @@ class TEXOTY(Text):
         self.insert(line_index, tex, self.hyperlink.add(partial(webbrowser.open, link)))
         self.yview(END)
 
+    def priont_click_command(self, tex: str, link: str, line_index=END):
+        self.insert(line_index, tex, self.hyperlink.add_cmd(partial(self.master.set_texity_input, tex)))
+
     def set_header(self, msg="Welcome to Texioty"):
         """
         Set a heading with a message and interesting looking lines

@@ -21,13 +21,6 @@ class Digiary(TexiotyHelper):
                                             {}, "DIRY", u.rgb_to_hex(t.VIOLET_RED), u.rgb_to_hex(t.BLACK)]
         self.helper_commands["/until_next_time"] = [self.stop_diary_mode, "Ends a diary entry.",
                                                     {}, "DIRY", u.rgb_to_hex(t.VIOLET_RED), u.rgb_to_hex(t.BLACK)]
-        # self.helper_commands = {
-        #     "help": [self.display_help_message, "Displays a message of helpfulness.",
-        #              {}, "DIRY", u.rgb_to_hex(t.VIOLET_RED), u.rgb_to_hex(t.BLACK)],
-        #     "dear_sys,": [self.start_diary_mode, "Starts a diary entry.",
-        #                   {}, "DIRY", u.rgb_to_hex(t.VIOLET_RED), u.rgb_to_hex(t.BLACK)],
-        #     "/until_next_time": [self.stop_diary_mode, "Ends a diary entry.",
-        #                          {}, "DIRY", u.rgb_to_hex(t.VIOLET_RED), u.rgb_to_hex(t.BLACK)]}
 
 
     def display_help_message(self, helper_tag: Optional[str] = None):
