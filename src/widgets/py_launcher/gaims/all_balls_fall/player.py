@@ -15,14 +15,8 @@ class Player(pg.sprite.Sprite):
             self.rect.x += 5
 
     def update(self, *args, **kwargs):
-        self.rect.y += 1
+        self.rect.y += 2
         self.move()
-        if self.rect.y > 512 or self.rect.y < 0:
-            self.kill()
-        elif self.rect.x < 0:
-            self.rect.x = 640
-        elif self.rect.x > 640:
-            self.rect.x = 0
 
     def collide_with_obstacle(self, obstacle):
         return self.rect.colliderect(obstacle.rect)

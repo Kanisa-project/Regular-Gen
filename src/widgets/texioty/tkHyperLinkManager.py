@@ -5,20 +5,20 @@ from tkinter import *
 
 class HyperlinkManager:
 
-    def __init__(self, text):
+    def __init__(self, txo):
 
         self.links = {}
-        self.text = text
+        self.txo = txo
 
-        self.text.tag_config("hyper", foreground="blue", underline=1)
-        self.text.tag_bind("hyper", "<Enter>", self._enter)
-        self.text.tag_bind("hyper", "<Leave>", self._leave)
-        self.text.tag_bind("hyper", "<Button-1>", self._click)
+        self.txo.tag_config("hyper", foreground="blue", underline=1)
+        self.txo.tag_bind("hyper", "<Enter>", self._enter)
+        self.txo.tag_bind("hyper", "<Leave>", self._leave)
+        self.txo.tag_bind("hyper", "<Button-1>", self._click)
 
-        self.text.tag_config("command", foreground="yellow", underline=1)
-        self.text.tag_bind("command", "<Enter>", self._enter)
-        self.text.tag_bind("command", "<Leave>", self._leave)
-        self.text.tag_bind("command", "<Button-1>", self._command_click)
+        self.txo.tag_config("command", foreground="yellow", background="darkblue", underline=1)
+        self.txo.tag_bind("command", "<Enter>", self._enter)
+        self.txo.tag_bind("command", "<Leave>", self._leave)
+        self.txo.tag_bind("command", "<Button-1>", self._command_click)
 
         self.reset()
 
@@ -40,19 +40,19 @@ class HyperlinkManager:
         return "command", tag
 
     def _enter(self, event):
-        self.text.config(cursor="hand2")
+        self.txo.config(cursor="hand2")
 
     def _leave(self, event):
-        self.text.config(cursor="")
+        self.txo.config(cursor="")
 
     def _click(self, event):
-        for tag in self.text.tag_names(CURRENT):
+        for tag in self.txo.tag_names(CURRENT):
             if tag[:6] == "hyper-":
                 self.links[tag]()
                 return
 
     def _command_click(self, event):
-        for tag in self.text.tag_names(CURRENT):
+        for tag in self.txo.tag_names(CURRENT):
             if tag[:8] == "command-":
                 self.links[tag]()
                 return

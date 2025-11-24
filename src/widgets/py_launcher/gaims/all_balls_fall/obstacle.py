@@ -8,9 +8,10 @@ class Wall(pg.sprite.Sprite):
         self.image = image
         self.rect = self.image.get_rect()
         self.rect.center = (x,y)
+        self.bot_line = y
 
     def update(self, *args, **kwargs):
         self.rect.y -= 3
-        if self.rect.y < 0:
-            self.rect.y = 512
+        if self.rect.y <= -22:
+            self.rect.y = self.bot_line
             self.rect.x = 64 * random.randint(0, 10)

@@ -95,14 +95,6 @@ class TEXOTY(Text):
             self._tag_cache.add(tag_name)
         self.tag_add(tag_name, start_index, end_index)
 
-
-    # def make_text_colored(self, fg_color, bg_color, start_index, end_index):
-    #     # print(fg_color, bg_color, start_index, end_index)
-    #     self.tag_configure(f"{fg_color}_{bg_color}", background=theme.rgb_to_hex(bg_color), foreground=theme.rgb_to_hex(fg_color))
-    #     self.tag_add(f"{fg_color}_{bg_color}", start_index, end_index)
-    #     # self.tag_ranges(f'{fg_color}_{bg_color}')
-    #     # self.tag_delete(f'{fg_color}_{bg_color}', '1.5', END)
-
     def create_masterpiece(self, *args):
         """
         Adds an artistic frame around the Texoty textuality.
@@ -135,39 +127,57 @@ class TEXOTY(Text):
         """ Clear Texoty display and do not replace the header. """
         self.delete("0.0", 'end')
 
-    def priont_kre8dict(self, kre8dict: dict, indent=0):
+    def command_group_break(self, helper_tag: str):
         """
-        Print and display the full kre8dict in Texoty.
-        :param kre8dict: 
-        :param indent: 
-        :return: 
+        Adds a break line in Texoty with style.
+        :return:
         """
-        print(kre8dict)
-        for key, value in kre8dict.items():
-            self.priont_string(f'▐{key}╕')
-            if isinstance(value, str):  # STRING
-                self.priont_string(f'{" " * (len(key) + 1)}└{value}')
-            elif isinstance(value, list):  # LIST
-                self.priont_list(items=value, list_key=key)
-            elif isinstance(value, int):  # INT
-                self.priont_int(key, value)
-            elif isinstance(value, float):  # FLOAT
-                self.priont_float(key, value)
-            elif isinstance(value, dict):  # DICT
-                if indent == 1:
-                    self.priont_dict(value, parent_key=key, indent=indent + 1)
-                else:
-                    self.priont_dict(value, parent_key=key, indent=indent + 1)
+        break_line = ""
+        helper_shades = '▓▒░'
+        help_shade = ''
+        for shade in helper_shades:
+            help_shade += shade * 7
+        bg = self.active_profile.color_theme[2]
+        fg = self.active_profile.color_theme[0]
+        self.tag_configure('break_line', foreground=fg, background=bg)
+        for _ in range(self.texoty_w - 28):
+            break_line += random.choice('┉┅')
+        self.insert(END, f"\n╫{help_shade}{helper_tag} {break_line}╫", 'break_line')
 
-    def priont_dict(self, dioct: dict, parent_key=None, indent=0):
+
+    # def priont_kre8dict(self, kre8dict: dict, indent=0):
+    #     """
+    #     Print and display the full kre8dict in Texoty.
+    #     :param kre8dict:
+    #     :param indent:
+    #     :return:
+    #     """
+    #     print(kre8dict)
+    #     for key, value in kre8dict.items():
+    #         self.priont_string(f'▐{key}╕')
+    #         if isinstance(value, str):  # STRING
+    #             self.priont_string(f'{" " * (len(key) + 1)}└{value}')
+    #         elif isinstance(value, list):  # LIST
+    #             self.priont_list(items=value, list_key=key)
+    #         elif isinstance(value, int):  # INT
+    #             self.priont_int(key, value)
+    #         elif isinstance(value, float):  # FLOAT
+    #             self.priont_float(key, value)
+    #         elif isinstance(value, dict):  # DICT
+    #             if indent == 1:
+    #                 self.priont_dict(value, parent_key=key, indent=indent + 1)
+    #             else:
+    #                 self.priont_dict(value, parent_key=key, indent=indent + 1)
+
+    def priont_dict(self, the_dict: dict, parent_key=None, indent=0):
         """
         Iterate through a dictionary and display each key/value pair.
 
         :param indent: How much front spacing.
         :param parent_key: The parent key in a nested dictionary.
-        :param dioct: Dictionary to iterate through.
+        :param the_dict: Dictionary to iterate through.
         """
-        for key, value in dioct.items():
+        for key, value in the_dict.items():
             # if parent_key:
             #     prefix = " " * (len(parent_key) - 1) + "▐"
             # else:
@@ -175,21 +185,21 @@ class TEXOTY(Text):
             prefix = ''
             self.priont_string(f'{prefix}{key}┐')
 
-            if isinstance(dioct[key], str):  # STRING
-                self.priont_string(f'{" " * (len(key) + 1)}└{dioct[key]}')
-            elif isinstance(dioct[key], list):  # LIST
-                self.priont_list(dioct[key], list_key=key)
-            elif isinstance(dioct[key], int):  # INT
-                self.priont_int(key, dioct[key])
-            elif isinstance(dioct[key], float):  # FLOAT
-                self.priont_float(key, dioct[key])
-            elif isinstance(dioct[key], texity.Command):  # COMMAND
-                self.priont_command(dioct[key])
-            elif isinstance(dioct[key], dict):  # DICT
+            if isinstance(the_dict[key], str):  # STRING
+                self.priont_string(f'{" " * (len(key) + 1)}└{the_dict[key]}')
+            elif isinstance(the_dict[key], list):  # LIST
+                self.priont_list(the_dict[key], list_key=key)
+            elif isinstance(the_dict[key], int):  # INT
+                self.priont_int(key, the_dict[key])
+            elif isinstance(the_dict[key], float):  # FLOAT
+                self.priont_float(key, the_dict[key])
+            elif isinstance(the_dict[key], texity.Command):  # COMMAND
+                self.priont_command(the_dict[key])
+            elif isinstance(the_dict[key], dict):  # DICT
                 if indent == 1:
-                    self.priont_dict(dioct[key], parent_key=key, indent=indent + 1)
+                    self.priont_dict(the_dict[key], parent_key=key, indent=indent + 1)
                 else:
-                    self.priont_dict(dioct[key], parent_key=key, indent=indent + 1)
+                    self.priont_dict(the_dict[key], parent_key=key, indent=indent + 1)
 
     def priont_command(self, command: texity.Command):
         """
@@ -224,23 +234,6 @@ class TEXOTY(Text):
         for _ in range(self.texoty_w - 2):
             break_line += random.choice('┉┅')
         self.insert(END, f"\n╫{break_line}╫", 'break_line')
-
-    def command_group_break(self, helper_tag: str):
-        """
-        Adds a break line in Texoty with style.
-        :return:
-        """
-        break_line = ""
-        helper_shades = '▓▒░'
-        help_shade = ''
-        for shade in helper_shades:
-            help_shade += shade * 7
-        bg = self.active_profile.color_theme[2]
-        fg = self.active_profile.color_theme[0]
-        self.tag_configure('break_line', foreground=fg, background=bg)
-        for _ in range(self.texoty_w - 28):
-            break_line += random.choice('┉┅')
-        self.insert(END, f"\n╫{help_shade}{helper_tag} {break_line}╫", 'break_line')
 
     def priont_string(self, striong: str, line_index=END):
         """

@@ -5,6 +5,7 @@ from .gaims.pylanes import pylanes
 # from .gaims.candy_slinger import candy_slinger
 from .gaims.all_balls_fall import all_balls_fall
 # from .gaims.thurbo import thurbo
+from .gaims.spaceDits import spacedits
 
 
 __all__ = ["kPaint",
@@ -12,5 +13,6 @@ __all__ = ["kPaint",
            # "othaido",
 #            "candy_slinger",
            "all_balls_fall",
-#            "thurbo"
+#            "thurbo",
+           "spacedits"
            ]

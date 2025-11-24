@@ -40,8 +40,8 @@ class KINVOW(basik_widget.BasikWidget):
         # Start setup of Texioty.
         self.txo: texoty.TEXOTY = None
         self.helper_commands = {
-            "kre8dict": [self.priont_kre8dict, "Show the creationary dictionary.",
-                         {}, "KNVO", t.rgb_to_hex(t.LIGHT_GOLDENROD_YELLOW), t.rgb_to_hex(t.DARK_KHAKI)],
+            # "kre8dict": [self.priont_kre8dict, "Show the creationary dictionary.",
+            #              {}, "KNVO", t.rgb_to_hex(t.LIGHT_GOLDENROD_YELLOW), t.rgb_to_hex(t.DARK_KHAKI)],
             "kin8": [self.create_from_masterpiece, "Create a masterpiece on Kinvow.",
                      {"glyth": "Gather glyth options and show on Kinvow.",
                       "glyph": "Gather glyph options and show on Kinvow.",
@@ -55,15 +55,15 @@ class KINVOW(basik_widget.BasikWidget):
                       }, "KNVO", t.rgb_to_hex(t.LIGHT_GOLDENROD_YELLOW), t.rgb_to_hex(t.DARK_KHAKI)]
         }
 
-    def priont_kre8dict(self, args):
-        """
-        Display the current kre8dict being used with a header.
-        :param args:
-        :return:
-        """
-        self.txo.clear_add_header("kre8dict")
-        self.txo.priont_kre8dict(self.idutc.kre8dict)
-        # self.txo.priont_dict(self.idutc.kre8dict)
+    # def priont_kre8dict(self, args):
+    #     """
+    #     Display the current kre8dict being used with a header.
+    #     :param args:
+    #     :return:
+    #     """
+    #     self.txo.clear_add_header("kre8dict")
+    #     self.txo.priont_kre8dict(self.idutc.kre8dict)
+    #     # self.txo.priont_dict(self.idutc.kre8dict)
 
     def starter_image(self, size_type="full_canvas"):
         if size_type == 'full_canvas':

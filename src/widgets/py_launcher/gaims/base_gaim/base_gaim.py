@@ -14,11 +14,14 @@ class SpiriteMerge:
         pass
 
 class BaseGaim:
-    def __init__(self, player_name, is_new_game=False):
+    def __init__(self, player_name, is_new_game=False, window_size=(1280, 768)):
+        pg.mixer.pre_init()
         pg.init()
+        pg.font.init()
         pg.mixer.init()
+        self.player_name = player_name
         self.font = pg.font.SysFont("Parkinsans", 16)
-        self.screen = pg.display.set_mode((1280, 768))
+        self.screen = pg.display.set_mode(window_size)
         self.clock = pg.time.Clock()
         self.all_sprites = pg.sprite.Group()
         self.running = True

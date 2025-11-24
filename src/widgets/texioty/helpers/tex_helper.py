@@ -77,7 +77,6 @@ class TexiotyHelper:
         self.txo = txo
         self.txi = txi
         self.helper_tag = "HLPR"
-        self.filesIO = self.helper_tag + "_base"
         self.helper_commands = {
             "welcome": [self.welcome_message, "Displays a welcoming message.",
                      {}, self.helper_tag, u.rgb_to_hex(t.GREEN_YELLOW), u.rgb_to_hex(t.BLACK)],

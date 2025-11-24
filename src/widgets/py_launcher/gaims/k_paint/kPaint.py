@@ -1,10 +1,12 @@
 #PAINT TYPE GAME
 import random
 
+from src.utils.helpers import clamp
 from src.widgets.py_launcher.gaims.base_gaim.base_gaim import BaseGaim
-from src.widgets.py_launcher.gaims.k_paint import sprites as spirites
+# from src.widgets.py_launcher.gaims.k_paint import sprites as spirites
 import pygame as pg
 from src.settings import themery as t, app_settings as s
+from src.widgets.py_launcher.gaims.k_paint import brush, canvas, palette
 
 import datetime
 
@@ -12,16 +14,53 @@ INSTRUCTIONS = {'objective': 'There will be goals to change the aspect of the br
                      'controls': 'You will need to change the brush settings to match the goal for points.',
                      'scoring': 'The faster you attain the goal, the more points you get.'}
 
+DEFAULT_RULE_DICT = {
+    'Q': 'thickness +1',
+    'A': f'thickness {random.randint(-3, 3)}',
+    'Z': 'thickness -1',
+    'W': 'num_sides +1',
+    'S': f'num_sides {random.randint(-2, 2)}',
+    'X': 'num_sides -1',
+    'E': 'radius +7',
+    'D': f'radius {random.randint(-7, 7)}',
+    'C': 'radius -7',
+    'R': 'rot_offset +12',
+    'F': f'rot_offset {random.randint(-12, 12)}',
+    'V': 'rot_offset -12',
+    'T': '',
+    'G': '',
+    'B': '',
+    'Y': '',
+    'H': '',
+    'N': '',
+    'U': '',
+    'J': '',
+    'M': '',
+    'I': 'PRECISION',
+    'O': 'POLYGON',
+    'P': 'FLOWER',
+    'K': 'WILD',
+    'L': '',
+    '0': '',
+    '1': '',
+    '2': '',
+    '3': '',
+    '4': '',
+    '5': '',
+    '6': '',
+    '7': '',
+    '8': '',
+    '9': ''
+}
+
 class Gaim(BaseGaim):
     def __init__(self, player_name):
         super().__init__(player_name)
-        self.canvas = spirites.Canvas()
-        self.palette = spirites.ColorPalette()
-        self.toolbox = spirites.ToolBox()
-        self.brush = spirites.Brush()
+        self.canvas = canvas.Canvas()
+        self.palette = palette.ColorPalette()
+        self.brush = brush.Brush()
         self.all_sprites.add(self.canvas)
         self.all_sprites.add(self.palette)
-        self.all_sprites.add(self.toolbox)
 
     def run(self):
         while self.running:
@@ -43,105 +82,90 @@ class Gaim(BaseGaim):
                 self.brush.brush_pos = self.mouse_pos
             elif event.type == pg.MOUSEBUTTONDOWN:
                 #IF YOU CLICK ANYWHERE INSIDE OF THE CANVAS
-                if self.canvas.rect.collidepoint(self.brush.brush_pos):
-                    #====IF LEFT CLICK
+                if self.canvas.rect.collidepoint(self.mouse_pos):
+                    #====IF LEFT CLICK canvas
                     if event.button == 1:
-                        if self.brush.chosen_shape == "circle":
-                            self.brush.circlebrush(self.canvas)
-                        elif self.brush.chosen_shape == "line":
-                            self.brush.linebrush(self.canvas)
-                        elif self.brush.chosen_shape == "polygon":
+                        if self.brush.isPolygon:
                             self.brush.polybrush(self.canvas)
-                        elif self.brush.chosen_shape == "circleFoL":
-                            self.brush.circle_fol_brush(self.canvas)
-                        elif self.brush.chosen_shape == "polyFoL":
-                            self.brush.polyFoLbrush(self.canvas)
-                        elif self.brush.chosen_shape == "box":
-                            self.brush.boxbrush(self.canvas)
-                    #====IF MIDDLE CLICK
+                        else:
+                            self.brush.circlebrush(self.canvas)
+                    #====IF MIDDLE CLICK canvas
                     elif event.button == 2:
                         now = datetime.datetime.now()
                         name_string = f'{now.year}{now.month}{now.day}-{now.hour}{now.minute}{now.second}.png'
-                        self.canvas.save(f'../../../filesOutput/Bluebeard/kPaint/{name_string}')
+                        self.canvas.save_paint(f'filesOutput/Bluebeard/kPaint/{name_string}')
                         print(f"Saved as: {name_string}")
-                    #====IF RIGHT CLICK
+                    #====IF RIGHT CLICK canvas
                     elif event.button == 3:
                         pass
-                    #====IF SCROLL UP
-                    elif event.button == 4:
-                        self.brush.radius += 1
-                    #====IF SCROLL DOWN
-                    elif event.button == 5:
-                        if self.brush.radius > 10:
-                            self.brush.radius -= 1
-                    #====IF SIDE BACK BUTTON
-                    elif event.button == 8:
-                        if self.brush.sides > 2:
-                            self.brush.sides -= 1
-                    elif event.button == 9:
-                        #====IF SIDE FRONT BUTTON
-                        self.brush.sides += 1
 
                 #IF YOU CLICK ANYWHERE INSIDE OF THE COLOR PALETTE RECT
-                if self.palette.rect.collidepoint(self.brush.brush_pos):
+                if self.palette.rect.collidepoint(self.mouse_pos):
                     #====IF LEFT CLICK
                     if event.button == 1:
-                        for i in range(0, len(self.palette.color_palist)):
-                            if self.palette.color_palist[i].rect.collidepoint(self.mouse_pos):
-                                self.palette.color_palist[i].selectcolor(self.brush)
-                            elif self.palette.random_palist[i].rect.collidepoint(self.mouse_pos):
-                                self.palette.random_palist[i].selectcolor(self.brush)
+                        for i in range(0, len(self.palette.color_palette_list)):
+                            if self.palette.color_palette_list[i].rect.collidepoint(self.mouse_pos):
+                                self.palette.color_palette_list[i].selectcolor(self.brush, self.mouse_pos)
                     #====IF MIDDLE CLICK
                     elif event.button == 2:
-                        for i in range(0, len(self.palette.color_palist)):
-                            if self.palette.color_palist[i].rect.collidepoint(self.mouse_pos):
-                                self.canvas.image.fill(self.palette.color_palist[i].color)
-                            elif self.palette.random_palist[i].rect.collidepoint(self.mouse_pos):
-                                self.canvas.image.fill(self.palette.random_palist[i].color)
+                        for i in range(0, len(self.palette.color_palette_list)):
+                            if self.palette.color_palette_list[i].rect.collidepoint(self.mouse_pos):
+                                self.canvas.image.fill(self.palette.color_palette_list[i].color)
                     #====IF RIGHT CLICK
                     elif event.button == 3:
-                        for item in self.palette.random_palist:
+                        for item in self.palette.color_palette_list:
                             if item.rect.collidepoint(self.brush.brush_pos):
                                 item.color = (random.randint(0, 255), random.randint(0, 255), random.randint(0, 255))
                                 item.image.fill(item.color)
                                 self.brush.chosen_color = item.color
 
-                #IF YOU CLICK ANYWHERE INSIDE OF TOOLBOX RECT
-                elif self.toolbox.rect.collidepoint(self.brush.brush_pos):
-                    #====IF LEFT CLICK
-                    if event.button == 1:
-                        for item in self.toolbox.toolbox_list:
-                            if item.rect.collidepoint(self.mouse_pos):
-                                item.selectshape(self.brush, self.canvas)
-
-                    if event.button == 3:
-                        if self.toolbox.toolbox_list[1].rect.collidepoint(self.mouse_pos):
-                            self.canvas.pointlist = [(0, 0), (0, 0), (0, 0)]
-
             elif event.type == pg.KEYDOWN:
                 if event.key == pg.K_ESCAPE:
                     self.running = False
+                elif event.key == pg.K_UP:
+                    self.brush.y_offset = clamp(self.brush.y_offset-1,
+                                                -22, 22, True)
+                elif event.key == pg.K_DOWN:
+                    self.brush.y_offset = clamp(self.brush.y_offset+1,
+                                                -22, 22, True)
+                elif event.key == pg.K_LEFT:
+                    self.brush.x_offset = clamp(self.brush.x_offset-1,
+                                                -22, 22, True)
+                elif event.key == pg.K_RIGHT:
+                    self.brush.x_offset = clamp(self.brush.x_offset+1,
+                                                -22, 22, True)
                 #IF A KEY IS PRESSED
-                # self.keystring = pg.key.name(event.key)
-                # for item in runes.rune_list:
-                #     if item.phonetic_value == self.keystring.upper():
-                #         self.canvas.keystroke(item.germanic)
-                #         self.label = self.canvas.myfont.render(item.germanic)
-                #         self.canvas.blit(self.label,(random.randint(200,500),random.randint(200,500)))
-                if event.key == pg.K_UP:
-                    self.brush.sides += 1
-                if event.key == pg.K_DOWN and self.brush.sides >= 2:
-                    self.brush.sides -= 1
-                if event.key == pg.K_RIGHT:
-                    self.brush.thickness += 1
-                if event.key == pg.K_LEFT and self.brush.thickness >= 2:
-                    self.brush.thickness -= 1
+                keystring = pg.key.name(event.key)
+                try:
+                    ruling = DEFAULT_RULE_DICT[keystring.upper()].split()
+                    if "thickness" in ruling:
+                        self.brush.thickness = clamp(self.brush.thickness + int(ruling[1]),
+                                                     0, 32, True)
+                    elif "radius" in ruling:
+                        self.brush.radius = clamp(self.brush.radius + int(ruling[1]),
+                                                     0, 142, True)
+                    elif "num_sides" in ruling:
+                        self.brush.sides = clamp(self.brush.sides + int(ruling[1]),
+                                                 3, 10, True)
+                    elif "rot_offset" in ruling:
+                        self.brush.polygon_offset = clamp(self.brush.polygon_offset + int(ruling[1]),
+                                                 0, 360, True)
+                    elif "PRECISION" in ruling:
+                        self.brush.isPrecise = not self.brush.isPrecise
+                    elif "WILD" in ruling:
+                        self.brush.isWild = not self.brush.isWild
+                    elif "POLYGON" in ruling:
+                        self.brush.isPolygon = not self.brush.isPolygon
+                    elif "FLOWER" in ruling:
+                        self.brush.isFoL = not self.brush.isFoL
+                except Exception as e:
+                    print(e)
+                self.palette.brush_info(self.brush)
 
     def update(self):
         #game loop update
         self.all_sprites.update(self.mouse_pos[0], self.mouse_pos[1], self.brush)
         self.palette.color_group.update()
-        self.toolbox.tool_group.update(self.brush)
         self.brush.update(self.mouse_pos[0], self.mouse_pos[1])
 
     def draw(self):
@@ -149,7 +173,6 @@ class Gaim(BaseGaim):
         self.screen.fill(t.WHITE)
         self.all_sprites.draw(self.screen)
         self.palette.color_group.draw(self.screen)
-        self.toolbox.tool_group.draw(self.screen)
         #after drawing everying, flip the display
         pg.display.flip()
 

@@ -308,4 +308,5 @@ class SpiriteForge(BasikWidget):
     def save_spirite(self):
         spirite_visual_config = self.get_spirite_configuration()|self.current_idutc_dict
         spirite_img = spirite.stack_layers(Image.new("RGBA", (1, 1)), spirite_visual_config, (64, 64))
-        spirite_img.save(f"filesOutput/Bluebeard/spirites/{self.current_spirite}.png")
+        spirite_num = len(glob.glob(f"filesOutput/Bluebeard/spirites/{self.current_spirite}*.png"))
+        spirite_img.save(f"filesOutput/Bluebeard/spirites/{self.current_spirite}{spirite_num}.png")

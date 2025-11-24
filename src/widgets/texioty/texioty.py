@@ -1,6 +1,5 @@
 import json
 import os.path
-import random
 import tkinter as tk
 from dataclasses import dataclass
 from typing import Dict, Any, Callable
