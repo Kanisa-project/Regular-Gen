@@ -255,7 +255,7 @@ available_profiles = {
 for profile in glob.glob(".profiles/*.json"):
     with open(profile, "r") as f:
         profile_data = json.load(f)
-        print(profile_data)
+        # print(profile_data)
         available_profiles[profile_data['texioty']["username"]] = TexiotyProfile(
             profile_data['texioty']["username"],
             profile_data['texioty']["password"],

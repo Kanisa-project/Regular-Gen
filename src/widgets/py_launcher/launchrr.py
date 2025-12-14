@@ -1,7 +1,13 @@
 import glob
+import json
+import os
+import re
+import shutil
 from tkinter import Canvas, Button, OptionMenu, StringVar, PhotoImage
 from typing import Optional, List
 
+from src.domain.resource_loader import openfilename_str
+from src.services.utils import ensure_parent_dir
 from src.utils.helpers import clamp
 from src.widgets.basik_widget import BasikWidget
 from src.settings import themery as t
@@ -14,21 +20,31 @@ CANVAS_SIZE = (128, 128)
 SPIRITE_SIZE = (128, 128)
 
 MINIMUM_SPRITE_OBJ_DICT = {
+    'k_paint': {
+        "player": "Brush"
+    },
     "ABF": {
         "player": "Ball",
         "obstacle": "Platform"
     },
     "spaceDits": {
         "player": "Ship",
-        "enemy": "Alien",
-        "obstacle": "Asteroid"
+        "obstacle": "Asteroid",
+        "enemy": "Alien"
+    },
+    "ThurBo": {
+        "player": "Character",
+        "obstacle": "Wall",
+        "enemy": "Character",
+        "collectable": "Coin"
     }
 }
 
 class Launchrr(BasikWidget):
     def __init__(self, width, height, master=None, tk_root_window=None):
         super().__init__(width, height, master)
-        self.loaded_gaim = None
+        self.loaded_gaim = "ABF"
+        self.loaded_gaim_string = "ABF"
         self.helper_commands['launch'] = [self.launch_gaim, "Launch the selected gaim from launchrr",
                                           {}, "GAIM", u.rgb_to_hex(t.JUNGLE_GREEN), u.rgb_to_hex(t.DARK_SEA_GREEN)]
         self.available_gaims = {
@@ -38,24 +54,39 @@ class Launchrr(BasikWidget):
             'pylanes': pylanes.PyLanes
         }
         self.setup_dropdown_menus(list(self.available_gaims.keys()), dropdown_name="avail_gaims")
-        self.setup_button_choices(["Launch"], start_x_cell=1)
-        # self.spirite_view_frame = SpriteViewFrame(self)
-        # self.spirite2_view_frame = SpriteViewFrame(self, "Platform")
-        # self.spirite_view_frame.grid(column=0, row=1, columnspan=4)
-        # self.spirite2_view_frame.grid(column=5, row=1, columnspan=4)
+        self.setup_button_choices(["Save", "Load", "Launch"], start_y_cell=1)
+        self.button_dict['Save'][1].config(command = lambda: self.save_gaim_profile())
+        self.button_dict['Load'][1].config(command = lambda: self.load_gaim_profile())
         self.button_dict['Launch'][1].config(command = lambda: self.launch_gaim(self.dropdown_menu_dict['avail_gaims'][0].get()))
         self.launch_gaim_flag = False
-        self.spirite_view_frames = []
+        self.spirite_view_frames = {}
+        self.setup_spirite_view_frames('ABF', get_min_spirite_obj_dict("ABF"))
 
-    def setup_spirite_selections(self, gaim_name: str):
-        for gaim_object in get_min_spirite_obj_dict(gaim_name):
-            self.spirite_view_frame.set_spirite_info(get_min_spirite_obj_dict(gaim_name)[gaim_object], gaim_object)
-            self.spirite2_view_frame.set_spirite_info(get_min_spirite_obj_dict(gaim_name)[gaim_object], gaim_object)
+    def clear_spirite_view_frames(self):
+        for spirite_view_frame in self.spirite_view_frames.values():
+            spirite_view_frame.grid_forget()
+        self.spirite_view_frames = {}
+
+    def setup_spirite_view_frames(self, game_name: str, spirite_dict: dict):
+        self.clear_spirite_view_frames()
+        s = 1
+        for object_name, spirite_name in spirite_dict.items():
+            new_view_frame = SpriteViewFrame(self, spirite_name)
+            self.spirite_view_frames[object_name] = new_view_frame
+            self.spirite_view_frames[object_name].grid(column=s, row=1, columnspan=4, rowspan=3)
+            s += 5
 
     def launch_gaim(self, game_name: str = "ABF"):
         self.launch_gaim_flag = True
         self.loaded_gaim = self.available_gaims[game_name]
         self.txo.priont_string(f"Loaded {game_name} and ready for launching..")
+
+    def load_spirite_set(self, spirite_set: list):
+        for spirite_name in spirite_set:
+            shutil.copy(f"filesOutput/Bluebeard/spirites/{spirite_name}.png",
+                        f"src/widgets/py_launcher/gaims/all_balls_fall/assets/{re.sub('[0-9]', '', spirite_name)}.png")
+
+        self.txo.priont_string(f"Loaded spirite set {spirite_set}")
 
     def setup_dropdown_menus(self, word_list: Optional[List[str]]=None,
                              word_str: Optional[str]=None,
@@ -81,7 +112,28 @@ class Launchrr(BasikWidget):
     def _on_gaim_changed(self, selected_gaim: str):
         print(f"Gaim changed to {selected_gaim}")
         self.current_gaim = selected_gaim
-        self.setup_spirite_selections(selected_gaim)
+        self.loaded_gaim = selected_gaim
+        self.setup_spirite_view_frames(selected_gaim, get_min_spirite_obj_dict(selected_gaim))
+
+    def save_gaim_profile(self):
+        self.txo.priont_string("Saving gaim profile..")
+        save_path = ensure_parent_dir(f"filesOutput/Bluebeard/.profiles/gaims/{self.loaded_gaim_string}_0000.json")
+        json_dict = {}
+        for spirite_name, spirite_view_frame in self.spirite_view_frames.items():
+            json_dict[spirite_name] = spirite_view_frame.path_button.cget("text")
+        with open(save_path, "w") as f:
+            f.write(json.dumps(json_dict, indent=4, ensure_ascii=False))
+
+    def load_gaim_profile(self):
+        x = openfilename_str('filesOutput/Bluebeard/.profiles/gaims/')
+        spirite_set = []
+        with open(x, "r") as f:
+            json_dict = json.load(f)
+            for object_name, spirite_name in json_dict.items():
+                spirite_set.append(spirite_name)
+        x = x[len(os.getcwd()):]
+        self.button_dict["Load"][0].set(x.split('/')[-1])
+        self.load_spirite_set(spirite_set)
 
 
 class SpriteViewFrame(Frame):

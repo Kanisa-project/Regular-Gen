@@ -144,44 +144,15 @@ class TEXOTY(Text):
             break_line += random.choice('┉┅')
         self.insert(END, f"\n╫{help_shade}{helper_tag} {break_line}╫", 'break_line')
 
-
-    # def priont_kre8dict(self, kre8dict: dict, indent=0):
-    #     """
-    #     Print and display the full kre8dict in Texoty.
-    #     :param kre8dict:
-    #     :param indent:
-    #     :return:
-    #     """
-    #     print(kre8dict)
-    #     for key, value in kre8dict.items():
-    #         self.priont_string(f'▐{key}╕')
-    #         if isinstance(value, str):  # STRING
-    #             self.priont_string(f'{" " * (len(key) + 1)}└{value}')
-    #         elif isinstance(value, list):  # LIST
-    #             self.priont_list(items=value, list_key=key)
-    #         elif isinstance(value, int):  # INT
-    #             self.priont_int(key, value)
-    #         elif isinstance(value, float):  # FLOAT
-    #             self.priont_float(key, value)
-    #         elif isinstance(value, dict):  # DICT
-    #             if indent == 1:
-    #                 self.priont_dict(value, parent_key=key, indent=indent + 1)
-    #             else:
-    #                 self.priont_dict(value, parent_key=key, indent=indent + 1)
-
     def priont_dict(self, the_dict: dict, parent_key=None, indent=0):
         """
         Iterate through a dictionary and display each key/value pair.
-
+1
         :param indent: How much front spacing.
         :param parent_key: The parent key in a nested dictionary.
         :param the_dict: Dictionary to iterate through.
         """
         for key, value in the_dict.items():
-            # if parent_key:
-            #     prefix = " " * (len(parent_key) - 1) + "▐"
-            # else:
-            #     prefix = ""
             prefix = ''
             self.priont_string(f'{prefix}{key}┐')
 

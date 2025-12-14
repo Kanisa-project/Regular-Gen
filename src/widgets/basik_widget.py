@@ -139,6 +139,7 @@ class BasikWidget(TexiotyHelper, ttk.LabelFrame):
                 entry.grid(column=col + start_x_cell + 1, row=row + start_y_cell, stick='w')
             else:
                 entry.grid(column=col + start_x_cell, row=row + start_y_cell)
+
     def setup_button_choices(self, button_list: List[str], start_x_cell=0, start_y_cell=0):
         """
         Take in a list of texts and create a button for each one, starting at the specified cell.

@@ -3,6 +3,8 @@ import os
 import random
 from PIL import Image, ImageFilter
 from tkinter import filedialog
+
+from ...domain.resource_loader import openfilename_str
 from ...features.artay import fotoes
 from . import artstyle
 
@@ -152,12 +154,12 @@ class Fotoes(artstyle.Artyle):
             self.checkbutton_dict[option][0].set(0)
 
 
-def openfilename_str(init_dir=None) -> str:
-    if init_dir:
-        filename = filedialog.askopenfilename(title='Open..', initialdir=init_dir)
-    else:
-        filename = filedialog.askopenfilename(title='Open..', initialdir='/home/trevor/Documents/PycharmProjects/Regular-Gen')
-    return filename
+# def openfilename_str(init_dir=None) -> str:
+#     if init_dir:
+#         filename = filedialog.askopenfilename(title='Open..', initialdir=init_dir)
+#     else:
+#         filename = filedialog.askopenfilename(title='Open..', initialdir='/home/trevor/Documents/PycharmProjects/Regular-Gen')
+#     return filename
 
 def openfiledir_str() -> str:
     filename = filedialog.askdirectory(title='Open..', initialdir='/home/trevor/Documents/PycharmProjects/Regular-Gen')

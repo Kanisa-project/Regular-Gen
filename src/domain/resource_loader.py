@@ -1,5 +1,7 @@
 import os
 import glob
+from tkinter import filedialog
+
 
 def project_root() -> str:
     return os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -41,3 +43,8 @@ def safe_filename(name: str, replacement: str = "_") -> str:
     """
     invalid = '<>:"/\\|?*\n\r\t'
     return "".join((c if c not in invalid else replacement) for c in name).strip()
+
+def openfilename_str(init_dir='') -> str:
+    open_dir = '/home/trevor/Documents/PycharmProjects/Regular-Gen/' + init_dir
+    filename = filedialog.askopenfilename(title='Open..', initialdir=open_dir)
+    return filename

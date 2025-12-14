@@ -6,7 +6,8 @@ from src.widgets.texioty import texioty
 from src.settings import themery as t
 
 large_widgets = ["Texioty", "Kinvow"]
-small_widgets = ["Calendar", "Wordier", "IDUTC", "aRtay", "Launchrr", "Mujic Player", "Glythph"]
+small_widgets = ["Calendar", "Wordier", "IDUTC", "aRtay",
+                 "Launchrr", "Glythph", "Spirite Forge"]
 
 def run_pygame_game(gaim_for_launch):
     """Run a simple pygame demo loop until the user quits pygame.
@@ -54,8 +55,7 @@ class Application(tk.Frame):
         self.texioty_frame.add_helper_widget("THPH", self.glythph_frame)
         self.texioty_frame.add_helper_widget("WRDR", self.wordier_frame)
         self.texioty_frame.add_helper_widget("GAIM", self.launchrr_frame)
-        self.texioty_frame.add_helper_widget("SPRI", self.spirite_forge_frame)
-        # self.texioty_frame.add_helper_widget("GAIM", self.gaimplay_frame)
+        self.texioty_frame.add_helper_widget("SPII", self.spirite_forge_frame)
         print("Added the main frame helpers..")
 
         self.widget_dict = {
@@ -66,6 +66,7 @@ class Application(tk.Frame):
             "aRtay": self.artay_frame,
             "Wordier": self.wordier_frame,
             "Glythph": self.glythph_frame,
+            "Spirite Forge": self.spirite_forge_frame,
             "Launchrr": self.launchrr_frame
         }
         self.center_frame = SpotLighter(widget_dict=self.widget_dict, width=screen_w//3, height=screen_h//4)
@@ -114,9 +115,9 @@ class SpotLighter(tk.LabelFrame):
         :return:
         """
         north_light_var = tk.StringVar()
-        north_light_var.set('Wordier')
+        north_light_var.set('Launchrr')
         south_light_var = tk.StringVar()
-        south_light_var.set('Glythph')
+        south_light_var.set('Spirite Forge')
         east_light_var = tk.StringVar()
         east_light_var.set('Kinvow')
         west_light_var = tk.StringVar()

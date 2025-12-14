@@ -4,7 +4,8 @@ from typing import List
 
 from PIL import Image
 
-from src.widgets.artay.tab_foto import openfilename_str
+from src.domain.resource_loader import openfilename_str
+# from src.widgets.artay.tab_foto import openfilename_str
 from src.widgets.basik_widget import BasikWidget
 from src.settings import themery as t, alphanumers as a
 from src.services import utils as u

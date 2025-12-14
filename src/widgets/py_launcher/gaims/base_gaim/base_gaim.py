@@ -50,5 +50,5 @@ class BaseGaim:
         pass
 
     def draw(self):
-        self.screen.fill((74, 14, 90))
+        self.screen.fill((34, 114, 250))
         pg.display.flip()

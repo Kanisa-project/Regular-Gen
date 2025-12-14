@@ -15,6 +15,9 @@ from src.settings import themery as t
 from ...services import utils as u
 import os
 
+from ...services.utils import ensure_parent_dir
+
+
 @dataclass
 class CommandRegistry:
     """
@@ -302,7 +305,7 @@ class Texioty(tk.LabelFrame):
             color_theme = self.current_prompt.question_prompt_dict['color_theme'][1]
             color_theme = t.DEFAULT_THEMES[color_theme]
             self.available_profiles[profile_name] = u.TexiotyProfile(profile_name, password, color_theme)
-            save_path = f"filesOutput/.profiles/{profile_name}.json"
+            save_path = ensure_parent_dir(f"filesOutput/Bluebeard/.profiles/{profile_name}.json")
             # print(save_path)
             if not os.path.exists(save_path):
                 with open(save_path, 'w') as f:

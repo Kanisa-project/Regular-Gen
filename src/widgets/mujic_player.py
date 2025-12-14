@@ -7,6 +7,7 @@ from tkinter import filedialog
 
 import pygame.mixer
 
+from src.domain.resource_loader import openfilename_str
 from src.settings import theme
 from src.widgets import basik_widget, idutc
 from src.widgets.texioty import texoty
@@ -18,9 +19,9 @@ HUUUUGE INSPIRATION
 """
 
 
-class mujicPlayer(basik_widget.BasikWidget):
+class MujicPlayer(basik_widget.BasikWidget):
     def __init__(self, width, height, master=None, idutc_frame=None):
-        super(mujicPlayer, self).__init__(master=master, width=width, height=height, text="Play Mujic: ")
+        super(MujicPlayer, self).__init__(master=master, width=width, height=height, text="Play Mujic: ")
         self.txo: texoty.TEXOTY = None
         self.idutc: idutc.IDUTC = idutc_frame
         pygame.mixer.init()
@@ -65,6 +66,6 @@ class mujicPlayer(basik_widget.BasikWidget):
         self.loaded_wav_file2 = AudioSegment.from_wav(os.getcwd() + x)
 
 
-def openfilename_str() -> str:
-    filename = filedialog.askopenfilename(title='Open..')
-    return filename
+# def openfilename_str() -> str:
+#     filename = filedialog.askopenfilename(title='Open..')
+#     return filename
