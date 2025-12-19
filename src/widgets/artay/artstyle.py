@@ -6,7 +6,7 @@ class Artyle(TabbedWidget):
     def __init__(self, width, height, master=None):
         """
         Base art style tab that has buttons, sliders, checkboxes and dropdown menus for choosing options from within
-        a glyth, glyph, wordie, sprite, gaim, mujic, fotoes and any other forms of art style.
+        a glyth, glyph, categories, sprite, gaim, mujic, fotoes and any other forms of art style.
 
         :param width:
         :param height:

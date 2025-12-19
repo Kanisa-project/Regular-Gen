@@ -9,7 +9,7 @@ from PIL import Image
 from ..artay.tab_foto import openfilename_str
 from ..basik_widget import BasikWidget
 from ...features.artay import spirite
-from ...services.utils import rgb_to_hex, load_idutc
+from src.utils.utils import rgb_to_hex, load_idutc
 from ...settings.app_settings import LAYER_DICT
 from ...utils.helpers import clamp
 
@@ -141,7 +141,7 @@ class SpiriteLayerManager:
     def _create_layer_frames(self, num_layers: int):
         for i in range(num_layers):
             frame = SpiriteLayerFrame(master=self.master)
-            frame.grid(column=i, row=1)
+            frame.grid(column=i, row=(i%2)+1, columnspan=2)
             self.layer_frames.append(frame)
 
     def update_all_layers(self, spirite_name: str, layer_names: List[str]):

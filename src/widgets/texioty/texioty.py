@@ -12,10 +12,10 @@ from .helpers.tex_helper import TexiotyHelper
 from src.widgets.texioty import texoty
 from src.widgets.texioty import texity
 from src.settings import themery as t
-from ...services import utils as u
+from ...utils import utils as u
 import os
 
-from ...services.utils import ensure_parent_dir
+from src.utils.utils import ensure_parent_dir
 
 
 @dataclass

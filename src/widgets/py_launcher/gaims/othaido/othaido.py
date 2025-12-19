@@ -330,5 +330,5 @@ def launch_from_script():
 
 
 if __name__ == "__main__":
-    othaido = Game()
+    othaido = Gaim()
     othaido.run()

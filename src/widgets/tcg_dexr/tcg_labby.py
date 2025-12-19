@@ -5,9 +5,10 @@ from mtgsdk import Card
 from PIL import Image, ImageDraw
 import random
 
+from src.widgets.basik_widget import BasikWidget
 from src.widgets.texioty.question_prompts.base_prompt import BasePrompt
 from src.settings import themery as t, alphanumers as s
-from src.services import utils as u
+from src.utils import utils as u
 
 TCG_OPTIONS = ['Magic the Gathering',
                'Pokemon',
@@ -16,8 +17,13 @@ TCG_OPTIONS = ['Magic the Gathering',
                'Digimon',
                'All']
 
+class TCGLaboratory(BasikWidget):
+    def __init__(self, txo, txi):
+        super().__init__(txo, txi)
+        self.current_tcg = None
 
-class TCGLabratory(BasePrompt):
+
+class TCGLabby(BasePrompt):
     def __init__(self, txo, txi):
         super().__init__(txo, txi)
         self.current_tcg = None

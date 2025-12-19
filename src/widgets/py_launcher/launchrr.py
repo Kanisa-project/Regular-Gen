@@ -7,11 +7,11 @@ from tkinter import Canvas, Button, OptionMenu, StringVar, PhotoImage
 from typing import Optional, List
 
 from src.domain.resource_loader import openfilename_str
-from src.services.utils import ensure_parent_dir
+from src.utils.utils import ensure_parent_dir
 from src.utils.helpers import clamp
 from src.widgets.basik_widget import BasikWidget
 from src.settings import themery as t
-from src.services import utils as u
+from src.utils import utils as u
 from src.widgets.py_launcher import pylanes, kPaint, all_balls_fall, spacedits
 from tkinter.ttk import Frame
 
@@ -23,7 +23,7 @@ MINIMUM_SPRITE_OBJ_DICT = {
     'k_paint': {
         "player": "Brush"
     },
-    "ABF": {
+    "all_balls_fall": {
         "player": "Ball",
         "obstacle": "Platform"
     },
@@ -37,20 +37,24 @@ MINIMUM_SPRITE_OBJ_DICT = {
         "obstacle": "Wall",
         "enemy": "Character",
         "collectable": "Coin"
+    },
+    "pylanes": {
+        "player": "Character",
+        "enemy": "Character"
     }
 }
 
 class Launchrr(BasikWidget):
     def __init__(self, width, height, master=None, tk_root_window=None):
         super().__init__(width, height, master)
-        self.loaded_gaim = "ABF"
-        self.loaded_gaim_string = "ABF"
+        self.loaded_gaim = "all_balls_fall"
+        self.loaded_gaim_string = "all_balls_fall"
         self.helper_commands['launch'] = [self.launch_gaim, "Launch the selected gaim from launchrr",
                                           {}, "GAIM", u.rgb_to_hex(t.JUNGLE_GREEN), u.rgb_to_hex(t.DARK_SEA_GREEN)]
         self.available_gaims = {
-            'ABF': all_balls_fall.AllBallsFall,
+            'all_balls_fall': all_balls_fall.AllBallsFall,
             'k_paint': kPaint.Gaim,
-            'spaceDits': None,
+            'spaceDits': spacedits.SpaceDits,
             'pylanes': pylanes.PyLanes
         }
         self.setup_dropdown_menus(list(self.available_gaims.keys()), dropdown_name="avail_gaims")
@@ -60,7 +64,7 @@ class Launchrr(BasikWidget):
         self.button_dict['Launch'][1].config(command = lambda: self.launch_gaim(self.dropdown_menu_dict['avail_gaims'][0].get()))
         self.launch_gaim_flag = False
         self.spirite_view_frames = {}
-        self.setup_spirite_view_frames('ABF', get_min_spirite_obj_dict("ABF"))
+        self.setup_spirite_view_frames('all_balls_fall', get_min_spirite_obj_dict("all_balls_fall"))
 
     def clear_spirite_view_frames(self):
         for spirite_view_frame in self.spirite_view_frames.values():
@@ -76,15 +80,16 @@ class Launchrr(BasikWidget):
             self.spirite_view_frames[object_name].grid(column=s, row=1, columnspan=4, rowspan=3)
             s += 5
 
-    def launch_gaim(self, game_name: str = "ABF"):
+    def launch_gaim(self, game_name: str = "all_balls_fall"):
         self.launch_gaim_flag = True
         self.loaded_gaim = self.available_gaims[game_name]
+        self.loaded_gaim_string = game_name
         self.txo.priont_string(f"Loaded {game_name} and ready for launching..")
 
     def load_spirite_set(self, spirite_set: list):
         for spirite_name in spirite_set:
             shutil.copy(f"filesOutput/Bluebeard/spirites/{spirite_name}.png",
-                        f"src/widgets/py_launcher/gaims/all_balls_fall/assets/{re.sub('[0-9]', '', spirite_name)}.png")
+                        f"src/widgets/py_launcher/gaims/{self.loaded_gaim_string}/assets/{re.sub('[0-9]', '', spirite_name)}.png")
 
         self.txo.priont_string(f"Loaded spirite set {spirite_set}")
 

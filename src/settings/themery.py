@@ -229,6 +229,13 @@ RANDOM_COLOR7 = (random.randint(0, 255), random.randint(0, 255), random.randint(
 RANDOM_COLOR8 = (random.randint(0, 255), random.randint(0, 255), random.randint(0, 255))
 RANDOM_COLOR9 = (random.randint(0, 255), random.randint(0, 255), random.randint(0, 255))
 
+RANDOM_RED = (random.randint(170, 255), random.randint(0, 160), random.randint(0, 160))
+RANDOM_GREEN = (random.randint(0, 160), random.randint(170, 255), random.randint(0, 160))
+RANDOM_BLUE = (random.randint(0, 160), random.randint(0, 160), random.randint(170, 255))
+RANDOM_COLOR = (random.randint(0, 255), random.randint(0, 255), random.randint(0, 255))
+
+
+
 RANDOM_COLORS = [RANDOM_COLOR0, RANDOM_COLOR1, RANDOM_COLOR2, RANDOM_COLOR3, RANDOM_COLOR4]
 
 

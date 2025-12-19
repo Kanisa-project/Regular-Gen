@@ -8,7 +8,7 @@ from src.domain.resource_loader import openfilename_str
 # from src.widgets.artay.tab_foto import openfilename_str
 from src.widgets.basik_widget import BasikWidget
 from src.settings import themery as t, alphanumers as a
-from src.services import utils as u
+from src.utils import utils as u
 from src.widgets.glythph import glyther
 
 

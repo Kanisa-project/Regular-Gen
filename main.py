@@ -1,12 +1,16 @@
 import sys
 import tkinter as tk
-from src.widgets import kinvow, idutc, artay, kalendar, glythph, wordier, spirite_forge
+from src.widgets import kinvow, idutc, artay, kalendar, glythph, wordie, spirite_forge
+from src.widgets.cooked_book.cooked_book import CookedBook
+from src.widgets.foto_worx.tab_foto import FotoWorx
+from src.widgets.mujica.mujica import Mujica
 from src.widgets.py_launcher.launchrr import Launchrr
 from src.widgets.texioty import texioty
 from src.settings import themery as t
 
-large_widgets = ["Texioty", "Kinvow"]
-small_widgets = ["Calendar", "Wordier", "IDUTC", "aRtay",
+large_widgets = ["Texioty", "Kinvow", "Cooked Book", "Mujica",
+                 "Foto Worx"]
+small_widgets = ["Calendar", "Wordie", "IDUTC",
                  "Launchrr", "Glythph", "Spirite Forge"]
 
 def run_pygame_game(gaim_for_launch):
@@ -38,14 +42,18 @@ class Application(tk.Frame):
         self.kinvow_frame.txo = self.texioty_frame.texoty
 
         self.glythph_frame = glythph.Glythph(width=sml_width, height=sml_height, master=self.texioty_frame)
-        self.wordier_frame = wordier.Wordier(width=sml_width, height=sml_height,
-                                             master=self.texioty_frame, masterpiece_size=(self.kinvow_frame.canvas_w//8, self.kinvow_frame.canvas_h//4))
+        self.wordie_frame = wordie.Wordie(width=sml_width, height=sml_height,
+                                          master=self.texioty_frame, kinvow_size=(self.kinvow_frame.canvas_w//8, self.kinvow_frame.canvas_h//4))
         self.spirite_forge_frame = spirite_forge.SpiriteForge(width=sml_width, height=sml_height, master=self.texioty_frame)
 
         self.calendar_frame = kalendar.Kalendar(width=sml_width, height=sml_height)
         self.calendar_frame.txo = self.texioty_frame.texoty
 
         self.launchrr_frame = Launchrr(width=sml_width, height=sml_height, master=self.texioty_frame, tk_root_window=master)
+        self.cookbook_frame = CookedBook(width=lrg_width, height=lrg_height, master=self.texioty_frame)
+        self.mujica_frame = Mujica(width=lrg_width, height=lrg_height, master=self.texioty_frame)
+        self.foto_worx_frame = FotoWorx(width=lrg_width, height=lrg_height, master=self.texioty_frame)
+
         print("Created the main frame helper widgets..")
 
         self.texioty_frame.add_helper_widget("CLDR", self.calendar_frame)
@@ -53,9 +61,12 @@ class Application(tk.Frame):
         self.texioty_frame.add_helper_widget("KNVO", self.kinvow_frame)
         self.texioty_frame.add_helper_widget("ARTY", self.artay_frame)
         self.texioty_frame.add_helper_widget("THPH", self.glythph_frame)
-        self.texioty_frame.add_helper_widget("WRDR", self.wordier_frame)
+        self.texioty_frame.add_helper_widget("WRDR", self.wordie_frame)
         self.texioty_frame.add_helper_widget("GAIM", self.launchrr_frame)
         self.texioty_frame.add_helper_widget("SPII", self.spirite_forge_frame)
+        self.texioty_frame.add_helper_widget("COOK", self.cookbook_frame)
+        self.texioty_frame.add_helper_widget("MUJI", self.mujica_frame)
+        self.texioty_frame.add_helper_widget("FOTO", self.foto_worx_frame)
         print("Added the main frame helpers..")
 
         self.widget_dict = {
@@ -64,10 +75,13 @@ class Application(tk.Frame):
             "IDUTC": self.idutc_frame,
             "Kinvow": self.kinvow_frame,
             "aRtay": self.artay_frame,
-            "Wordier": self.wordier_frame,
+            "Wordie": self.wordie_frame,
             "Glythph": self.glythph_frame,
             "Spirite Forge": self.spirite_forge_frame,
-            "Launchrr": self.launchrr_frame
+            "Launchrr": self.launchrr_frame,
+            "Cooked Book": self.cookbook_frame,
+            "Mujica": self.mujica_frame,
+            "Foto Worx": self.foto_worx_frame
         }
         self.center_frame = SpotLighter(widget_dict=self.widget_dict, width=screen_w//3, height=screen_h//4)
         self.center_frame.grid(column=1, row=1, columnspan=1, rowspan=1, padx=1, pady=1, sticky='nesw')
@@ -75,7 +89,7 @@ class Application(tk.Frame):
         self.center_frame.grid_columnconfigure(1, weight=1)
 
         self.center_frame.change_western_light(self.texioty_frame)
-        self.center_frame.change_eastern_light(self.kinvow_frame)
+        self.center_frame.change_eastern_light(self.mujica_frame)
         self.center_frame.change_southern_light(self.spirite_forge_frame)
         self.center_frame.change_northern_light(self.launchrr_frame)
 

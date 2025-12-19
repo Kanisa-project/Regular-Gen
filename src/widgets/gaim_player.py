@@ -55,10 +55,10 @@ class GaimPlayer(basik_widget.BasikWidget):
         print("starting gaim", self.idutc.kre8dict)
         if "hangman" in args:
             try:
-                if "Hangman" == self.idutc.kre8dict["wordie"]["type"]:
+                if "Hangman" == self.idutc.kre8dict["categories"]["type"]:
                     self.loaded_gaim = "Hangman"
                     self.inGaim = True
-                    self.start_hangman(self.idutc.kre8dict["wordie"]['Hangman'])
+                    self.start_hangman(self.idutc.kre8dict["categories"]['Hangman'])
             except KeyError as e:
                 raise KeyError(f"Ain't got the {e} key, dawg")
         elif "blackjack" in args:

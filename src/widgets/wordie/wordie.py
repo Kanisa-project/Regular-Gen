@@ -1,12 +1,12 @@
 from tkinter import *
-from . import artstyle
 from tkinter import ttk
 
-from .wordie import wtabCrossword, wtabWordSearch, wtabCollage, wtabHangman, wtabRiddle
-from ...features.artay import wordie
+from .categories import wtabCrossword, wtabWordSearch, wtabCollage, wtabHangman, wtabRiddle
+from ..basik_widget import BasikWidget
+# from ...features.artay import categories
 
 
-class Wordie(artstyle.Artyle):
+class Wordie(BasikWidget):
     def __init__(self, width, height, master=None, idutc=None, kinvow_size=(0, 0)):
         """
         This artyle has everything to do with words and how they correlate to each other or lack there of. It can be a
@@ -21,14 +21,12 @@ class Wordie(artstyle.Artyle):
         self.tab_name = "Wordie"
         self.idutc_frame = idutc
         self.font_name = "Akt"
-        # self.wordie_choices = ["Collage", "Riddle", "Word Search", "Hangman", "Crossword"]
-        # self.setup_radiobutton_choices(self.wordie_choices)
+
         self.wordieBook = ttk.Notebook(master=self)
         self.hangmanTab = wtabHangman.Hangman(master=self.wordieBook, width=width, height=height, text="Hangman")
         self.wordsearchTab = wtabWordSearch.WordSearch(master=self.wordieBook, width=width, height=height)
         self.crosswordTab = wtabCrossword.Crossword(master=self.wordieBook, width=width, height=height)
         self.riddleTab = wtabRiddle.Riddle(master=self.wordieBook, width=width, height=height)
-        # kinvow_size = (self.master.master.kinvow_frame.canvas_w, self.master.master.kinvow_frame.canvas_h)
         self.collageTab = wtabCollage.Collage(master=self.wordieBook, masterpiece_size=kinvow_size, width=width, height=height)
 
         self.wordieBook.add(self.collageTab, text="Collage")
@@ -38,13 +36,6 @@ class Wordie(artstyle.Artyle):
         self.wordieBook.add(self.crosswordTab, text="Crossword")
 
         self.wordieBook.grid(row=0, column=1, rowspan=6)
-
-    def destroy_word_optionmenus(self):
-        """
-        Destroy each of the optionmenus that contain wordlists. Unsure of exactly what is going on here.
-        """
-        for c in self.optionmenu_dict:
-            self.optionmenu_dict[c][1].destroy()
 
     def gather_wordie_options(self, command_arg='') -> dict:
         """
@@ -81,39 +72,6 @@ class Wordie(artstyle.Artyle):
 
         return chosen_wordie_options
 
-    def command_wordie_options(self, command_arg: str) -> dict:
-        """
-        Gather and return a dictionary of categories options, such as the type of art it is. Hangman, poem, random sentence
-        generator. Along with the phrase for hangman or list of words in a word search or crossword.
-        """
-        chosen_wordie_options = {
-            "type": command_arg.title()
-        }
-        if command_arg == "collage":
-            chosen_wordie_options["Collage"] = {}
-            for i, word in enumerate(self.collageTab.textbox_dict):
-                chosen_wordie_options["Collage"][word] = self.collageTab.textbox_dict[word][0].get()
-        if command_arg == "riddle":
-            chosen_wordie_options["Riddle"] = {}
-            for i, word in enumerate(self.riddleTab.textbox_dict):
-                chosen_wordie_options["Riddle"][word] = self.riddleTab.textbox_dict[word][0].get()
-        if command_arg == "word_search":
-            chosen_wordie_options["Word Search"] = {}
-            for i, word in enumerate(self.wordsearchTab.textbox_dict):
-                chosen_wordie_options["Word Search"][str(i)] = self.wordsearchTab.textbox_dict[word][0].get()
-        if command_arg == "hangman":
-            chosen_wordie_options["Hangman"] = {
-                'Phrase': self.hangmanTab.textbox_dict["Phrase"][0].get(),
-                'Max Guesses': self.hangmanTab.max_guesses
-            }
-        if command_arg == "crossword":
-            chosen_wordie_options["Crossword"] = {
-                "Across": self.crosswordTab.across_hint_dict,
-                "Down": self.crosswordTab.down_hint_dict
-            }
-
-        return chosen_wordie_options
-
     def gather_random_options(self) -> dict:
         """
         Select some random categories options.
@@ -143,7 +101,7 @@ class Wordie(artstyle.Artyle):
             wordie.word_search(img, artribute_dict, kre8dict["categories"]["Word Search"])
         if kre8dict["categories"]["type"] == 3:
             kre8dict["categories"]["type"] = "Hangman"
-            wordie.hangman(img, artribute_dict, kre8dict["categories"]["Hangman"])
+            hangman(img, artribute_dict, kre8dict["categories"]["Hangman"])
         if kre8dict["categories"]["type"] == 4:
             kre8dict["categories"]["type"] = "Crossword"
             wordie.crossword(img, artribute_dict, kre8dict["categories"]["Crossword"])

@@ -1,7 +1,7 @@
 import math
 import random
 
-from src.services import utils as u
+from . import wordieTab
 from src.settings import themery as t
 from src.utils import helpers
 from typing import Tuple
@@ -11,8 +11,6 @@ from typing import Dict
 import os
 import tkinter as tk
 from typing import Optional, Callable, List
-
-from src.widgets.basik_widget import BasikWidget
 
 
 class FontCanvas(tk.Canvas):
@@ -122,12 +120,12 @@ class FontCanvas(tk.Canvas):
         # Clear previous selection
         self._clear_selection()
 
-        # Set a new selection
+        # Set new selection
         self.selected_font = font_name
         font_index = self.font_names.index(font_name)
         font_path = self.font_paths[font_index]
 
-        # Highlight the selected font
+        # Highlight selected font
         for tag in [f"font:{font_name}", f"bg:{font_name}"]:
             items = self.find_withtag(tag)
             for item in items:
@@ -154,14 +152,14 @@ class FontCanvas(tk.Canvas):
                         self.itemconfig(item, fill="", outline="", width=0)
 
     def set_selection_callback(self, callback: Callable[[str, str], None]):
-        """Set a callback function that receives (font_name, font_path) when the font is selected."""
+        """Set callback function that receives (font_name, font_path) when font is selected."""
         self.selection_callback = callback
 
     def get_selected_font(self) -> Optional[tuple]:
         """Get currently selected font as (font_name, font_path) or None."""
         if self.selected_font and self.selected_font in self.font_names:
             font_index = self.font_names.index(self.selected_font)
-            return self.selected_font, self.font_paths[font_index]
+            return (self.selected_font, self.font_paths[font_index])
         return None
 
     def select_font_by_name(self, font_name: str) -> bool:
@@ -456,26 +454,23 @@ class GraphCanvas(tk.Canvas):
         self.master.randomize_graph_drawn_lines()
 
 
-class Wordier(BasikWidget):
+class Collage(wordieTab.Wordietab):
     def __init__(self, width, height, master=None, masterpiece_size=(1000, 500)):
         super().__init__(width, height, master)
         self.textbox_names = ["One", "Two", "Three"]
         self.collage_name_dict = init_collage_areas(self.textbox_names)
+        self.setup_button_choices(["R a n D O c A p S p A c E D"], start_y_cell=0, start_x_cell=1)
         self.setup_text_boxes(self.collage_name_dict, start_y_cell=2, width=28)
+        self.button_dict["R a n D O c A p S p A c E D"][1].config(command=self.shuffle_case_the_areas)
         for area in self.textbox_names:
             self.textbox_dict[area][0].set(helpers.random_loading_phrase())
-        self.graph_canvas = GraphCanvas(self, width=masterpiece_size[0]*3)
+        self.graph_canvas = GraphCanvas(self, width=masterpiece_size[0]//3, height=masterpiece_size[1]//3)
         self.graph_canvas.grid(row=0, column=0, rowspan=25, sticky="nsew")
         self.font_canvas = FontCanvas(self)
         self.font_canvas.grid(row=5, column=1, rowspan=1, sticky="nsew")
         self.update_graph_drawn_lines()
-        self.helper_commands['words'] = [self.add_words_kinvow, "Add some words to the image on kinvow",
-                                         {}, "WRDR", u.rgb_to_hex(t.RANDOM_COLOR3), u.rgb_to_hex(t.BLACK)]
 
     def get_font_canvas_selection(self):
-        pass
-
-    def add_words_kinvow(self):
         pass
 
     def get_graph_canvas_points(self) -> dict:

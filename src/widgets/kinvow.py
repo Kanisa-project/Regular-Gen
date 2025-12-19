@@ -45,9 +45,9 @@ class KINVOW(basik_widget.BasikWidget):
             "kin8": [self.create_from_masterpiece, "Create a masterpiece on Kinvow.",
                      {"glyth": "Gather glyth options and show on Kinvow.",
                       "glyph": "Gather glyph options and show on Kinvow.",
-                      "wordie": "Gather wordie options and show on Kinvow.",
+                      "categories": "Gather categories options and show on Kinvow.",
                       "spirite": "Gather spirite options and show on Kinvow.",
-                      "recipe": "Gather recipe options and show on Kinvow.",
+                      "categories": "Gather categories options and show on Kinvow.",
                       "fotoes": "Gather fotoes options and show on Kinvow.",
                       "mujic": "Gather mujic options and show on Kinvow.",
                       "gaim": "Gather gaim options and show on Kinvow.",
@@ -84,9 +84,9 @@ class KINVOW(basik_widget.BasikWidget):
         # self.txo.priont_dict(kre8dict)
         gather_options_dict = {'glyth': self.artay.glythTab.gather_glyth_options,
                                'glyph': self.artay.glyphTab.gather_glyph_options,
-                               'wordie': self.artay.wordieTab.gather_wordie_options,
+                               'categories': self.artay.wordieTab.gather_wordie_options,
                                'spirite': self.artay.spiriteTab.get_spirite_configuration,
-                               'recipe': self.artay.recipeTab.gather_recipe_options,
+                               'categories': self.artay.recipeTab.gather_recipe_options,
                                'fotoes': self.artay.fotoTab.gather_foto_options,
                                'mujic': self.artay.mujicTab.gather_mujic_options,
                                'gaim': self.artay.gaimTab.gather_gaim_options,
@@ -144,7 +144,7 @@ class KINVOW(basik_widget.BasikWidget):
         :return:
         """
         for artyle in args:
-            if artyle in ["glyth", "glyph", "wordie", "spirite", "fotoes", "recipe",
+            if artyle in ["glyth", "glyph", "categories", "spirite", "fotoes", "categories",
                           "mujic", "gaim", "meem"]:
                 # self.txo.priont_string(f"⦓⦙ Starting a {artyle}...")
                 pass
@@ -152,13 +152,13 @@ class KINVOW(basik_widget.BasikWidget):
                 self.create_glyth(nim, kre8dict, abt)
             if artyle.lower() == "glyph":
                 self.create_glyph(nim, kre8dict, abt)
-            if artyle.lower() == "wordie":
+            if artyle.lower() == "categories":
                 self.create_wordie(nim, kre8dict, abt)
             if artyle.lower() == "spirite":
                 self.create_spirite(nim, kre8dict, abt)
             if artyle.lower() == "fotoes":
                 self.create_foto(nim, kre8dict, abt)
-            if artyle.lower() == "recipe":
+            if artyle.lower() == "categories":
                 self.create_recipe(nim, kre8dict, abt)
             if artyle.lower() == "mujic":
                 self.create_mujic(nim, kre8dict, abt)
@@ -204,12 +204,12 @@ class KINVOW(basik_widget.BasikWidget):
     #     kanisa_pen_dict = self.idutc.setup_kre8dict(args[0], args[1])
     #     kanisa_pen_dict['artributes'] = self.idutc.gather_random_attributes()
     #     random_artyles = []
-    #     possible_artyles = ["glyth", "glyph", "wordie", "recipe", "spirite"]
+    #     possible_artyles = ["glyth", "glyph", "categories", "categories", "spirite"]
     #     random_options_dict = {'glyth': self.artay.glythTab.gather_random_options,
     #                            'glyph': self.artay.glyphTab.gather_random_options,
-    #                            'wordie': self.artay.wordieTab.gather_random_options,
+    #                            'categories': self.artay.wordieTab.gather_random_options,
     #                            'spirite': self.artay.spiriteTab.gather_random_options,
-    #                            'recipe': self.artay.recipeTab.gather_random_options}
+    #                            'categories': self.artay.recipeTab.gather_random_options}
     #     # Pick 3 random artay and run their creations.
     #     for i in range(3):
     #         random_artyles.append(random.choice(possible_artyles))

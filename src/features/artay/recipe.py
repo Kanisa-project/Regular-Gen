@@ -5,7 +5,7 @@ from src.settings import themery
 
 
 def add_ingredients(img: Image.Image, kre8dict: dict) -> Image.Image:
-    ing_dict = kre8dict["recipe"]["ingredients"]
+    ing_dict = kre8dict["categories"]["ingredients"]
     draw = ImageDraw.Draw(img)
     width, height = img.size
     for i, (key, value) in enumerate(ing_dict.items()):
@@ -17,7 +17,7 @@ def add_ingredients(img: Image.Image, kre8dict: dict) -> Image.Image:
 
 
 def add_directions(img: Image.Image, kre8dict: dict) -> Image.Image:
-    dir_dict = kre8dict["recipe"]["directions"]
+    dir_dict = kre8dict["categories"]["directions"]
     draw = ImageDraw.Draw(img)
     width, height = img.size
     for i, (key, value) in enumerate(dir_dict.items()):
@@ -43,9 +43,9 @@ def add_labels(img: Image.Image, kre8dict: dict) -> Image.Image:
                             text="\n".join("directions"), font=akt16,
                             fill=random.choice(themery.RANDOM_COLORS))
         draw.text((width * .6 + random.randint(-2, 2), height * .8 + random.randint(-2, 2)),
-                  text="created by: \n    -" + kre8dict["recipe"]["recipe_info"][0], font=akt16,
+                  text="created by: \n    -" + kre8dict["categories"]["recipe_info"][0], font=akt16,
                   fill=random.choice(themery.RANDOM_COLORS))
         draw.text((8 + random.randint(-2, 2), 4 + random.randint(-2, 2)),
-                  text=kre8dict["recipe"]["recipe_info"][1], font=akt32,
+                  text=kre8dict["categories"]["recipe_info"][1], font=akt32,
                   fill=random.choice(themery.RANDOM_COLORS))
     return img

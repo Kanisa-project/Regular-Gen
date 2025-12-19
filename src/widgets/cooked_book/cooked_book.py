@@ -3,18 +3,13 @@ import random
 from tkinter import *
 from tkinter import ttk
 
-from . import artstyle
-from src.widgets.artay.recipe import rtabMarinades, rtabOSRS, rtabCasseroles, rtabSauces, \
-    rtabSeasonings, rtabOther, rtabSandwiches, rtabSoups
-from .recipe import rtabDesserts
-from ...features.artay import recipe
+from src.widgets.cooked_book.categories import rtabMarinades, rtabOSRS, rtabCasseroles, rtabSauces, \
+    rtabSeasonings, rtabOther, rtabSandwiches, rtabSoups, rtabDesserts
+
+from ..basik_widget import BasikWidget
 
 
-# akt16 = ImageFont.truetype(os.getcwd() + "/assets/Fonts/Akt-Medium.ttf", 16)
-# akt32 = ImageFont.truetype(os.getcwd() + "/assets/Fonts/Akt-Medium.ttf", 32)
-
-
-class AlaNFT(artstyle.Artyle):
+class CookedBook(BasikWidget):
     def __init__(self, width, height, master=None, idutc=None):
         """
         A tab to add a categories on the kinvow with the help of the wordies tab.
@@ -23,7 +18,7 @@ class AlaNFT(artstyle.Artyle):
         :param TEXIOTY: Texioty frame, for textual input and output
         :param KINVOW: Kinvow frame, for visual input(eventually) and output.
         """
-        super(AlaNFT, self).__init__(master=master, width=width, height=height)
+        super().__init__(width, height, master)
         self.osrsTab = None
         self.tab_name = "Recipe"
 

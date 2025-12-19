@@ -65,13 +65,13 @@ class ARTAY(ttk.LabelFrame):
         #               {"add": "Add a glyph to the kre8dict.",
         #                "new": "Make a new option for glyph."}, "ARTY", t.rgb_to_hex(t.LIGHT_GOLDENROD_YELLOW),
         #               t.rgb_to_hex(t.DARK_SEA_GREEN)],
-        #     "wordie": [self.change_wordie, "Change wordie options and choices.",
-        #                {"add": "Add a wordie type to the kre8dict.",
+        #     "categories": [self.change_wordie, "Change categories options and choices.",
+        #                {"add": "Add a categories type to the kre8dict.",
         #                 "font": "Select which font for Kinvow to use."}, "ARTY", t.rgb_to_hex(t.LIGHT_GOLDENROD_YELLOW),
         #                t.rgb_to_hex(t.DARK_SEA_GREEN)],
-        #     "recipe": [self.change_recipe, "Change recipe options and choices.",
-        #                {"add": "Add a recipe to the kre8dict.",
-        #                 "new": "Make a new recipe for the book."}, "ARTY", t.rgb_to_hex(t.LIGHT_GOLDENROD_YELLOW),
+        #     "categories": [self.change_recipe, "Change categories options and choices.",
+        #                {"add": "Add a categories to the kre8dict.",
+        #                 "new": "Make a new categories for the book."}, "ARTY", t.rgb_to_hex(t.LIGHT_GOLDENROD_YELLOW),
         #                t.rgb_to_hex(t.DARK_SEA_GREEN)],
         #     "spirite": [self.change_spirite, "Change spirite options and choices.",
         #                 {"add": "Add a spirite to the kre8dict.",
@@ -108,18 +108,18 @@ class ARTAY(ttk.LabelFrame):
                 f"Current font: {FONT_NAMES.index(self.wordieTab.font_name)} - {self.wordieTab.font_name}")
             self.txo.priont_list(FONT_NAMES, parent_key="Fonts", numbered=True)
         elif "add" in args:
-            self.IDUTC_frame.kre8dict["wordie"] = self.wordieTab.command_wordie_options(
+            self.IDUTC_frame.kre8dict["categories"] = self.wordieTab.command_wordie_options(
                 command_arg=str(random.randint(1, 3)))
             if len(args) == 2:
-                self.IDUTC_frame.kre8dict["wordie"] = self.wordieTab.command_wordie_options(command_arg=args[1])
+                self.IDUTC_frame.kre8dict["categories"] = self.wordieTab.command_wordie_options(command_arg=args[1])
 
     def change_recipe(self, args: list):
         self.txo.priont_string(f"Whipping with the {args}")
         if 'add' in args:
-            self.IDUTC_frame.kre8dict["recipe"] = self.recipeTab.command_recipe(
+            self.IDUTC_frame.kre8dict["categories"] = self.recipeTab.command_recipe(
                 random.choice(["casseroles", "other", "desserts", "soups", "seasonings"]))
             if len(args) == 2:
-                self.IDUTC_frame.kre8dict['recipe'] = self.recipeTab.command_recipe(args[1])
+                self.IDUTC_frame.kre8dict['categories'] = self.recipeTab.command_recipe(args[1])
         elif 'new' in args and len(args) >= 2:
             if "OSRS" in args:
                 self.recipeTab.add_osrs_tab()

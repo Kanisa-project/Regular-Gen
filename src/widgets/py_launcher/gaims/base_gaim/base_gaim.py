@@ -46,7 +46,7 @@ class BaseGaim:
                 if event.key == pg.K_ESCAPE:
                     self.running = False
 
-    def update(self):
+    def update(self, dt: float = 1/60):
         pass
 
     def draw(self):

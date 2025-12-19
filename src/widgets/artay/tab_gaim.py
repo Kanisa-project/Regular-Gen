@@ -11,18 +11,18 @@ class Gaim(artstyle.Artyle):
         super(Gaim, self).__init__(master=master, width=width, height=height)
         self.disp_img = None
         self.tab_name = "Gaim"
-        self.gaim_optionmenu_choice_list = ["SpaceDits", "ABF", "ThurBo", "othaido", "BootyDefence"]
+        self.gaim_optionmenu_choice_list = ["SpaceDits", "all_balls_fall", "ThurBo", "othaido", "BootyDefence"]
         # self.spirite_option_dict = {
         #     "othaido": ["RTJ", "Boat"],
         #     "SpaceDits": ["Alien", "Ship", "Asteroid"],
-        #     "ABF": ["Ball", "Platform"],
+        #     "all_balls_fall": ["Ball", "Platform"],
         #     "ThurBo": ["Sword", "Tribloc"],
         #     "Booty Race": ["Boat", "RTJ"],
         # }
         # self.update_gaim_spirites_button = Button(self, text="Update", command=self.generate_populate_spirite_choices)
         # self.update_gaim_spirites_button.grid(column=0, row=1)
         self.spirite_type_str_var = StringVar()
-        self.spirite_type_str_var.set("ABF")
+        self.spirite_type_str_var.set("all_balls_fall")
         spirite_type_dropmenu = OptionMenu(self, self.spirite_type_str_var, *self.gaim_optionmenu_choice_list)
         spirite_type_dropmenu.grid(column=0, row=0)
 
@@ -68,7 +68,7 @@ class Gaim(artstyle.Artyle):
                 chosen_gaim_options[ltr][nbr] = option_choice[0].get()
         chosen_gaim_options["gaim_play"] = self.spirite_type_str_var.get()
         chosen_gaim_options["MovementProfile"] = random.choice(["LR", "UD"])
-        if chosen_gaim_options["gaim_play"] == "ABF":
+        if chosen_gaim_options["gaim_play"] == "all_balls_fall":
             chosen_gaim_options["MovementProfile"] = "LR"
         return chosen_gaim_options
 

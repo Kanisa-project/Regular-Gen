@@ -128,7 +128,7 @@
           <mxGeometry x="10" y="350" width="120" height="30" as="geometry"/>
         </mxCell>
 
-        <!-- src/features/recipe inner files (representative) -->
+        <!-- src/features/categories inner files (representative) -->
         <mxCell id="recipe_files_group" value="recipe files" style="swimlane;rounded=1;whiteSpace=wrap;html=1;fillColor=#fff8e1;strokeColor=#ffcc80" vertex="1" parent="features_group">
           <mxGeometry x="150" y="260" width="150" height="170" as="geometry"/>
         </mxCell>
@@ -160,7 +160,7 @@
           <mxGeometry relative="1" as="geometry"/>
         </mxCell>
 
-        <!-- gaim_player depends on idutc and wordie feature -->
+        <!-- gaim_player depends on idutc and categories feature -->
         <mxCell id="e_gaim_idutc" edge="1" parent="rootGroup" source="widgets_gaim_player" target="idutc_idutc" style="endArrow=block;strokeColor=#2e7d32">
           <mxGeometry relative="1" as="geometry"/>
         </mxCell>
@@ -182,7 +182,7 @@
           <mxGeometry relative="1" as="geometry"/>
         </mxCell>
 
-        <!-- features.recipe (group) depends on widgets/ and possibly settings -->
+        <!-- features.categories (group) depends on widgets/ and possibly settings -->
         <mxCell id="e_recipe_widgets" edge="1" parent="rootGroup" source="features_recipe" target="widgets_group" style="endArrow=block;strokeColor=#ef6c00;dashed=1">
           <mxGeometry relative="1" as="geometry"/>
         </mxCell>

@@ -1,6 +1,6 @@
 import random
 
-from src.services.utils import polypointlist
+from src.utils.utils import polypointlist
 from src.settings import themery as t
 import pygame as pg
 

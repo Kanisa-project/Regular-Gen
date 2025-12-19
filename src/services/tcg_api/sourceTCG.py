@@ -1,10 +1,7 @@
 import os
-
 import requests
 import random
-
 from dotenv import load_dotenv
-
 from src.utils import dbHelper
 
 load_dotenv()

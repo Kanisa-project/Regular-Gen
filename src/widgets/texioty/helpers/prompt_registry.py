@@ -5,7 +5,7 @@ import src.widgets.texioty.texity as texity
 import src.widgets.texioty.texoty as texoty
 from src.widgets.texioty.helpers.tex_helper import TexiotyHelper
 from src.settings import themery as t
-from src.services import utils as u
+from src.utils import utils as u
 from src.widgets.texioty.question_prompts.foto_worx import FotoWorxHop
 from src.widgets.texioty.question_prompts.profilizer import Profilizer
 

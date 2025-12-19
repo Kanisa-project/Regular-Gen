@@ -4,7 +4,7 @@ from math import ceil
 from typing import Callable
 
 from src.widgets.texioty.question_prompts.base_prompt import BasePrompt
-from src.services import utils as u
+from src.utils import utils as u
 from PIL import Image, ImageDraw, ImageFont
 
 

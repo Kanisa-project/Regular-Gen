@@ -4,15 +4,10 @@ import datetime
 from dataclasses import dataclass
 from typing import Dict
 
-from . import basik_widget
-from ..domain import models
-from ..settings import themery as t
-from ..utils import helpers
-
-# import lisox
-
-# import dbhelper
-# import texoty
+from src.widgets import basik_widget
+from src.domain import models
+from src.settings import themery as t
+from src.utils import helpers
 
 day_abbrv = ["S", "M", "T", "W", "Th", "F", "Sa"]
 months = ["January", "February", "March", "April", "May", "June",
