@@ -84,9 +84,9 @@ class KINVOW(basik_widget.BasikWidget):
         # self.txo.priont_dict(kre8dict)
         gather_options_dict = {'glyth': self.artay.glythTab.gather_glyth_options,
                                'glyph': self.artay.glyphTab.gather_glyph_options,
-                               'categories': self.artay.wordieTab.gather_wordie_options,
+                               'wordie': self.artay.wordieTab.gather_wordie_options,
                                'spirite': self.artay.spiriteTab.get_spirite_configuration,
-                               'categories': self.artay.recipeTab.gather_recipe_options,
+                               'recipes': self.artay.recipeTab.gather_recipe_options,
                                'fotoes': self.artay.fotoTab.gather_foto_options,
                                'mujic': self.artay.mujicTab.gather_mujic_options,
                                'gaim': self.artay.gaimTab.gather_gaim_options,

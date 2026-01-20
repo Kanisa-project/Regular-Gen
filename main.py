@@ -89,9 +89,9 @@ class Application(tk.Frame):
         self.center_frame.grid_columnconfigure(1, weight=1)
 
         self.center_frame.change_western_light(self.texioty_frame)
-        self.center_frame.change_eastern_light(self.mujica_frame)
-        self.center_frame.change_southern_light(self.spirite_forge_frame)
-        self.center_frame.change_northern_light(self.launchrr_frame)
+        self.center_frame.change_eastern_light(self.kinvow_frame)
+        self.center_frame.change_southern_light(self.artay_frame)
+        self.center_frame.change_northern_light(self.idutc_frame)
 
         self.texioty_frame.log_profile_in('bluebeard', "p455")
 
@@ -129,9 +129,9 @@ class SpotLighter(tk.LabelFrame):
         :return:
         """
         north_light_var = tk.StringVar()
-        north_light_var.set('Launchrr')
+        north_light_var.set('IDUTC')
         south_light_var = tk.StringVar()
-        south_light_var.set('Spirite Forge')
+        south_light_var.set('aRtay')
         east_light_var = tk.StringVar()
         east_light_var.set('Kinvow')
         west_light_var = tk.StringVar()
